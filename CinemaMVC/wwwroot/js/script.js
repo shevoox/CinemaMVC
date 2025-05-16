@@ -1,23 +1,23 @@
 document.addEventListener('DOMContentLoaded', function () {
     // Search functionality
-    const searchInput = document.getElementById('searchInput');
-    if (searchInput) {
-        searchInput.addEventListener('keypress', function (e) {
-            if (e.key === 'Enter' && this.value.trim() !== '') {
-                window.location.href = `search-results.html?q=${encodeURIComponent(this.value.trim())}`;
-            }
-        });
+    //const searchInput = document.getElementById('searchInput');
+    //if (searchInput) {
+    //    searchInput.addEventListener('keypress', function (e) {
+    //        if (e.key === 'Enter' && this.value.trim() !== '') {
+    //            window.location.href = `search-results.html?q=${encodeURIComponent(this.value.trim())}`;
+    //        }
+    //    });
 
-        // Also handle click on the search icon
-        const searchIcon = searchInput.previousElementSibling;
-        if (searchIcon) {
-            searchIcon.addEventListener('click', function () {
-                if (searchInput.value.trim() !== '') {
-                    window.location.href = `search-results.html?q=${encodeURIComponent(searchInput.value.trim())}`;
-                }
-            });
-        }
-    }
+    //    // Also handle click on the search icon
+    //    const searchIcon = searchInput.previousElementSibling;
+    //    if (searchIcon) {
+    //        searchIcon.addEventListener('click', function () {
+    //            if (searchInput.value.trim() !== '') {
+    //                window.location.href = `search-results.html?q=${encodeURIComponent(searchInput.value.trim())}`;
+    //            }
+    //        });
+    //    }
+    //}
 
     // تفعيل أزرار القائمة
     const menuButtons = document.querySelectorAll('.menu-btn');
