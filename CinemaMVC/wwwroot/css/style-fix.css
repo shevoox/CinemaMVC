@@ -1,0 +1,820 @@
+/* Fix genre tag placement - overrides existing styles */
+.carousel-item .genre-tag {
+    position: absolute;
+    top: 15px;
+    right: 15px !important; /* Force right positioning */
+    left: auto !important; /* Ensure left property is not used */
+    background: rgba(233, 69, 96, 0.75);
+    backdrop-filter: blur(5px);
+    padding: 4px 12px; /* Smaller padding */
+    border-radius: 20px;
+    font-size: 0.75rem; /* Smaller font */
+    font-weight: 600;
+    z-index: 10 !important; /* Higher z-index to ensure visibility */
+    border: 1px solid rgba(233, 69, 96, 0.5);
+    transform: translateY(-50px);
+    opacity: 0;
+    transition: all 0.4s cubic-bezier(0.23, 1, 0.32, 1) 0.1s;
+    color: white;
+    letter-spacing: 0.5px;
+    box-shadow: 0 5px 15px rgba(0, 0, 0, 0.2);
+}
+
+.carousel-item:hover .genre-tag {
+    transform: translateY(0);
+    opacity: 1;
+}
+
+/* Fix availability tag position to left */
+.carousel-item .availability-tag {
+    position: absolute;
+    top: 15px;
+    left: 15px !important;
+    right: auto !important;
+    padding: 4px 12px;
+    border-radius: 20px;
+    font-size: 0.75rem;
+    font-weight: 700;
+    z-index: 9;
+    display: flex;
+    align-items: center;
+    gap: 5px;
+    box-shadow: 0 5px 15px rgba(0, 0, 0, 0.3);
+}
+
+/* Fix carousel info z-index */
+.carousel-item .carousel-info {
+    z-index: 5;
+}
+
+/* Make title always visible */
+.carousel-item .carousel-title {
+    opacity: 1;
+    transform: translateY(0);
+    z-index: 6;
+}
+
+/* Fix for hero banner genre tags */
+.hero-banner .genre-tag {
+    position: static;
+    transform: none;
+    opacity: 1;
+    display: inline-block;
+    margin-right: 10px;
+    margin-bottom: 10px;
+}
+
+/* Enhanced Book Now Button Styling */
+
+/* Common styles for all book buttons */
+.book-btn,
+.quick-book,
+.booking-actions .book-btn,
+.hero-btn.book-btn {
+    background: linear-gradient(135deg, var(--accent-color), #ff6b81);
+    color: white;
+    border: none;
+    font-weight: 600;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 8px;
+    transition: all 0.3s cubic-bezier(0.23, 1, 0.32, 1);
+    position: relative;
+    overflow: hidden;
+    box-shadow: 0 5px 15px rgba(233, 69, 96, 0.3);
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+}
+
+/* Add shine effect */
+.book-btn::before,
+.quick-book::before,
+.booking-actions .book-btn::before,
+.hero-btn.book-btn::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: -100%;
+    width: 100%;
+    height: 100%;
+    background: linear-gradient(
+        90deg,
+        transparent,
+        rgba(255, 255, 255, 0.3),
+        transparent
+    );
+    transition: left 0.7s ease;
+}
+
+/* Hover effects */
+.book-btn:hover,
+.quick-book:hover,
+.booking-actions .book-btn:hover,
+.hero-btn.book-btn:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 8px 25px rgba(233, 69, 96, 0.5);
+    background: linear-gradient(135deg, #ff6b81, var(--accent-color));
+}
+
+.book-btn:hover::before,
+.quick-book:hover::before,
+.booking-actions .book-btn:hover::before,
+.hero-btn.book-btn:hover::before {
+    left: 100%;
+}
+
+/* Active state */
+.book-btn:active,
+.quick-book:active,
+.booking-actions .book-btn:active,
+.hero-btn.book-btn:active {
+    transform: translateY(-2px);
+    box-shadow: 0 5px 15px rgba(233, 69, 96, 0.4);
+}
+
+/* Icon animation */
+.book-btn i,
+.quick-book i,
+.booking-actions .book-btn i,
+.hero-btn.book-btn i {
+    transition: transform 0.3s ease;
+}
+
+.book-btn:hover i,
+.quick-book:hover i,
+.booking-actions .book-btn:hover i,
+.hero-btn.book-btn:hover i {
+    transform: translateX(3px) rotate(10deg);
+}
+
+/* Specific styles for different button types */
+
+/* Carousel buttons */
+.carousel-item .button-container .book-btn {
+    padding: 12px 15px;
+    border-radius: 12px;
+    font-size: 0.9rem;
+}
+
+/* Sidebar quick book */
+.quick-book {
+    padding: 10px 15px;
+    border-radius: 10px;
+    font-size: 0.85rem;
+}
+
+/* Full width section buttons */
+.booking-actions .book-btn {
+    padding: 14px 20px;
+    border-radius: 12px;
+    font-size: 1rem;
+}
+
+/* Hero banner book button */
+.hero-btn.book-btn {
+    padding: 16px 32px;
+    border-radius: 15px;
+    font-size: 1.1rem;
+}
+
+/* Disabled state */
+.book-btn[disabled],
+.quick-book[disabled],
+.booking-actions .book-btn[disabled],
+.hero-btn.book-btn[disabled] {
+    background: linear-gradient(135deg, #888, #666);
+    cursor: not-allowed;
+    opacity: 0.7;
+    box-shadow: none;
+    transform: none;
+}
+
+.book-btn[disabled]:hover,
+.quick-book[disabled]:hover,
+.booking-actions .book-btn[disabled]:hover,
+.hero-btn.book-btn[disabled]:hover {
+    transform: none;
+    box-shadow: none;
+}
+
+.book-btn[disabled]::before,
+.quick-book[disabled]::before,
+.booking-actions .book-btn[disabled]::before,
+.hero-btn.book-btn[disabled]::before {
+    display: none;
+}
+
+/* Time selected state */
+.book-btn.time-selected,
+.hero-btn.book-btn.time-selected {
+    animation: pulse-button 2s infinite;
+}
+
+@keyframes pulse-button {
+    0% {
+        box-shadow: 0 5px 15px rgba(233, 69, 96, 0.3);
+    }
+    50% {
+        box-shadow: 0 5px 30px rgba(233, 69, 96, 0.6);
+    }
+    100% {
+        box-shadow: 0 5px 15px rgba(233, 69, 96, 0.3);
+    }
+}
+
+/* Fix for the Movies section buttons alignment */
+.movie-item .movie-content {
+    display: flex;
+    flex-direction: column;
+    height: auto; /* Changed from 100% to auto */
+}
+
+.movie-item .booking-actions {
+    margin-top: 20px; /* Changed from auto to fixed margin */
+    width: 100%;
+    display: flex;
+    visibility: visible !important; /* Ensure buttons are visible */
+    opacity: 1 !important; /* Ensure buttons are visible */
+}
+
+/* Ensure consistent height for all movie cards */
+.movie-item {
+    height: auto; /* Changed from 100% to auto */
+    display: flex;
+    flex-direction: column;
+}
+
+.movie-item .movie-poster {
+    flex-shrink: 0;
+}
+
+/* Removed min-height constraint that was hiding buttons */
+.movies-container .movie-item .movie-content {
+    padding-bottom: 20px; /* Add padding at bottom */
+    display: flex;
+    flex-direction: column;
+}
+
+/* Fix for list view */
+.movies-container.list-view .movie-item .movie-content {
+    flex: 1;
+    padding-bottom: 0;
+}
+
+/* Force buttons to be visible */
+.book-btn,
+.quick-book,
+.booking-actions .book-btn,
+.hero-btn.book-btn,
+.action-btn,
+.details-btn {
+    visibility: visible !important;
+    opacity: 1 !important;
+    display: flex !important;
+}
+
+/* Fix for inconsistent button positioning with different numbers of time slots */
+.movie-showtimes {
+    height: 180px; /* Increased from 120px to 180px */
+    min-height: unset; /* Remove min-height */
+    display: flex;
+    flex-direction: column;
+    overflow: hidden; /* Hide overflow */
+    margin-bottom: 15px;
+    position: relative;
+}
+
+/* Make time slots container scrollable */
+.time-slots {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 10px;
+    max-height: 140px; /* Increased from 80px to 140px */
+    overflow-y: auto; /* Make scrollable */
+    padding-right: 5px; /* Space for scrollbar */
+    scrollbar-width: thin;
+    scrollbar-color: var(--accent-color) rgba(255, 255, 255, 0.1);
+}
+
+/* Scrollbar styling for time slots */
+.time-slots::-webkit-scrollbar {
+    width: 4px;
+}
+
+.time-slots::-webkit-scrollbar-track {
+    background: rgba(255, 255, 255, 0.1);
+    border-radius: 10px;
+}
+
+.time-slots::-webkit-scrollbar-thumb {
+    background: var(--accent-color);
+    border-radius: 10px;
+}
+
+/* Ensure consistent spacing for seats info */
+.seats-info {
+    margin: 15px 0;
+    padding-top: 0;
+}
+
+/* Additional fix for movie content to ensure consistent spacing */
+.movies-container .movie-item .movie-content {
+    padding-bottom: 20px;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between; /* Distribute space evenly */
+}
+
+/* Set consistent heights for different sections */
+.movie-header, .movie-info {
+    margin-bottom: 15px;
+}
+
+/* Fixed position for booking actions */
+.movie-item .booking-actions {
+    margin-top: 0;
+    width: 100%;
+    display: flex;
+    visibility: visible !important;
+    opacity: 1 !important;
+    position: relative;
+    bottom: 0;
+}
+
+/* Adjust list view to maintain consistent button positioning */
+.movies-container.list-view .movie-showtimes {
+    height: auto;
+    max-height: 180px; /* Increased from 120px to 180px */
+    overflow-y: visible;
+}
+
+/* Add indicator for scrollable time slots */
+.time-slots::after {
+    content: '';
+    position: absolute;
+    bottom: 40px;
+    right: 10px;
+    width: 8px;
+    height: 8px;
+    border-right: 2px solid var(--accent-color);
+    border-bottom: 2px solid var(--accent-color);
+    transform: rotate(45deg);
+    opacity: 0;
+    transition: opacity 0.3s ease;
+    pointer-events: none;
+}
+
+.time-slots.scrollable::after {
+    opacity: 1;
+}
+
+/* Add JavaScript to detect when time slots are scrollable */
+
+/* Enhanced Hero Section */
+.hero-banner {
+    border-radius: 24px;
+    overflow: hidden;
+    position: relative;
+    box-shadow: 0 20px 60px rgba(0, 0, 0, 0.4);
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    margin-bottom: 50px;
+}
+
+.hero-image {
+    width: 100%;
+    height: 700px; /* Increased from 600px */
+    position: relative;
+    overflow: hidden;
+}
+
+.hero-image img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    transition: transform 1.2s cubic-bezier(0.23, 1, 0.32, 1);
+    filter: brightness(0.9) saturate(1.1);
+    animation: subtle-float 8s ease-in-out infinite alternate;
+}
+
+@keyframes subtle-float {
+    0% {
+        transform: scale(1.0) translate(0, 0);
+    }
+    100% {
+        transform: scale(1.05) translate(-5px, -5px);
+    }
+}
+
+.hero-banner:hover .hero-image img {
+    transform: scale(1.05);
+}
+
+
+.hero-overlay {
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    background: linear-gradient(to top,
+        rgba(20, 10, 40, 0.98) 0%,
+        rgba(20, 10, 40, 0.9) 30%,
+        rgba(20, 10, 40, 0.7) 60%,
+        rgba(20, 10, 40, 0.3) 80%,
+        transparent 100%);
+    padding: 120px 50px 50px;
+}
+
+.hero-title {
+    font-size: 4rem; /* Increased from 3.5rem */
+    font-weight: 800;
+    margin-bottom: 20px;
+    text-shadow: 2px 2px 15px rgba(0, 0, 0, 0.7);
+    background: linear-gradient(90deg, #fff, #e9e9e9);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    line-height: 1.1;
+    letter-spacing: -0.5px;
+}
+
+/* Add availability tags to Movies section cards */
+.movie-item .movie-poster {
+    position: relative;
+}
+
+.movie-item .availability-tag {
+    position: absolute;
+    top: 15px;
+    left: 15px;
+    padding: 4px 12px;
+    border-radius: 20px;
+    font-size: 0.75rem;
+    font-weight: 700;
+    z-index: 10;
+    display: flex;
+    align-items: center;
+    gap: 5px;
+    box-shadow: 0 5px 15px rgba(0, 0, 0, 0.3);
+    backdrop-filter: blur(5px);
+    transition: all 0.3s ease;
+    width: fit-content;
+
+}
+
+.movie-item .availability-tag.available {
+    background: rgba(39, 174, 96, 0.8);
+    border: 1px solid rgba(39, 174, 96, 0.5);
+}
+
+.movie-item .availability-tag.few-seats {
+    background: rgba(243, 156, 18, 0.8);
+    border: 1px solid rgba(243, 156, 18, 0.5);
+}
+
+.movie-item .availability-tag.unavailable {
+    background: rgba(233, 69, 96, 0.8);
+    border: 1px solid rgba(233, 69, 96, 0.5);
+}
+
+.movie-item:hover .availability-tag {
+    transform: translateY(-3px);
+    box-shadow: 0 8px 20px rgba(0, 0, 0, 0.4);
+}
+
+/* Enhanced Popular Movies and Top Rated Movies Sections */
+.movie-categories {
+    background: linear-gradient(145deg, rgba(20, 10, 40, 0.9), rgba(26, 26, 46, 0.95));
+    backdrop-filter: blur(20px);
+    border-radius: 30px;
+    padding: 40px 50px;
+    margin: 50px 0;
+    overflow: hidden;
+    position: relative;
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    box-shadow: 0 30px 60px rgba(0, 0, 0, 0.5);
+    transition: all 0.4s cubic-bezier(0.23, 1, 0.32, 1);
+}
+
+.movie-categories::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: url("data:image/svg+xml,%3Csvg width='100' height='100' viewBox='0 0 100 100' xmlns='http://www.w3.org/2000/svg'%3E%3Cpath d='M11 18c3.866 0 7-3.134 7-7s-3.134-7-7-7-7 3.134-7 7 3.134 7 7 7zm48 25c3.866 0 7-3.134 7-7s-3.134-7-7-7-7 3.134-7 7 3.134 7 7 7zm-43-7c1.657 0 3-1.343 3-3s-1.343-3-3-3-3 1.343-3 3 1.343 3 3 3zm63 31c1.657 0 3-1.343 3-3s-1.343-3-3-3-3 1.343-3 3 1.343 3 3 3zM34 90c1.657 0 3-1.343 3-3s-1.343-3-3-3-3 1.343-3 3 1.343 3 3 3zm56-76c1.657 0 3-1.343 3-3s-1.343-3-3-3-3 1.343-3 3 1.343 3 3 3zM12 86c2.21 0 4-1.79 4-4s-1.79-4-4-4-4 1.79-4 4 1.79 4 4 4zm28-65c2.21 0 4-1.79 4-4s-1.79-4-4-4-4 1.79-4 4 1.79 4 4 4zm23-11c2.76 0 5-2.24 5-5s-2.24-5-5-5-5 2.24-5 5 2.24 5 5 5zm-6 60c2.21 0 4-1.79 4-4s-1.79-4-4-4-4 1.79-4 4 1.79 4 4 4zm29 22c2.76 0 5-2.24 5-5s-2.24-5-5-5-5 2.24-5 5 2.24 5 5 5zM32 63c2.76 0 5-2.24 5-5s-2.24-5-5-5-5 2.24-5 5 2.24 5 5 5zm57-13c2.76 0 5-2.24 5-5s-2.24-5-5-5-5 2.24-5 5 2.24 5 5 5zm-9-21c1.105 0 2-.895 2-2s-.895-2-2-2-2 .895-2 2 .895 2 2 2zM60 91c1.105 0 2-.895 2-2s-.895-2-2-2-2 .895-2 2 .895 2 2 2zM35 41c1.105 0 2-.895 2-2s-.895-2-2-2-2 .895-2 2 .895 2 2 2zM12 60c1.105 0 2-.895 2-2s-.895-2-2-2-2 .895-2 2 .895 2 2 2z' fill='rgba(255,255,255,.05)' fill-rule='evenodd'/%3E%3C/svg%3E");
+    opacity: 0.7;
+    z-index: 0;
+}
+
+.movie-categories::after {
+    content: '';
+    position: absolute;
+    top: -50%;
+    left: -50%;
+    width: 200%;
+    height: 200%;
+    background: radial-gradient(circle at center, rgba(233, 69, 96, 0.15), transparent 70%);
+    z-index: 0;
+    animation: rotateGlow 30s infinite linear;
+}
+
+.movie-categories:hover {
+    box-shadow: 0 35px 70px rgba(0, 0, 0, 0.6);
+    border: 1px solid rgba(255, 255, 255, 0.15);
+    transform: translateY(-5px);
+}
+
+.movie-categories .section-title {
+    position: relative;
+    z-index: 2;
+    display: flex;
+    align-items: center;
+    justify-content: flex-start;
+    gap: 15px;
+    margin-bottom: 35px;
+    width: 100%;
+}
+
+.movie-categories .section-title i {
+    order: 1;
+    font-size: 2.2rem;
+    color: var(--accent-color);
+    filter: drop-shadow(0 0 15px rgba(233, 69, 96, 0.6));
+    animation: pulse 2s infinite;
+}
+
+.movie-categories .section-title span {
+    order: 2;
+    font-size: 2.5rem;
+    font-weight: 800;
+    background: linear-gradient(135deg, #ffffff 0%, #e0e0e0 100%);
+    -webkit-background-clip: text;
+    background-clip: text;
+    -webkit-text-fill-color: transparent;
+    text-shadow: 0 2px 10px rgba(0, 0, 0, 0.3);
+    letter-spacing: -0.5px;
+}
+
+/* Premium title for Top Rated section */
+.premium-title {
+    position: relative;
+}
+
+.premium-title::after {
+    content: '';
+    position: absolute;
+    left: 0;
+    bottom: -10px;
+    width: 80px;
+    height: 4px;
+    background: linear-gradient(to right, var(--accent-color), transparent);
+    border-radius: 4px;
+}
+
+/* Remove the subtitle styles since it's no longer used */
+.premium-title .subtitle {
+    display: none;
+}
+
+/* Enhanced carousel container */
+.carousel-container {
+    position: relative;
+    overflow: hidden;
+    padding: 20px 0;
+}
+
+/* Enhanced carousel items */
+.movie-carousel {
+    display: flex;
+    transition: transform 0.5s cubic-bezier(0.23, 1, 0.32, 1);
+    gap: 25px;
+    padding: 10px 0;
+}
+
+.carousel-item {
+    min-width: 300px;
+    flex: 0 0 300px;
+    background: rgba(255, 255, 255, 0.03);
+    border-radius: 24px;
+    overflow: hidden;
+    transition: all 0.5s cubic-bezier(0.23, 1, 0.32, 1);
+    border: 1px solid rgba(255, 255, 255, 0.08);
+    position: relative;
+    box-shadow: 0 20px 40px rgba(0, 0, 0, 0.3);
+    transform-style: preserve-3d;
+    perspective: 1000px;
+    height: 500px;
+}
+
+.carousel-item:hover {
+    transform: translateY(-10px) scale(1.02);
+    box-shadow: 0 15px 30px rgba(0, 0, 0, 0.3);
+    z-index: 10;
+}
+
+.carousel-thumb {
+    position: relative;
+    height: 450px;
+    overflow: hidden;
+    transform: translateZ(0);
+}
+
+.carousel-thumb::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background: linear-gradient(to bottom, rgba(0, 0, 0, 0.2), rgba(0, 0, 0, 0.6));
+    z-index: 1;
+    opacity: 0;
+    transition: opacity 0.4s ease;
+}
+
+.carousel-item:hover .carousel-thumb::before {
+    opacity: 1;
+}
+
+.carousel-thumb img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    transition: transform 1s cubic-bezier(0.23, 1, 0.32, 1);
+    filter: brightness(0.95);
+}
+
+.carousel-item:hover .carousel-thumb img {
+    transform: scale(1.12);
+    filter: brightness(1.05) saturate(1.1);
+}
+
+/* Ensure carousel arrows are more visible and interactive */
+.carousel-large-arrow {
+    position: absolute;
+    top: 50%;
+    transform: translateY(-50%);
+    background: rgba(0, 0, 0, 0.7);
+    width: 50px;
+    height: 50px;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    box-shadow: 0 5px 15px rgba(0, 0, 0, 0.3);
+    z-index: 100;
+}
+
+.carousel-large-arrow:hover {
+    background: var(--accent-color);
+    transform: translateY(-50%) scale(1.1);
+}
+
+.carousel-large-arrow.left {
+    left: 20px;
+}
+
+.carousel-large-arrow.right {
+    right: 20px;
+}
+
+.carousel-large-arrow i {
+    font-size: 1.5rem;
+    color: white;
+}
+
+.carousel-large-arrow.left:hover i {
+    transform: translateX(-3px);
+    transition: transform 0.3s ease;
+}
+
+.carousel-large-arrow.right:hover i {
+    transform: translateX(3px);
+    transition: transform 0.3s ease;
+}
+
+/* Top Rated Movies section specific styling */
+.top-rated-section {
+    background: linear-gradient(145deg, rgba(30, 13, 60, 0.95), rgba(20, 20, 40, 0.95));
+    border: 1px solid rgba(233, 69, 96, 0.15);
+}
+
+.top-rated-section::after {
+    content: '';
+    position: absolute;
+    right: 30px;
+    bottom: 20px;
+    width: 80px;
+    height: 4px;
+    background: linear-gradient(to right, transparent, var(--accent-color));
+    border-radius: 4px;
+    animation: pulse 2s infinite;
+}
+
+.top-rated-section .carousel-item {
+    border: 1px solid rgba(233, 69, 96, 0.1);
+}
+
+/* Animations */
+@keyframes rotateGlow {
+    0% { transform: rotate(0deg); }
+    100% { transform: rotate(360deg); }
+}
+
+@keyframes pulse {
+    0% { transform: scale(1); filter: drop-shadow(0 0 5px rgba(233, 69, 96, 0.3)); }
+    50% { transform: scale(1.1); filter: drop-shadow(0 0 15px rgba(233, 69, 96, 0.6)); }
+    100% { transform: scale(1); filter: drop-shadow(0 0 5px rgba(233, 69, 96, 0.3)); }
+}
+
+/* Responsive adjustments */
+@media (max-width: 1200px) {
+    .movie-categories {
+        padding: 30px;
+    }
+
+    .carousel-container {
+        padding: 10px 80px;
+        margin: 30px -30px 15px;
+    }
+
+    .carousel-item {
+        flex: 0 0 280px;
+        height: 450px;
+    }
+
+    .carousel-thumb {
+        height: 400px;
+    }
+
+    .movie-categories .section-title span {
+        font-size: 2.2rem;
+    }
+}
+
+@media (max-width: 768px) {
+    .movie-categories {
+        padding: 25px;
+        border-radius: 20px;
+    }
+
+    .carousel-container {
+        padding: 10px 20px;
+        margin: 20px -20px 10px;
+    }
+
+    .carousel-item {
+        flex: 0 0 250px;
+        height: 400px;
+    }
+
+    .carousel-thumb {
+        height: 350px;
+    }
+
+    .carousel-large-arrow {
+        width: 45px;
+        height: 45px;
+    }
+
+    .carousel-large-arrow.left {
+        left: 10px;
+    }
+
+    .carousel-large-arrow.right {
+        right: 10px;
+    }
+
+    .movie-categories .section-title span {
+        font-size: 1.8rem;
+    }
+
+    .movie-categories .section-title i {
+        font-size: 1.8rem;
+    }
+}
+
+/* Add scroll indicator animation */
+@keyframes scroll-indicator {
+    0%, 100% { opacity: 0.5; transform: translateX(0); }
+    50% { opacity: 1; transform: translateX(10px); }
+}
+
+/* Add smooth scrolling behavior */
+.movie-carousel {
+    scroll-behavior: smooth;
+}
+
+/* Ensure carousel items have proper spacing */
+.carousel-item {
+    margin-right: 5px;
+}
+
+/* Add transition for carousel items */
+.carousel-item {
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+}

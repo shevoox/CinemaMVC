@@ -1,0 +1,120 @@
+﻿@model Movie
+@{
+    ViewData["Title"] = "Details";
+}
+@section Styles {
+    <link href="~/css/movie-details.css" rel="stylesheet" asp-append-version="true" />
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700&display=swap" rel="stylesheet">
+
+}
+
+
+                @* -------------------------------------- *@
+
+<div class="mdp-container">
+    <!-- Backdrop Section -->
+    <div class="mdp-backdrop">
+        <img src="~/images/@Model.PosterImage" alt="@Model.Title" id="mdp-backdrop-img" />
+        <div class="mdp-backdrop-overlay"></div>
+    </div>
+
+    <!-- Movie Details Container -->
+    <div class="mdp-details-container">
+        <!-- Movie Info Section -->
+        <div class="mdp-info-section">
+            <!-- Movie Poster -->
+            <div class="mdp-poster">
+                <img src="~/images/@Model.PosterImage" alt="@Model.Title" id="mdp-poster-img" />
+            </div>
+
+            <!-- Movie Details -->
+            <div class="mdp-details">
+                <h1 class="mdp-title" id="mdp-title">@Model.Title</h1>
+
+                <!-- Movie Metadata -->
+                <div class="mdp-meta">
+                    <div class="mdp-rating">
+                        <i class="fas fa-star"></i>
+                        <span id="mdp-rating-value">@Model.Rating.ToString("N1")</span>
+                    </div>
+                    <div class="mdp-duration" id="mdp-duration">@Model.DurationMinutes</div>
+                    <div class="mdp-release-year" id="mdp-year">@Model.ReleaseYear</div>
+                </div>
+
+                <!-- Genre Tags -->
+                <div class="mdp-genre-tags" id="mdp-genres">
+                    @foreach (var genre in Model.MovieGenres)
+                    {
+                        <span class="mdp-genre-tag">@genre.Genre.Name</span>
+                    }
+
+                </div>
+
+                <!-- Movie Description -->
+                <p class="mdp-description" id="mdp-description">@Model.Description</p>
+
+                <!-- Action Buttons -->
+                <div class="mdp-action-buttons">
+                    <button class="mdp-book-btn">
+                        <i class="fas fa-ticket-alt"></i>
+                        Book Now
+                    </button>
+                    <button class="mdp-trailer-btn">
+                        <i class="fas fa-play"></i>
+                        Watch Trailer
+                    </button>
+                    <button class="mdp-add-list-btn">
+                        <i class="fas fa-plus"></i>
+                        Add to List
+                    </button>
+                </div>
+
+                <!-- Showtimes Section -->
+                <div class="mdp-showtime">
+                    <h3>Available Showtimes</h3>
+                    <div class="mdp-showtime-grid" id="mdp-showtimes">
+
+                        @foreach (var item in Model.Showtimes)
+                        {
+                            <div class="mdp-showtime-slot">@item.StartTime.ToString("h:mm tt")</div>
+                        }
+
+                    </div>
+                </div>
+
+                <!-- Additional Info Section -->
+                <div class="mdp-additional-info">
+                    <!-- Cast Section -->
+                    <div class="mdp-info-section">
+                        <h3>Cast</h3>
+                        <div class="mdp-cast-list" id="mdp-cast">
+                            @foreach (var movieCast in Model.MovieCasts)
+                            {
+                                <div class="mdp-cast-item">
+                                    <div class="mdp-cast-photo">
+                                        <img src="~/images/Crow/@movieCast.Cast.Photo" alt="@movieCast.Cast.Name" />
+                                    </div>
+                                    <div class="mdp-cast-name">@movieCast.Cast.Name</div>
+                                    <div class="mdp-cast-character">@movieCast.CharacterName</div>
+                                </div>
+                            }
+                        </div>
+
+                    </div>
+
+                    <!-- Director Section -->
+                    <div class="mdp-info-section">
+                        <h3>Director</h3>
+                        <p class="mdp-director" id="mdp-director">@Model.Director</p>
+                    </div>
+
+                    <!-- Language Section -->
+                    <div class="mdp-info-section">
+                        <h3>Language</h3>
+                        <p class="mdp-language" id="mdp-language">@Model.Language</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

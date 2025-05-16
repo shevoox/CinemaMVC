@@ -1,0 +1,457 @@
+﻿@model HomeViewModel
+@{
+    ViewData["Title"] = "Home Page";
+}
+
+<div class="main-content">
+    <aside class="sidebar">
+        <div class="now-showing">
+            <div class="section-title">
+                <span>🎬 Now Showing</span>
+                <span class="today-tag">Live</span>
+            </div>
+            <div class="movie-list">
+                <div class="movie-list-item">
+                    <div class="movie-thumb">
+                        <img src="images/Inception.jpg" alt="Inception">
+                    </div>
+                    <div class="movie-list-info">
+                        <h4 class="movie-list-title">Inception</h4>
+                        <div class="movie-meta">
+                            <span><i class="far fa-clock"></i> 2h 28m</span>
+                            <span><i class="fas fa-star"></i> 4.8</span>
+                        </div>
+                        <div class="movie-meta">
+                            <span><i class="fas fa-film"></i> IMAX</span>
+                            <span><i class="fas fa-couch"></i> 45 seats</span>
+                        </div>
+                        <button class="quick-book">
+                            <i class="fas fa-ticket-alt"></i>
+                            Book Now
+                        </button>
+                    </div>
+                </div>
+                <div class="movie-list-item">
+                    <div class="movie-thumb">
+                        <img src="images/Interstellar.jpg" alt="Interstellar">
+                    </div>
+                    <div class="movie-list-info">
+                        <h4 class="movie-list-title">Interstellar</h4>
+                        <div class="movie-meta">
+                            <span><i class="far fa-clock"></i> 2h 49m</span>
+                            <span><i class="fas fa-star"></i> 4.9</span>
+                        </div>
+                        <div class="movie-meta">
+                            <span><i class="fas fa-film"></i> 4DX</span>
+                            <span><i class="fas fa-couch"></i> 32 seats</span>
+                        </div>
+                        <button class="quick-book">
+                            <i class="fas fa-ticket-alt"></i>
+                            Book Now
+                        </button>
+                    </div>
+                </div>
+                <div class="movie-list-item">
+                    <div class="movie-thumb">
+                        <img src="images/John Wick.jpg" alt="John Wick">
+                    </div>
+                    <div class="movie-list-info">
+                        <h4 class="movie-list-title">John Wick: Chapter 4</h4>
+                        <div class="movie-meta">
+                            <span><i class="far fa-clock"></i> 2h 15m</span>
+                            <span><i class="fas fa-star"></i> 4.7</span>
+                        </div>
+                        <div class="movie-meta">
+                            <span><i class="fas fa-film"></i> IMAX</span>
+                            <span><i class="fas fa-couch"></i> 28 seats</span>
+                        </div>
+                        <button class="quick-book">
+                            <i class="fas fa-ticket-alt"></i>
+                            Book Now
+                        </button>
+                    </div>
+                </div>
+                <div class="movie-list-item">
+                    <div class="movie-thumb">
+                        <img src="images/Avatar.jpg" alt="Avatar">
+                    </div>
+                    <div class="movie-list-info">
+                        <h4 class="movie-list-title">Avatar: The Way of Water</h4>
+                        <div class="movie-meta">
+                            <span><i class="far fa-clock"></i> 3h 12m</span>
+                            <span><i class="fas fa-star"></i> 4.7</span>
+                        </div>
+                        <div class="movie-meta">
+                            <span><i class="fas fa-film"></i> IMAX 3D</span>
+                            <span><i class="fas fa-couch"></i> 52 seats</span>
+                        </div>
+                        <button class="quick-book">
+                            <i class="fas fa-ticket-alt"></i>
+                            Book Now
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+    </aside>
+
+    <section class="main-section">
+        <div class="hero-banner">
+            <div class="hero-image">
+                <img src="images/Inception.jpg" alt="Spider-Man: Across the Spider-Verse">
+                <div class="hero-overlay">
+                    <div class="hero-content">
+                        <div class="featured-tag">Featured Film</div>
+                        <div class="genre-tags">
+                            <span class="genre-tag">Animation</span>
+                            <span class="genre-tag">Adventure</span>
+                            <span class="genre-tag">Action</span>
+                        </div>
+                        <h1 class="hero-title">Spider-Man: Across the Spider-Verse</h1>
+                        <div class="movie-meta-info">
+                            <span class="rating"><i class="fas fa-star"></i> 9.2/10</span>
+                            <span class="duration"><i class="far fa-clock"></i> 140 min</span>
+                            <span class="release"><i class="far fa-calendar"></i> 2023</span>
+                        </div>
+                        <p class="hero-description">2023 sequel to the animated film "Spider-Man: Into the Spider-Verse". The story follows Miles Morales as he embarks on a journey through the multiverse, encountering various Spider-People from different dimensions.</p>
+                        <div class="showtime-preview">
+                            <span class="next-show">Next shows today:</span>
+                            <div class="time-options">
+                                <span class="time-chip">11:30</span>
+                                <span class="time-chip">14:15</span>
+                                <span class="time-chip">17:00</span>
+                                <span class="time-chip">20:30</span>
+                            </div>
+                        </div>
+                        <div class="hero-buttons">
+                            <button class=" book-btn ">
+                                <i class="fas fa-ticket-alt"></i>
+                                Book Tickets
+                            </button>
+                            <button class="hero-btn trailer-btn">
+                                <div class="play-icon">
+                                    <i class="fas fa-play"></i>
+                                </div>
+                                Watch Trailer
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="movie-categories">
+            <div class="section-title">
+                <i class="fas fa-fire"></i>
+                <span>Popular Movies</span>
+            </div>
+            <div class="carousel-container">
+                <div class="movie-carousel">
+                   @foreach (var item in Model.PopularMovies)
+                    {
+                        <div class="carousel-item">
+                            <div class="carousel-thumb">
+                                <img src="images/@item.PosterImage" alt="@item.Title">
+                                <div class="cinema-tag">
+                                    <i class="fas fa-film"></i>
+                                    @item.Showtimes.FirstOrDefault()?.Theater.Name
+                                </div>
+                                @if (item.Showtimes.FirstOrDefault().AvailableSeats == 0)
+                                {
+                                   <div class="availability-tag unavailable"><i class="fas fa-times-circle"></i> Sold Out</div>
+
+                                }
+                                else if (item.Showtimes.FirstOrDefault().AvailableSeats <= 5)
+                                {
+                                    <div class="availability-tag few-seats"><i class="fas fa-exclamation-circle"></i> Few Seats</div>
+
+                                }
+                                else{
+                                    <div class="availability-tag available"><i class="fas fa-check-circle"></i> Available</div>
+                                }
+
+
+
+                            </div>
+                            <div class="carousel-info">
+                                <span class="genre-tag">
+                                    @foreach (var mg in item.MovieGenres)
+                                    {
+                                        @mg.Genre.Name
+                                    }
+                                </span>
+                                <h3 class="carousel-title">@item.Title</h3>
+                                <div class="movie-rating">
+                                    <i class="fas fa-star"></i>
+                                    <span>@item.Rating.ToString("N1") </span>
+                                </div>
+                                <div class="movie-data-detail">
+                                    <i class="far fa-clock"></i>
+                                    @foreach (var show in item.Showtimes)
+                                    {
+                                        <span>Start Time: @show.StartTime.ToString("hh:mm tt")</span>
+
+                                    }
+                                </div>
+                                <div class="movie-data-detail">
+                                    <i class="far fa-clock"></i>
+                                    @foreach (var show in item.Showtimes)
+                                    {
+                                        <span>End Time: @show.EndTime.ToString("hh:mm tt")</span>
+
+                                    }
+                                </div>
+
+
+                                    @if (item.Showtimes.Any())
+                                    {
+                                    var availableSeats = item.Showtimes.FirstOrDefault()?.AvailableSeats;
+
+
+                                        <div class="movie-data-detail">
+                                            <i class="fas fa-couch"></i>
+                                            <span>@availableSeats seats available</span>
+                                        </div>
+                                    }
+                                    else
+                                    {
+                                        <span>No showtimes</span>
+                                    }
+                                <div class="button-container">
+                                    <a asp-controller="Booking" asp-action="Booking" asp-route-id="@item.Id" class="book-btn"><i class="fas fa-ticket-alt"></i> Book Now</a>
+                                    <a asp-controller="Details" asp-action="details" asp-route-id="@item.Id" class="details-btn"><i class="fas fa-info-circle"></i> Details</a>
+                                </div>
+                            </div>
+                        </div>
+                    }
+
+                </div>
+                <div class="carousel-large-arrow left">
+                    <i class="fas fa-chevron-left"></i>
+                </div>
+                <div class="carousel-large-arrow right">
+                    <i class="fas fa-chevron-right"></i>
+                </div>
+            </div>
+        </div>
+
+        <div class="movie-categories top-rated-section">
+            <div class="section-title premium-title">
+                <i class="fas fa-star"></i>
+                <span>Top Rated Movies</span>
+            </div>
+            <div class="carousel-container">
+                <div class="movie-carousel">
+                   @foreach (var item in Model.TopRatedMovies)
+                    {
+                        <div class="carousel-item">
+                            <div class="carousel-thumb">
+                                <img src="images/@item.PosterImage" alt="The Godfather">
+                                <div class="cinema-tag">
+                                    <i class="fas fa-film"></i>
+                                    @item.Showtimes.FirstOrDefault()?.Theater.Name
+                                </div>
+                                @if (item.Showtimes.FirstOrDefault().AvailableSeats == 0)
+                                {
+                                    <div class="availability-tag unavailable"><i class="fas fa-times-circle"></i> Sold Out</div>
+
+                                }
+                                else if (item.Showtimes.FirstOrDefault().AvailableSeats <= 5)
+                                {
+                                    <div class="availability-tag few-seats"><i class="fas fa-exclamation-circle"></i> Few Seats</div>
+
+                                }
+                                else
+                                {
+                                    <div class="availability-tag available"><i class="fas fa-check-circle"></i> Available</div>
+                                }
+                            </div>
+                            <div class="carousel-info">
+
+                                <span class="genre-tag">
+                                    @foreach (var mg in item.MovieGenres)
+                                    {
+                                        @mg.Genre.Name
+                                    }
+                                </span>
+
+                                <h3 class="carousel-title">@item.Title</h3>
+                                <div class="movie-rating">
+                                    <i class="fas fa-star"></i>
+                                    <span>@item.Rating.ToString("N1")</span>
+                                </div>
+                                <div class="movie-data-detail">
+                                    <i class="far fa-clock"></i>
+                                    @foreach (var show in item.Showtimes)
+                                    {
+                                        <span>Start Time: @show.StartTime.ToString("hh:mm tt")</span>
+
+                                    }
+                                </div>
+                                <div class="movie-data-detail">
+                                    <i class="far fa-clock"></i>
+                                    @foreach (var show in item.Showtimes)
+                                    {
+                                        <span>End Time: @show.EndTime.ToString("hh:mm tt")</span>
+
+                                    }
+                                </div>
+
+
+                                @if (item.Showtimes.Any())
+                                {
+                                    var availableSeats = item.Showtimes.FirstOrDefault()?.AvailableSeats;
+
+
+                                    <div class="movie-data-detail">
+                                        <i class="fas fa-couch"></i>
+                                        <span>@availableSeats seats available</span>
+                                    </div>
+                                }
+                                else
+                                {
+                                    <span>No showtimes</span>
+                                }
+                                <div class="button-container">
+                                    <button class="book-btn"><i class="fas fa-ticket-alt"></i> Book Now</button>
+                                    <a asp-action="details" asp-route-id="@item.Id" class="details-btn"><i class="fas fa-info-circle"></i> Details</a>
+                                </div>
+                            </div>
+                        </div>
+                    }
+
+                </div>
+                <div class="carousel-large-arrow left">
+                    <i class="fas fa-chevron-left"></i>
+                </div>
+                <div class="carousel-large-arrow right">
+                    <i class="fas fa-chevron-right"></i>
+                </div>
+            </div>
+        </div>
+    </section>
+</div>
+
+    <!-- Full Width All Movies Section -->
+    <div class="full-width-section">
+        <div class="all-movies-section">
+            <div class="section-header">
+                <div class="header-left">
+                    <h2 class="section-title">Movies</h2>
+                    <div class="genre-filter-wrapper">
+                        <div class="genre-filter">
+                            <button class="genre-btn active">All</button>
+                            <button class="genre-btn">Action <i class="fas fa-bolt"></i></button>
+                            <button class="genre-btn">Drama <i class="fas fa-theater-masks"></i></button>
+                            <button class="genre-btn">Sci-Fi <i class="fas fa-robot"></i></button>
+                            <button class="genre-btn">Animation <i class="fas fa-magic"></i></button>
+                            <button class="genre-btn">Crime <i class="fas fa-user-secret"></i></button>
+                            <button class="genre-btn">Adventure <i class="fas fa-mountain"></i></button>
+                            <button class="genre-btn">Comedy <i class="fas fa-laugh"></i></button>
+                            <button class="genre-btn">Horror <i class="fas fa-ghost"></i></button>
+                            <button class="genre-btn">Fantasy <i class="fas fa-hat-wizard"></i></button>
+                            <button class="genre-btn">Romance <i class="fas fa-heart"></i></button>
+                        </div>
+                    </div>
+                </div>
+
+            </div>
+
+            <div class="movies-container">
+                <!-- Movie Card -->
+@foreach (var item in Model.AllMovies)
+            {
+                <div class="movie-item" data-genres="action,crime,drama">
+                    <div class="movie-poster">
+                        <img src="images/@item.PosterImage" alt="@item.Title">
+                        <div class="movie-badge">
+                            <i class="fas fa-star"></i>
+                            @item.Rating.ToString("N1")
+                        </div>
+                        @if (item.Showtimes.FirstOrDefault().AvailableSeats == 0)
+                        {
+                            <div class="availability-tag unavailable"><i class="fas fa-times-circle"></i> Sold Out</div>
+
+                        }
+                        else if (item.Showtimes.FirstOrDefault().AvailableSeats <= 5)
+                        {
+                            <div class="availability-tag few-seats"><i class="fas fa-exclamation-circle"></i> Few Seats</div>
+
+                        }
+                        else
+                        {
+                            <div class="availability-tag available"><i class="fas fa-check-circle"></i> Available</div>
+                        }
+                    </div>
+                    <div class="movie-content">
+                        <div class="movie-header">
+                            <h3 class="movie-title">@item.Title</h3>
+                            <div class="movie-rating">
+                                <i class="fas fa-star"></i>
+                                <span>@item.Rating.ToString("N1")</span>
+                            </div>
+                        </div>
+                        <div class="movie-info">
+                            <div class="info-item">
+                                <i class="far fa-clock"></i>
+                                <span>@item.DurationMinutes</span>
+                            </div>
+                            <div class="info-item">
+                                <i class="fas fa-film"></i>
+                                <span>@item.Showtimes.FirstOrDefault().Theater.Name</span>
+                            </div>
+                            <div class="info-item">
+                                <i class="fas fa-closed-captioning"></i>
+                                <span>Subtitled</span>
+                            </div>
+                        </div>
+                        <div class="movie-showtimes">
+                            <div class="showtime-title">
+                                <span>Today's Showtimes</span>
+                                <span class="showtime-date">@DateTime.Today.ToString("MMM dd")</span>
+                            </div>
+                            <div class="time-slots" >
+                                @foreach (var showtime in item.Showtimes)
+                                {
+                                    <button class="time-slot" style="margin-top:10px">
+                                        @showtime.StartTime.ToString("h:mm tt")  - @showtime.Theater.Name
+                                    </button>
+                                }
+                            </div>
+                        </div>
+                        <div class="seats-info">
+                            <span class="seats-available">45 seats available</span>
+                            <span class="price">@item.Showtimes.FirstOrDefault()?.Price.ToString("C0")</span>
+                        </div>
+                        <div class="booking-actions">
+                            <a asp-action="Book"asp-route-id="@item.Id" class="book-btn">
+                                <i class="fas fa-ticket-alt"></i>
+                                Book Now
+                            </a>
+                            <button class="action-btn">
+                                <i class="fas fa-info-circle"></i>
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            }
+
+            </div>
+
+            <!-- Replace Load More with Pagination -->
+            <div class="pagination">
+                <button class="pagination-btn" title="Previous page">
+                    <i class="fas fa-chevron-left"></i>
+                </button>
+                <button class="pagination-btn active">1</button>
+                <button class="pagination-btn">2</button>
+                <button class="pagination-btn">3</button>
+                <span class="pagination-ellipsis">...</span>
+                <button class="pagination-btn">10</button>
+                <button class="pagination-btn" title="Next page">
+                    <i class="fas fa-chevron-right"></i>
+                </button>
+            </div>
+        </div>
+    </div>

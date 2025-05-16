@@ -1,0 +1,238 @@
+﻿@model Movie
+@{
+    ViewData["Title"] = "Search";
+}
+@section Styles {
+    <link href="~/css/search-results.css" rel="stylesheet" asp-append-version="true" />
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700&display=swap" rel="stylesheet">
+
+}
+
+<div class="sr-header">
+    <h1>Search Results for: <span class="sr-search-term">"Inception"</span></h1>
+    <div class="sr-meta">
+        <span class="sr-results-count">3 results found</span>
+        <div class="sr-filters">
+            <span class="sr-filter-label">Filter by:</span>
+            <div class="sr-filter-options">
+                <a href="#" class="sr-filter-option active">All</a>
+                <a href="#" class="sr-filter-option">Movies</a>
+                <a href="#" class="sr-filter-option">TV Shows</a>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="sr-results-grid">
+    <!-- Movie Result -->
+    <div class="sr-movie-card">
+        <div class="sr-movie-poster">
+            <img src="images/Inception.jpg" alt="Inception">
+            <div class="sr-movie-badge">
+                <i class="fas fa-star"></i>
+                4.9
+            </div>
+            <div class="sr-availability-tag sr-available"><i class="fas fa-check-circle"></i> Available</div>
+        </div>
+        <div class="sr-movie-details">
+            <span class="sr-genre-tag">Sci-Fi</span>
+            <div class="sr-movie-header">
+                <h3 class="sr-movie-title">Inception</h3>
+                <div class="sr-movie-rating">
+                    <i class="fas fa-star"></i>
+                    <span>4.9</span>
+                </div>
+            </div>
+            <div class="sr-movie-info">
+                <div class="sr-info-item">
+                    <i class="far fa-clock"></i>
+                    <span>2h 28m</span>
+                </div>
+                <div class="sr-info-item">
+                    <i class="fas fa-film"></i>
+                    <span>IMAX</span>
+                </div>
+                <div class="sr-info-item">
+                    <i class="fas fa-calendar-alt"></i>
+                    <span>2010</span>
+                </div>
+            </div>
+            <p class="sr-movie-description">
+                A thief who steals corporate secrets through the use of dream-sharing technology is given the inverse task of planting an idea into the mind of a C.E.O.
+            </p>
+            <div class="sr-movie-showtimes">
+                <h4>Today's Showtimes</h4>
+                <div class="sr-time-slots">
+                    <span class="sr-time-slot">10:30 AM</span>
+                    <span class="sr-time-slot">2:15 PM</span>
+                    <span class="sr-time-slot">6:00 PM</span>
+                    <span class="sr-time-slot">9:45 PM</span>
+                </div>
+            </div>
+            <div class="sr-seats-info">
+                <span class="sr-seats-available">45 seats available</span>
+                <span class="sr-price">$14.99</span>
+            </div>
+            <div class="sr-movie-actions">
+                <a href="#" class="sr-book-btn">
+                    <i class="fas fa-ticket-alt"></i>
+                    Book Now
+                </a>
+                <a href="movie-details.html?title=Inception" class="sr-details-btn">
+                    <i class="fas fa-info-circle"></i>
+                    Details
+                </a>
+            </div>
+        </div>
+    </div>
+
+    <!-- Movie Result -->
+    <div class="sr-movie-card">
+        <div class="sr-movie-poster">
+            <img src="images/Interstellar.jpg" alt="Interstellar">
+            <div class="sr-movie-badge">
+                <i class="fas fa-star"></i>
+                4.8
+            </div>
+            <div class="sr-availability-tag sr-few-seats"><i class="fas fa-exclamation-circle"></i> Few Seats</div>
+        </div>
+        <div class="sr-movie-details">
+            <span class="sr-genre-tag">Sci-Fi</span>
+            <div class="sr-movie-header">
+                <h3 class="sr-movie-title">Interstellar</h3>
+                <div class="sr-movie-rating">
+                    <i class="fas fa-star"></i>
+                    <span>4.8</span>
+                </div>
+            </div>
+            <div class="sr-movie-info">
+                <div class="sr-info-item">
+                    <i class="far fa-clock"></i>
+                    <span>2h 49m</span>
+                </div>
+                <div class="sr-info-item">
+                    <i class="fas fa-film"></i>
+                    <span>IMAX</span>
+                </div>
+                <div class="sr-info-item">
+                    <i class="fas fa-calendar-alt"></i>
+                    <span>2014</span>
+                </div>
+            </div>
+            <p class="sr-movie-description">
+                A team of explorers travel through a wormhole in space in an attempt to ensure humanity's survival.
+            </p>
+            <div class="sr-movie-showtimes">
+                <h4>Today's Showtimes</h4>
+                <div class="sr-time-slots">
+                    <span class="sr-time-slot">11:00 AM</span>
+                    <span class="sr-time-slot">3:30 PM</span>
+                    <span class="sr-time-slot">7:15 PM</span>
+                </div>
+            </div>
+            <div class="sr-seats-info">
+                <span class="sr-seats-available">Only 12 seats left</span>
+                <span class="sr-price">$14.99</span>
+            </div>
+            <div class="sr-movie-actions">
+                <a href="#" class="sr-book-btn">
+                    <i class="fas fa-ticket-alt"></i>
+                    Book Now
+                </a>
+                <a href="movie-details.html?title=Interstellar" class="sr-details-btn">
+                    <i class="fas fa-info-circle"></i>
+                    Details
+                </a>
+            </div>
+        </div>
+    </div>
+
+    <!-- Movie Result -->
+    <div class="sr-movie-card">
+        <div class="sr-movie-poster">
+            <img src="images/The Dark Knight.jpg" alt="The Dark Knight">
+            <div class="sr-movie-badge">
+                <i class="fas fa-star"></i>
+                4.9
+            </div>
+            <div class="sr-availability-tag sr-available"><i class="fas fa-check-circle"></i> Available</div>
+        </div>
+        <div class="sr-movie-details">
+            <span class="sr-genre-tag">Action</span>
+            <div class="sr-movie-header">
+                <h3 class="sr-movie-title">The Dark Knight</h3>
+                <div class="sr-movie-rating">
+                    <i class="fas fa-star"></i>
+                    <span>4.9</span>
+                </div>
+            </div>
+            <div class="sr-movie-info">
+                <div class="sr-info-item">
+                    <i class="far fa-clock"></i>
+                    <span>2h 32m</span>
+                </div>
+                <div class="sr-info-item">
+                    <i class="fas fa-film"></i>
+                    <span>IMAX</span>
+                </div>
+                <div class="sr-info-item">
+                    <i class="fas fa-calendar-alt"></i>
+                    <span>2008</span>
+                </div>
+            </div>
+            <p class="sr-movie-description">
+                When the menace known as the Joker wreaks havoc and chaos on the people of Gotham, Batman must accept one of the greatest psychological and physical tests of his ability to fight injustice.
+            </p>
+            <div class="sr-movie-showtimes">
+                <h4>Today's Showtimes</h4>
+                <div class="sr-time-slots">
+                    <span class="sr-time-slot">10:30 AM</span>
+                    <span class="sr-time-slot">2:15 PM</span>
+                    <span class="sr-time-slot">6:00 PM</span>
+                    <span class="sr-time-slot">9:45 PM</span>
+                </div>
+            </div>
+            <div class="sr-seats-info">
+                <span class="sr-seats-available">45 seats available</span>
+                <span class="sr-price">$12.99</span>
+            </div>
+            <div class="sr-movie-actions">
+                <a href="#" class="sr-book-btn">
+                    <i class="fas fa-ticket-alt"></i>
+                    Book Now
+                </a>
+                <a href="movie-details.html?title=The%20Dark%20Knight" class="sr-details-btn">
+                    <i class="fas fa-info-circle"></i>
+                    Details
+                </a>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- No Results Message (Hidden by default) -->
+<div class="sr-no-results" style="display: none;">
+    <div class="sr-no-results-icon">
+        <i class="fas fa-search"></i>
+    </div>
+    <h2>No movies found</h2>
+    <p>We couldn't find any movies matching your search. Try different keywords or browse our categories.</p>
+    <a href="index.html" class="sr-browse-all-btn">Browse All Movies</a>
+</div>
+
+<!-- Pagination -->
+<div class="sr-pagination">
+    <button class="sr-pagination-btn" title="Previous page">
+        <i class="fas fa-chevron-left"></i>
+    </button>
+    <button class="sr-pagination-btn active">1</button>
+    <button class="sr-pagination-btn">2</button>
+    <button class="sr-pagination-btn">3</button>
+    <span class="sr-pagination-ellipsis">...</span>
+    <button class="sr-pagination-btn">10</button>
+    <button class="sr-pagination-btn" title="Next page">
+        <i class="fas fa-chevron-right"></i>
+    </button>
+</div>
+
+
