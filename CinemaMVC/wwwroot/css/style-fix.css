@@ -818,3 +818,40 @@
 .carousel-item {
     transition: transform 0.3s ease, box-shadow 0.3s ease;
 }
+
+/********************************************************************************/
+
+.user-dropdown {
+    position: relative;
+}
+
+.dropdown-menu {
+    display: none;
+    position: absolute;
+    right: 0;
+    top: 100%;
+    background: white;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+    padding: 0.5rem;
+    min-width: 150px;
+    z-index: 1000;
+}
+
+    .dropdown-menu a {
+        display: block;
+        padding: 8px;
+        color: #333;
+        text-decoration: none;
+    }
+
+        .dropdown-menu a:hover {
+            background-color: #f0f0f0;
+        }
+
+.user-toggle {
+    display: flex;
+    align-items: center;
+    cursor: pointer;
+    gap: 5px;
+}

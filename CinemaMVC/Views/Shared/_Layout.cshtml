@@ -57,11 +57,35 @@
             </div>
 
             <div class="user-nav">
-                <img src="~/images/user/user_image.png" alt="Profile" class="user-avatar">
-                <span class="user-name">user</span>
-                <i class="fas fa-chevron-down dropdown-icon"></i>
+                <div class="user-dropdown">
+                    <div class="user-toggle">
+                        @{
+                            var userName = (User?.Identity != null && User.Identity.IsAuthenticated) ? User.Identity.Name : "user";
+                            var userImage = ViewBag.UserImage as string ?? Url.Content("~/images/user/user_image.png");
+                        }
+
+                        <img src="@userImage" alt="Profile" class="user-avatar" />
+                        <span class="user-name">@userName</span>
+                        <i class="fas fa-chevron-down dropdown-icon"></i>
+                    </div>
+
+                    <div class="dropdown-menu">
+                        @if (User != null && User.Identity != null && User.Identity.IsAuthenticated)
+                        {
+                            <a asp-controller="Account" asp-action="Profile">Profile</a>
+                            <a asp-controller="Account" asp-action="Logout">Logout</a>
+                        }
+                        else
+                        {
+                            <a asp-controller="Account" asp-action="Register">Login</a>
+                            <a asp-controller="Account" asp-action="Register">Register</a>
+                        }
+                    </div>
+
+                </div>
             </div>
         </nav>
+
 
             @RenderBody()
     </div>

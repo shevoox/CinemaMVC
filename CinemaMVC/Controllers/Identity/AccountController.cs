@@ -34,6 +34,9 @@ namespace CinemaMVC.Controllers.Identity
         public async Task<IActionResult> Register(AccountCombinedVM accountVM)
         {
             var registerVM = accountVM.RegisterVM;
+            ModelState.Remove("LoginVM.UserNameorEmail");
+            ModelState.Remove("LoginVM.Password");
+            ModelState.Remove("LoginVM.RemmberMe");
 
             ModelState.Remove("ProfileImage");
             if (!ModelState.IsValid)
@@ -74,6 +77,13 @@ namespace CinemaMVC.Controllers.Identity
         [HttpPost]
         public async Task<IActionResult> Login(AccountCombinedVM accountVM)
         {
+            ModelState.Remove("RegisterVM.FirstName");
+            ModelState.Remove("RegisterVM.LastName");
+            ModelState.Remove("RegisterVM.UserName");
+            ModelState.Remove("RegisterVM.Email");
+            ModelState.Remove("RegisterVM.Password");
+            ModelState.Remove("RegisterVM.ConfirmPassword");
+
             var loginVM = accountVM.LoginVM;
 
             if (!ModelState.IsValid)
@@ -95,8 +105,12 @@ namespace CinemaMVC.Controllers.Identity
             }
 
             ModelState.AddModelError(string.Empty, "Invalid login attempt.");
-            return View("Register", accountVM); //
+            return View("Register", accountVM);
         }
-
+        public async Task<IActionResult> Logout()
+        {
+            await _signInManager.SignOutAsync();
+            return RedirectToAction("Index", "Home");
+        }
     }
 }
