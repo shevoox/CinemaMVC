@@ -1,5 +1,4 @@
-﻿
-<!DOCTYPE html>
+﻿<!DOCTYPE html>
 <html lang="en">
 <head>
     <meta charset="utf-8" />
@@ -72,13 +71,29 @@
                     <div class="dropdown-menu">
                         @if (User != null && User.Identity != null && User.Identity.IsAuthenticated)
                         {
-                            <a asp-controller="Account" asp-action="Profile">Profile</a>
-                            <a asp-controller="Account" asp-action="Logout">Logout</a>
+                            <a asp-controller="Account" asp-action="Profile">
+                                <i class="fas fa-user"></i>
+                                Profile
+                            </a>
+                            <a asp-controller="Account" asp-action="Settings">
+                                <i class="fas fa-cog"></i>
+                                Settings
+                            </a>
+                            <a asp-controller="Account" asp-action="Logout">
+                                <i class="fas fa-sign-out-alt"></i>
+                                Logout
+                            </a>
                         }
                         else
                         {
-                            <a asp-controller="Account" asp-action="Register">Login</a>
-                            <a asp-controller="Account" asp-action="Register">Register</a>
+                            <a asp-controller="Account" asp-action="Register">
+                                <i class="fas fa-sign-in-alt"></i>
+                                Login
+                            </a>
+                            <a asp-controller="Account" asp-action="Register">
+                                <i class="fas fa-user-plus"></i>
+                                Register
+                            </a>
                         }
                     </div>
 

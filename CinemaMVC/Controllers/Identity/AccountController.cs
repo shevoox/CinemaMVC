@@ -22,6 +22,11 @@ namespace CinemaMVC.Controllers.Identity
 
         public IActionResult Register()
         {
+            if (User.Identity.IsAuthenticated)
+            {
+                return RedirectToAction("Index", "Home");
+            }
+
             var vm = new AccountCombinedVM
             {
                 RegisterVM = new RegisterVM(),
@@ -33,6 +38,11 @@ namespace CinemaMVC.Controllers.Identity
         [HttpPost]
         public async Task<IActionResult> Register(AccountCombinedVM accountVM)
         {
+            if (User.Identity.IsAuthenticated)
+            {
+                return RedirectToAction("Index", "Home");
+            }
+
             var registerVM = accountVM.RegisterVM;
             ModelState.Remove("LoginVM.UserNameorEmail");
             ModelState.Remove("LoginVM.Password");
@@ -60,7 +70,8 @@ namespace CinemaMVC.Controllers.Identity
 
             if (result.Succeeded)
             {
-                TempData["Notifacation"] = "Register Account Successfully";
+                await _signInManager.SignInAsync(applicationUser, isPersistent: false);
+                TempData["Notification"] = "Account registered successfully!";
                 return RedirectToAction("Index", "Home");
             }
             else
@@ -77,6 +88,11 @@ namespace CinemaMVC.Controllers.Identity
         [HttpPost]
         public async Task<IActionResult> Login(AccountCombinedVM accountVM)
         {
+            if (User.Identity.IsAuthenticated)
+            {
+                return RedirectToAction("Index", "Home");
+            }
+
             ModelState.Remove("RegisterVM.FirstName");
             ModelState.Remove("RegisterVM.LastName");
             ModelState.Remove("RegisterVM.UserName");
@@ -99,7 +115,7 @@ namespace CinemaMVC.Controllers.Identity
                 var result = await _signInManager.PasswordSignInAsync(user, loginVM.Password, loginVM.RemmberMe, false);
                 if (result.Succeeded)
                 {
-                    TempData["Notifacation"] = "Login Successfully";
+                    TempData["Notification"] = "Welcome back!";
                     return RedirectToAction("Index", "Home");
                 }
             }
@@ -107,10 +123,121 @@ namespace CinemaMVC.Controllers.Identity
             ModelState.AddModelError(string.Empty, "Invalid login attempt.");
             return View("Register", accountVM);
         }
+
         public async Task<IActionResult> Logout()
         {
             await _signInManager.SignOutAsync();
+            TempData["Notification"] = "You have been logged out successfully.";
             return RedirectToAction("Index", "Home");
+        }
+
+        public async Task<IActionResult> Profile()
+        {
+            var user = await _userManager.GetUserAsync(User);
+            if (user == null)
+            {
+                return NotFound();
+            }
+
+            return View(user);
+        }
+
+        public async Task<IActionResult> Settings()
+        {
+            var user = await _userManager.GetUserAsync(User);
+            if (user == null)
+            {
+                return NotFound();
+            }
+
+            return View(user);
+        }
+
+        [HttpPost]
+        public async Task<IActionResult> UpdateProfile(ApplicationUser model, IFormFile ProfileImage)
+        {
+            if (!ModelState.IsValid)
+            {
+                return View("Settings", model);
+            }
+
+            var user = await _userManager.GetUserAsync(User);
+            if (user == null)
+            {
+                return NotFound();
+            }
+
+            // Update user properties
+            user.FirstName = model.FirstName;
+            user.LastName = model.LastName;
+            user.UserName = model.UserName;
+            user.Email = model.Email;
+
+            // Handle profile image upload
+            if (ProfileImage != null)
+            {
+                string uploadsFolder = Path.Combine(_webHostEnvironment.WebRootPath, "images", "user");
+                string uniqueFileName = Guid.NewGuid().ToString() + "_" + ProfileImage.FileName;
+                string filePath = Path.Combine(uploadsFolder, uniqueFileName);
+
+                using (var fileStream = new FileStream(filePath, FileMode.Create))
+                {
+                    await ProfileImage.CopyToAsync(fileStream);
+                }
+
+                user.ProfileImage = "/images/user/" + uniqueFileName;
+            }
+
+            var result = await _userManager.UpdateAsync(user);
+            if (result.Succeeded)
+            {
+                TempData["Notification"] = "Profile updated successfully!";
+                return RedirectToAction("Settings");
+            }
+
+            foreach (var error in result.Errors)
+            {
+                ModelState.AddModelError(string.Empty, error.Description);
+            }
+
+            return View("Settings", model);
+        }
+
+        [HttpPost]
+        public async Task<IActionResult> ChangePassword(string CurrentPassword, string NewPassword, string ConfirmPassword)
+        {
+            if (string.IsNullOrEmpty(CurrentPassword) || string.IsNullOrEmpty(NewPassword) || string.IsNullOrEmpty(ConfirmPassword))
+            {
+                TempData["Error"] = "All fields are required.";
+                return RedirectToAction("Settings");
+            }
+
+            if (NewPassword != ConfirmPassword)
+            {
+                TempData["Error"] = "New password and confirmation password do not match.";
+                return RedirectToAction("Settings");
+            }
+
+            var user = await _userManager.GetUserAsync(User);
+            if (user == null)
+            {
+                return NotFound();
+            }
+
+            var result = await _userManager.ChangePasswordAsync(user, CurrentPassword, NewPassword);
+            if (result.Succeeded)
+            {
+                await _signInManager.RefreshSignInAsync(user);
+                TempData["Notification"] = "Password changed successfully!";
+                return RedirectToAction("Settings");
+            }
+
+            foreach (var error in result.Errors)
+            {
+                TempData["Error"] = error.Description;
+            }
+
+            return RedirectToAction("Settings");
         }
     }
 }
