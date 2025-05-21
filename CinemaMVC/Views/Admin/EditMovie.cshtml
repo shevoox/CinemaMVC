@@ -1,0 +1,435 @@
+@model CinemaMVC.Models.ViewModels.MovieFormViewModel
+@{
+    ViewData["Title"] = "Edit Movie";
+    Layout = "~/Views/Shared/_AdminLayout.cshtml";
+}
+
+<section class="content-section">
+    <div class="section-header">
+        <h1>Edit Movie</h1>
+    </div>
+
+    <div class="form-container">
+        <form asp-action="EditMovie" method="post" enctype="multipart/form-data" class="modern-form">
+            <input type="hidden" asp-for="Id" />
+
+            <div class="form-tabs">
+                <div class="tab-header">
+                    <div class="tab-btn active" data-tab="basic-info">Basic Info</div>
+                    <div class="tab-btn" data-tab="details">Details</div>
+                    <div class="tab-btn" data-tab="media">Media</div>
+                    <div class="tab-btn" data-tab="relationships">Relationships</div>
+                </div>
+
+                <div class="tab-content active" id="basic-info">
+                    <div class="form-group">
+                        <label asp-for="Title">Title</label>
+                        <input asp-for="Title" class="form-control" required />
+                        <span asp-validation-for="Title" class="text-danger"></span>
+                    </div>
+
+                    <div class="form-group">
+                        <label asp-for="Description">Description</label>
+                        <textarea asp-for="Description" class="form-control" rows="4" required></textarea>
+                        <span asp-validation-for="Description" class="text-danger"></span>
+                    </div>
+
+                    <div class="form-row">
+                        <div class="form-group">
+                            <label asp-for="DurationMinutes">Duration (minutes)</label>
+                            <input asp-for="DurationMinutes" class="form-control" type="number" min="1" required />
+                            <span asp-validation-for="DurationMinutes" class="text-danger"></span>
+                        </div>
+                        <div class="form-group">
+                            <label asp-for="ReleaseYear">Release Year</label>
+                            <input asp-for="ReleaseYear" class="form-control" required />
+                            <span asp-validation-for="ReleaseYear" class="text-danger"></span>
+                        </div>
+                    </div>
+
+                    <div class="form-row">
+                        <div class="form-group">
+                            <label asp-for="Rating">Rating (0-5)</label>
+                            <input asp-for="Rating" class="form-control" type="number" min="0" max="5" step="0.1" required />
+                            <span asp-validation-for="Rating" class="text-danger"></span>
+                        </div>
+                        <div class="form-group">
+                            <label asp-for="Price">Price</label>
+                            <div class="input-with-icon">
+                                <i class="fas fa-dollar-sign"></i>
+                                <input asp-for="Price" class="form-control" type="number" min="0.01" step="0.01" required />
+                            </div>
+                            <span asp-validation-for="Price" class="text-danger"></span>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="tab-content" id="details">
+                    <div class="form-row">
+                        <div class="form-group">
+                            <label asp-for="Format">Format</label>
+                            <select asp-for="Format" class="form-control">
+                                <option value="Standard">Standard</option>
+                                <option value="IMAX">IMAX</option>
+                                <option value="3D">3D</option>
+                                <option value="4DX">4DX</option>
+                            </select>
+                            <span asp-validation-for="Format" class="text-danger"></span>
+                        </div>
+                        <div class="form-group">
+                            <label asp-for="Language">Language</label>
+                            <input asp-for="Language" class="form-control" />
+                            <span asp-validation-for="Language" class="text-danger"></span>
+                        </div>
+                    </div>
+
+                    <div class="form-group">
+                        <label>Genres</label>
+                        <div class="checkbox-group modern-checkboxes">
+                            @foreach (var genre in Model.Genres)
+                            {
+                                <div class="modern-checkbox">
+                                    <input type="checkbox" id="genre-@genre.Id" name="SelectedGenreIds" value="@genre.Id"
+                                           @(Model.SelectedGenreIds.Contains(genre.Id) ? "checked" : "") />
+                                    <label for="genre-@genre.Id">@genre.Name</label>
+                                </div>
+                            }
+                        </div>
+                    </div>
+
+                    <div class="form-row">
+                        <div class="form-group modern-toggle">
+                            <label class="toggle-container">
+                                <input asp-for="HasSubtitles" />
+                                <span class="toggle-slider"></span>
+                                <span class="toggle-label">Has Subtitles</span>
+                            </label>
+                            <span asp-validation-for="HasSubtitles" class="text-danger"></span>
+                        </div>
+
+                        <div class="form-group modern-toggle">
+                            <label class="toggle-container">
+                                <input asp-for="IsFeatured" />
+                                <span class="toggle-slider"></span>
+                                <span class="toggle-label">Featured Movie</span>
+                            </label>
+                            <span asp-validation-for="IsFeatured" class="text-danger"></span>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="tab-content" id="media">
+                    <div class="form-group">
+                        <label asp-for="PosterFile">Movie Poster</label>
+                        <div class="file-upload-container">
+                            <div class="file-upload-preview">
+                                <img id="poster-preview" src="@(string.IsNullOrEmpty(Model.PosterImage) ? "https://via.placeholder.com/300x450" : "/images/" + Model.PosterImage)" alt="Poster Preview" />
+                            </div>
+                            <div class="file-upload-input">
+                                <input asp-for="PosterFile" type="file" accept="image/*" class="file-input" />
+                                <div class="file-upload-button">
+                                    <i class="fas fa-cloud-upload-alt"></i>
+                                    <span>Choose Image</span>
+                                </div>
+                                <div class="file-name"></div>
+                            </div>
+                        </div>
+                        <span asp-validation-for="PosterFile" class="text-danger"></span>
+                        <small class="form-text text-muted">Upload a new poster image (recommended size: 300x450px)</small>
+                    </div>
+
+                    <div class="form-group">
+                        <label>Trailer Video URL</label>
+                        <div class="input-with-icon">
+                            <i class="fas fa-film"></i>
+                            <input asp-for="TrailerUrl" class="form-control" placeholder="https://www.youtube.com/watch?v=..." />
+                        </div>
+                        <span asp-validation-for="TrailerUrl" class="text-danger"></span>
+                        <small class="form-text text-muted">Enter YouTube or Vimeo URL for the movie trailer</small>
+                    </div>
+                </div>
+
+                <div class="tab-content" id="relationships">
+                    <div class="form-group">
+                        <label asp-for="DirectorId">Director</label>
+                        <select asp-for="DirectorId" class="form-control">
+                            <option value="">-- Select Director --</option>
+                            @foreach (var director in Model.Directors)
+                            {
+                                <option value="@director.Id">@director.Name</option>
+                            }
+                        </select>
+                    </div>
+
+                    <div class="form-group">
+                        <label>Cast</label>
+                        <div class="enhanced-select-container">
+                            <div class="search-box">
+                                <input type="text" id="cast-search" placeholder="Search cast..." class="search-input">
+                                <div class="dropdown-list" id="cast-dropdown">
+                                    @foreach (var cast in Model.Casts)
+                                    {
+                                        <div class="dropdown-item" data-id="@cast.Id" data-name="@cast.Name">
+                                            @cast.Name
+                                        </div>
+                                    }
+                                </div>
+                            </div>
+                            <div class="selected-items-container">
+                                <div class="selected-items" id="selected-cast">
+                                    @foreach (var castId in Model.SelectedCastIds)
+                                    {
+                                        var cast = Model.Casts.FirstOrDefault(c => c.Id == castId);
+                                        if (cast != null)
+                                        {
+                                            <div class="selected-item" data-id="@cast.Id">
+                                                <span>@cast.Name</span>
+                                                <i class="fas fa-times remove-item"></i>
+                                                <input type="hidden" name="SelectedCastIds" value="@cast.Id" />
+                                            </div>
+                                        }
+                                    }
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="form-group">
+                        <label>Theaters</label>
+                        <div class="enhanced-select-container">
+                            <div class="search-box">
+                                <input type="text" id="theater-search" placeholder="Search theaters..." class="search-input">
+                                <div class="dropdown-list" id="theater-dropdown">
+                                    @foreach (var theater in Model.Theaters)
+                                    {
+                                        <div class="dropdown-item" data-id="@theater.Id" data-name="@theater.Name">
+                                            @theater.Name
+                                        </div>
+                                    }
+                                </div>
+                            </div>
+                            <div class="selected-items-container">
+                                <div class="selected-items" id="selected-theaters">
+                                    @foreach (var theaterId in Model.SelectedTheaterIds)
+                                    {
+                                        var theater = Model.Theaters.FirstOrDefault(t => t.Id == theaterId);
+                                        if (theater != null)
+                                        {
+                                            <div class="selected-item" data-id="@theater.Id">
+                                                <span>@theater.Name</span>
+                                                <i class="fas fa-times remove-item"></i>
+                                                <input type="hidden" name="SelectedTheaterIds" value="@theater.Id" />
+                                            </div>
+                                        }
+                                    }
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="form-actions">
+                <a asp-action="MoviesManagement" class="cancel-btn">Cancel</a>
+                <button type="submit" class="submit-btn">Save Changes</button>
+            </div>
+        </form>
+    </div>
+</section>
+
+@section Scripts {
+    @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            // Tab navigation
+            const tabBtns = document.querySelectorAll('.tab-btn');
+            const tabContents = document.querySelectorAll('.tab-content');
+
+            tabBtns.forEach(btn => {
+                btn.addEventListener('click', function() {
+                    const tabId = this.getAttribute('data-tab');
+
+                    // Hide all tab contents
+                    tabContents.forEach(content => {
+                        content.classList.remove('active');
+                    });
+
+                    // Remove active class from all buttons
+                    tabBtns.forEach(btn => {
+                        btn.classList.remove('active');
+                    });
+
+                    // Show the selected tab content
+                    document.getElementById(tabId).classList.add('active');
+
+                    // Add active class to the clicked button
+                    this.classList.add('active');
+                });
+            });
+
+            // File upload preview
+            const fileInput = document.querySelector('.file-input');
+            const fileButton = document.querySelector('.file-upload-button');
+            const fileName = document.querySelector('.file-name');
+            const posterPreview = document.getElementById('poster-preview');
+
+            fileButton.addEventListener('click', function() {
+                fileInput.click();
+            });
+
+            fileInput.addEventListener('change', function() {
+                if (this.files && this.files[0]) {
+                    const file = this.files[0];
+                    fileName.textContent = file.name;
+
+                    const reader = new FileReader();
+                    reader.onload = function(e) {
+                        posterPreview.src = e.target.result;
+                    };
+                    reader.readAsDataURL(file);
+                }
+            });
+
+            // Enhanced Cast selection
+            const castSearch = document.getElementById('cast-search');
+            const castDropdown = document.getElementById('cast-dropdown');
+            const selectedCast = document.getElementById('selected-cast');
+
+            // Show dropdown on focus
+            castSearch.addEventListener('focus', function() {
+                castDropdown.classList.add('show');
+            });
+
+            // Filter dropdown items on input
+            castSearch.addEventListener('input', function() {
+                const searchValue = this.value.toLowerCase();
+                const items = castDropdown.querySelectorAll('.dropdown-item');
+
+                items.forEach(item => {
+                    const name = item.getAttribute('data-name').toLowerCase();
+                    if (name.includes(searchValue)) {
+                        item.style.display = '';
+                    } else {
+                        item.style.display = 'none';
+                    }
+                });
+            });
+
+            // Add cast on click
+            castDropdown.querySelectorAll('.dropdown-item').forEach(item => {
+                item.addEventListener('click', function() {
+                    const id = this.getAttribute('data-id');
+                    const name = this.getAttribute('data-name');
+
+                    // Check if already selected
+                    if (!document.querySelector(`#selected-cast .selected-item[data-id="${id}"]`)) {
+                        const selectedItem = document.createElement('div');
+                        selectedItem.className = 'selected-item';
+                        selectedItem.setAttribute('data-id', id);
+                        selectedItem.innerHTML = `
+                            <span>${name}</span>
+                            <i class="fas fa-times remove-item"></i>
+                            <input type="hidden" name="SelectedCastIds" value="${id}" />
+                        `;
+                        selectedCast.appendChild(selectedItem);
+
+                        // Add remove event
+                        selectedItem.querySelector('.remove-item').addEventListener('click', function() {
+                            selectedItem.remove();
+                        });
+                    }
+
+                    // Clear search and hide dropdown
+                    castSearch.value = '';
+                    castDropdown.classList.remove('show');
+                });
+            });
+
+            // Close dropdown when clicking outside
+            document.addEventListener('click', function(e) {
+                if (!castSearch.contains(e.target) && !castDropdown.contains(e.target)) {
+                    castDropdown.classList.remove('show');
+                }
+            });
+
+            // Remove existing cast items
+            document.querySelectorAll('#selected-cast .remove-item').forEach(btn => {
+                btn.addEventListener('click', function() {
+                    this.closest('.selected-item').remove();
+                });
+            });
+
+            // Enhanced Theater selection
+            const theaterSearch = document.getElementById('theater-search');
+            const theaterDropdown = document.getElementById('theater-dropdown');
+            const selectedTheaters = document.getElementById('selected-theaters');
+
+            // Show dropdown on focus
+            theaterSearch.addEventListener('focus', function() {
+                theaterDropdown.classList.add('show');
+            });
+
+            // Filter dropdown items on input
+            theaterSearch.addEventListener('input', function() {
+                const searchValue = this.value.toLowerCase();
+                const items = theaterDropdown.querySelectorAll('.dropdown-item');
+
+                items.forEach(item => {
+                    const name = item.getAttribute('data-name').toLowerCase();
+                    if (name.includes(searchValue)) {
+                        item.style.display = '';
+                    } else {
+                        item.style.display = 'none';
+                    }
+                });
+            });
+
+            // Add theater on click
+            theaterDropdown.querySelectorAll('.dropdown-item').forEach(item => {
+                item.addEventListener('click', function() {
+                    const id = this.getAttribute('data-id');
+                    const name = this.getAttribute('data-name');
+
+                    // Check if already selected
+                    if (!document.querySelector(`#selected-theaters .selected-item[data-id="${id}"]`)) {
+                        const selectedItem = document.createElement('div');
+                        selectedItem.className = 'selected-item';
+                        selectedItem.setAttribute('data-id', id);
+                        selectedItem.innerHTML = `
+                            <span>${name}</span>
+                            <i class="fas fa-times remove-item"></i>
+                            <input type="hidden" name="SelectedTheaterIds" value="${id}" />
+                        `;
+                        selectedTheaters.appendChild(selectedItem);
+
+                        // Add remove event
+                        selectedItem.querySelector('.remove-item').addEventListener('click', function() {
+                            selectedItem.remove();
+                        });
+                    }
+
+                    // Clear search and hide dropdown
+                    theaterSearch.value = '';
+                    theaterDropdown.classList.remove('show');
+                });
+            });
+
+            // Close dropdown when clicking outside
+            document.addEventListener('click', function(e) {
+                if (!theaterSearch.contains(e.target) && !theaterDropdown.contains(e.target)) {
+                    theaterDropdown.classList.remove('show');
+                }
+            });
+
+            // Remove existing theater items
+            document.querySelectorAll('#selected-theaters .remove-item').forEach(btn => {
+                btn.addEventListener('click', function() {
+                    this.closest('.selected-item').remove();
+                });
+            });
+        });
+    </script>
+}
+
+
+

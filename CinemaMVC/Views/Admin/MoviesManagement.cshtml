@@ -1,0 +1,161 @@
+﻿@model IEnumerable<Movie>
+@{
+    ViewData["Title"] = "MoviesManagement";
+    Layout = "~/Views/Shared/_AdminLayout.cshtml";
+}
+<section class="content-section" id="movies">
+    <div class="section-header">
+        <h1>Movies Management</h1>
+        <a asp-action="AddMovie" class="add-btn">
+            <i class="fas fa-plus"></i> Add New Movie
+        </a>
+    </div>
+    <div class="filter-bar">
+        <div class="filter-group">
+            <label>Filter by Genre:</label>
+            <select id="genreFilter">
+                <option value="all">All Genres</option>
+                @{
+                    var genres = Model
+                        .Where(m => m.MovieGenres != null)
+                        .SelectMany(m => m.MovieGenres)
+                        .Where(mg => mg != null && mg.Genre != null)
+                        .Select(mg => mg.Genre)
+                        .Distinct()
+                        .ToList();
+
+                    foreach (var genre in genres)
+                    {
+                        <option value="@genre.Name">@genre.Name</option>
+                    }
+                }
+            </select>
+        </div>
+        <div class="filter-group">
+            <label>Sort by:</label>
+            <select id="sortFilter">
+                <option value="newest">Newest First</option>
+                <option value="rating">Highest Rating</option>
+                <option value="title">Title (A-Z)</option>
+            </select>
+        </div>
+    </div>
+    <div class="movie-list">
+        <table>
+            <thead>
+                <tr>
+                    <th>Title</th>
+                    <th>Duration</th>
+                    <th>Release Year</th>
+                    <th>Rating</th>
+                    <th>Actions</th>
+                </tr>
+            </thead>
+            <tbody>
+                @if (Model != null && Model.Any())
+                {
+                    foreach (var movie in Model)
+                    {
+                        <tr data-id="@movie.Id" data-genres="@(movie.MovieGenres != null ? string.Join(",", movie.MovieGenres.Where(mg => mg != null && mg.Genre != null).Select(mg => mg.Genre.Name)) : "")">
+                            <td>@movie.Title</td>
+                            <td>@(movie.DurationMinutes / 60)h @(movie.DurationMinutes % 60)m</td>
+                            <td>@movie.ReleaseYear</td>
+                            <td>
+                                <div class="rating">
+                                    <i class="fas fa-star"></i>
+                                    <span>@movie.Rating.ToString("N1")</span>
+                                </div>
+                            </td>
+                            <td>
+                                <a asp-action="EditMovie" asp-route-id="@movie.Id" class="action-icon edit">
+                                    <i class="fas fa-edit"></i>
+                                </a>
+                                <form method="post" asp-action="DeleteMovie" asp-route-id="@movie.Id" style="display:inline;">
+                                    <button type="submit" class="action-icon delete" onclick="return confirm('Are you sure you want to delete this movie?');">
+                                        <i class="fas fa-trash"></i>
+                                    </button>
+                                </form>
+                            </td>
+                        </tr>
+                    }
+                }
+                else
+                {
+                    <tr>
+                        <td colspan="5" class="text-center">No movies found</td>
+                    </tr>
+                }
+            </tbody>
+        </table>
+    </div>
+</section>
+
+<script>
+    document.addEventListener('DOMContentLoaded', function() {
+        const genreFilter = document.getElementById('genreFilter');
+        const sortFilter = document.getElementById('sortFilter');
+
+        if (genreFilter) {
+            genreFilter.addEventListener('change', function(e) {
+                e.preventDefault();
+                applyFilters();
+            });
+        }
+
+        if (sortFilter) {
+            sortFilter.addEventListener('change', function(e) {
+                e.preventDefault();
+                applyFilters();
+            });
+        }
+
+        function applyFilters() {
+            const selectedGenre = genreFilter.value;
+            const sortBy = sortFilter.value;
+
+            const tableRows = document.querySelectorAll('tbody tr');
+
+            // Filter by genre
+            tableRows.forEach(row => {
+                if (selectedGenre === 'all') {
+                    row.style.display = '';
+                } else {
+                    const rowGenres = row.getAttribute('data-genres');
+                    if (rowGenres && rowGenres.includes(selectedGenre)) {
+                        row.style.display = '';
+                    } else {
+                        row.style.display = 'none';
+                    }
+                }
+            });
+
+            // Sort visible rows
+            const visibleRows = Array.from(tableRows).filter(row => row.style.display !== 'none');
+            sortRows(visibleRows, sortBy);
+        }
+
+        function sortRows(rows, sortBy) {
+            const tbody = document.querySelector('tbody');
+
+            rows.sort((a, b) => {
+                if (sortBy === 'title') {
+                    const titleA = a.cells[0].textContent.toLowerCase();
+                    const titleB = b.cells[0].textContent.toLowerCase();
+                    return titleA.localeCompare(titleB);
+                } else if (sortBy === 'rating') {
+                    const ratingA = parseFloat(a.querySelector('.rating span').textContent);
+                    const ratingB = parseFloat(b.querySelector('.rating span').textContent);
+                    return ratingB - ratingA; // Descending order for ratings
+                } else {
+                    // Default to newest first using ID as proxy
+                    return parseInt(b.dataset.id) - parseInt(a.dataset.id);
+                }
+            });
+
+            // Re-append the sorted rows
+            rows.forEach(row => {
+                tbody.appendChild(row);
+            });
+        }
+    });
+</script>

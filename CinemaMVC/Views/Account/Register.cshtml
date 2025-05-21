@@ -1,0 +1,84 @@
+﻿@model CinemaMVC.ViewModels.AccountCombinedVM
+@{
+    ViewData["Title"] = "Register";
+    Layout = "~/Views/Shared/_RegisterLayout.cshtml";
+}
+<div class="wrapper">
+    <div class="title-text">
+        <div class="title login">Login Form</div>
+        <div class="title signup">Signup Form</div>
+    </div>
+    <div class="form-container">
+        <div class="slide-controls">
+            <input type="radio" name="slide" id="login" checked>
+            <input type="radio" name="slide" id="signup">
+            <label for="login" class="slide login">Login</label>
+            <label for="signup" class="slide signup">Signup</label>
+            <div class="slider-tab"></div>
+        </div>
+        <div class="form-inner">
+            <form action="Login" method="post" class="login">
+                <div asp-validation-summary="All"></div>
+
+                <div class="field">
+                    <input type="text" placeholder="Email Address or User Name" asp-for="LoginVM.UserNameorEmail" required />
+                    <span asp-validation-for="LoginVM.UserNameorEmail"></span>
+                </div>
+
+                <div class="field">
+                    <input type="password" placeholder="Password" asp-for="LoginVM.Password" required />
+                    <span asp-validation-for="LoginVM.Password"></span>
+                </div>
+
+                <!-- خانة Remember Me -->
+<div class="field remember-forgot" style="display: flex; justify-content: space-between; align-items: center; font-size: 14px; margin-top: 10px;">
+    <label style="display: flex; align-items: center; gap: 5px;">
+        <input type="checkbox" asp-for="LoginVM.RemmberMe" />
+        Remember Me
+    </label>
+    <a href="#" class="pass-link">Forgot password?</a>
+</div>
+
+
+                <div class="field btn">
+                    <div class="btn-layer"></div>
+                    <input type="submit" value="Login" />
+                </div>
+
+                <div class="signup-link">Not a member? <a href="">Signup now</a></div>
+            </form>
+
+            <form action="Register" method="post" class="signup">
+                <div asp-validation-summary="All"></div>
+                <div class="field">
+                    <input type="text" placeholder="First Name" asp-for="RegisterVM.FirstName" required>
+                    <span asp-validation-for="RegisterVM.FirstName"></span>
+                </div>
+                <div class="field">
+                    <input type="text" placeholder="Last Name" asp-for="RegisterVM.LastName" required>
+                    <span asp-validation-for="RegisterVM.LastName"></span>
+                </div>
+                <div class="field">
+                    <input type="text" placeholder="User Name" asp-for="RegisterVM.UserName" required>
+                    <span asp-validation-for="RegisterVM.UserName"></span>
+                </div>
+                <div class="field">
+                    <input type="text" placeholder="Email Address" asp-for="RegisterVM.Email" required>
+                    <span asp-validation-for="RegisterVM.Email"></span>
+                </div>
+                <div class="field">
+                    <input type="password" placeholder="Password" asp-for="RegisterVM.Password" required>
+                    <span asp-validation-for="RegisterVM.Password"></span>
+                </div>
+                <div class="field">
+                    <input type="password" placeholder="Confirm password" asp-for="RegisterVM.ConfirmPassword" required>
+                    <span asp-validation-for="RegisterVM.ConfirmPassword"></span>
+                </div>
+                <div class="field btn">
+                    <div class="btn-layer"></div>
+                    <input type="submit" value="Signup">
+                </div>
+            </form>
+        </div>
+    </div>
+</div>

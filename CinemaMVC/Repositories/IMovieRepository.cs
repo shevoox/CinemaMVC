@@ -9,5 +9,6 @@ namespace CinemaMVC.Repositories
         Task<IEnumerable<Movie>> GetAllMovieAsync();
         Task<Movie> GetMovieWithGenres(int id);
         Task<Movie> BookingMovie(int id);
+        Task<List<Movie>> SearchAMovie(string Name);
     }
 }

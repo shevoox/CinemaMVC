@@ -1,0 +1,250 @@
+@model CinemaMVC.Models.ViewModels.CastAndDirectorsViewModel
+@{
+    ViewData["Title"] = "Cast & Directors Management";
+    Layout = "~/Views/Shared/_AdminLayout.cshtml";
+}
+
+<section class="content-section">
+    <div class="section-header">
+        <h1><i class="fas fa-users"></i> Cast & Directors Management</h1>
+        <div class="header-actions">
+            <button class="add-btn primary" onclick="showAddCastModal()">
+                <i class="fas fa-plus"></i> Add Cast
+            </button>
+            <button class="add-btn secondary" onclick="showAddDirectorModal()">
+                <i class="fas fa-plus"></i> Add Director
+            </button>
+        </div>
+    </div>
+
+    <div class="management-container">
+        <!-- Cast Section -->
+        <div class="management-card">
+            <div class="card-header">
+                <div class="header-content">
+                    <h2><i class="fas fa-theater-masks"></i> Cast Members</h2>
+                    <span class="badge">@Model.Casts.Count</span>
+                </div>
+                <div class="search-box">
+                    <i class="fas fa-search"></i>
+                    <input type="text" id="cast-search" placeholder="Search cast members..." class="search-input">
+                </div>
+            </div>
+            <div class="card-content">
+                <div class="table-responsive">
+                    <table class="modern-table">
+                        <thead>
+                            <tr>
+                                <th>Name</th>
+                                <th>Biography</th>
+                                <th>Actions</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            @foreach (var cast in Model.Casts)
+                            {
+                                <tr>
+                                    <td>
+                                        <div class="user-info">
+                                            <div class="avatar">
+                                                <i class="fas fa-user"></i>
+                                            </div>
+                                            <span>@cast.Name</span>
+                                        </div>
+                                    </td>
+                                    <td>
+                                        <div class="bio-preview">
+                                            @(cast.Bio?.Length > 100 ? cast.Bio.Substring(0, 100) + "..." : cast.Bio)
+                                        </div>
+                                    </td>
+                                    <td>
+                                        <div class="action-buttons">
+                                            <button class="edit-btn" onclick="editCast(@cast.Id)" title="Edit">
+                                                <i class="fas fa-edit"></i>
+                                            </button>
+                                            <form asp-action="DeleteCast" method="post" class="delete-form">
+                                                <input type="hidden" name="id" value="@cast.Id" />
+                                                <button type="submit" class="delete-btn" onclick="return confirm('Are you sure you want to delete this cast member?')" title="Delete">
+                                                    <i class="fas fa-trash"></i>
+                                                </button>
+                                            </form>
+                                        </div>
+                                    </td>
+                                </tr>
+                            }
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+
+        <!-- Directors Section -->
+        <div class="management-card">
+            <div class="card-header">
+                <div class="header-content">
+                    <h2><i class="fas fa-film"></i> Directors</h2>
+                    <span class="badge">@Model.Directors.Count</span>
+                </div>
+                <div class="search-box">
+                    <i class="fas fa-search"></i>
+                    <input type="text" id="director-search" placeholder="Search directors..." class="search-input">
+                </div>
+            </div>
+            <div class="card-content">
+                <div class="table-responsive">
+                    <table class="modern-table">
+                        <thead>
+                            <tr>
+                                <th>Name</th>
+                                <th>Biography</th>
+                                <th>Actions</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            @foreach (var director in Model.Directors)
+                            {
+                                <tr>
+                                    <td>
+                                        <div class="user-info">
+                                            <div class="avatar">
+                                                <i class="fas fa-user-tie"></i>
+                                            </div>
+                                            <span>@director.Name</span>
+                                        </div>
+                                    </td>
+                                    <td>
+                                        <div class="bio-preview">
+                                            @(director.Bio?.Length > 100 ? director.Bio.Substring(0, 100) + "..." : director.Bio)
+                                        </div>
+                                    </td>
+                                    <td>
+                                        <div class="action-buttons">
+                                            <button class="edit-btn" onclick="editDirector(@director.Id)" title="Edit">
+                                                <i class="fas fa-edit"></i>
+                                            </button>
+                                            <form asp-action="DeleteDirector" method="post" class="delete-form">
+                                                <input type="hidden" name="id" value="@director.Id" />
+                                                <button type="submit" class="delete-btn" onclick="return confirm('Are you sure you want to delete this director?')" title="Delete">
+                                                    <i class="fas fa-trash"></i>
+                                                </button>
+                                            </form>
+                                        </div>
+                                    </td>
+                                </tr>
+                            }
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- Add Cast Modal -->
+<div id="addCastModal" class="modal">
+    <div class="modal-content">
+        <div class="modal-header">
+            <h2><i class="fas fa-theater-masks"></i> Add Cast Member</h2>
+            <span class="close" onclick="closeModal('addCastModal')">&times;</span>
+        </div>
+        <form asp-action="AddCast" method="post" class="modern-form">
+            <div class="form-group">
+                <label for="castName">Name</label>
+                <div class="input-with-icon">
+                    <i class="fas fa-user"></i>
+                    <input type="text" id="castName" name="Name" class="form-control" required>
+                </div>
+            </div>
+            <div class="form-group">
+                <label for="castBiography">Biography</label>
+                <div class="input-with-icon">
+                    <i class="fas fa-book"></i>
+                    <textarea id="castBiography" name="Bio" class="form-control" rows="4"></textarea>
+                </div>
+            </div>
+            <div class="form-actions">
+                <button type="button" class="cancel-btn" onclick="closeModal('addCastModal')">Cancel</button>
+                <button type="submit" class="submit-btn">Add Cast Member</button>
+            </div>
+        </form>
+    </div>
+</div>
+
+<!-- Add Director Modal -->
+<div id="addDirectorModal" class="modal">
+    <div class="modal-content">
+        <div class="modal-header">
+            <h2><i class="fas fa-film"></i> Add Director</h2>
+            <span class="close" onclick="closeModal('addDirectorModal')">&times;</span>
+        </div>
+        <form asp-action="AddDirector" method="post" class="modern-form">
+            <div class="form-group">
+                <label for="directorName">Name</label>
+                <div class="input-with-icon">
+                    <i class="fas fa-user-tie"></i>
+                    <input type="text" id="directorName" name="Name" class="form-control" required>
+                </div>
+            </div>
+            <div class="form-group">
+                <label for="directorBiography">Biography</label>
+                <div class="input-with-icon">
+                    <i class="fas fa-book"></i>
+                    <textarea id="directorBiography" name="Bio" class="form-control" rows="4"></textarea>
+                </div>
+            </div>
+            <div class="form-actions">
+                <button type="button" class="cancel-btn" onclick="closeModal('addDirectorModal')">Cancel</button>
+                <button type="submit" class="submit-btn">Add Director</button>
+            </div>
+        </form>
+    </div>
+</div>
+
+@section Scripts {
+    <script>
+        // Search functionality
+        document.getElementById('cast-search').addEventListener('input', function(e) {
+            const searchText = e.target.value.toLowerCase();
+            const rows = document.querySelectorAll('.management-card:first-child tbody tr');
+
+            rows.forEach(row => {
+                const name = row.querySelector('.user-info span').textContent.toLowerCase();
+                row.style.display = name.includes(searchText) ? '' : 'none';
+            });
+        });
+
+        document.getElementById('director-search').addEventListener('input', function(e) {
+            const searchText = e.target.value.toLowerCase();
+            const rows = document.querySelectorAll('.management-card:last-child tbody tr');
+
+            rows.forEach(row => {
+                const name = row.querySelector('.user-info span').textContent.toLowerCase();
+                row.style.display = name.includes(searchText) ? '' : 'none';
+            });
+        });
+
+        // Modal functionality
+        function showAddCastModal() {
+            document.getElementById('addCastModal').style.display = 'block';
+        }
+
+        function showAddDirectorModal() {
+            document.getElementById('addDirectorModal').style.display = 'block';
+        }
+
+        function closeModal(modalId) {
+            document.getElementById(modalId).style.display = 'none';
+        }
+
+        // Close modal when clicking outside
+        window.onclick = function(event) {
+            if (event.target.classList.contains('modal')) {
+                event.target.style.display = 'none';
+            }
+        }
+    </script>
+}
+
+
+
+

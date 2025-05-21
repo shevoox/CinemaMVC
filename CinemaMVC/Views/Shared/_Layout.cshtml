@@ -1,4 +1,5 @@
-﻿<!DOCTYPE html>
+﻿
+<!DOCTYPE html>
 <html lang="en">
 <head>
     <meta charset="utf-8" />
@@ -27,10 +28,10 @@
                 <span class="logo-text">Cinema</span>
             </div>
 
-            <div class="search-bar">
+            <form asp-action="Search" asp-controller="Search" method="get" class="search-bar">
                 <i class="fas fa-search"></i>
-                <input asp-action="search" asp-controller="search" type="text" placeholder="Search Movies" id="searchInput">
-            </div>
+                <input type="text" name="FilmName" placeholder="Search Movies" />
+            </form>
 
             <div class="nav-menu">
                 <a href="#" class="active">
@@ -56,8 +57,8 @@
             </div>
 
             <div class="user-nav">
-                <img src="~/images/Crow/leonardo.jpg" alt="Profile" class="user-avatar">
-                <span class="user-name">User</span>
+                <img src="~/images/user/user_image.png" alt="Profile" class="user-avatar">
+                <span class="user-name">user</span>
                 <i class="fas fa-chevron-down dropdown-icon"></i>
             </div>
         </nav>

@@ -31,7 +31,7 @@ namespace CinemaMVC.Models
         public string TransactionId { get; set; }
 
         // Navigation properties
-        public virtual User User { get; set; }
+        public virtual ApplicationUser User { get; set; }
         public virtual Showtime Showtime { get; set; }
         public virtual ICollection<Seat> Seats { get; set; }
 

@@ -1,9 +1,10 @@
 
+using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore;
 
 namespace CinemaMVC.Models
 {
-    public class ApplicationDbContext : DbContext
+    public class ApplicationDbContext : IdentityDbContext<ApplicationUser>
     {
         public ApplicationDbContext(DbContextOptions<ApplicationDbContext> options)
             : base(options)
@@ -18,6 +19,7 @@ namespace CinemaMVC.Models
         public DbSet<Booking> Bookings { get; set; }
         public DbSet<Seat> Seats { get; set; }
         public DbSet<Cast> Casts { get; set; }
+        public DbSet<Director> Directors { get; set; }
         public DbSet<MovieCast> MovieCasts { get; set; }
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {

@@ -1,8 +1,8 @@
-﻿using System.ComponentModel.DataAnnotations;
+using System.ComponentModel.DataAnnotations;
 
 namespace CinemaMVC.Models
 {
-    public class Cast
+    public class Director
     {
         public int Id { get; set; }
 
@@ -11,11 +11,12 @@ namespace CinemaMVC.Models
         public string Name { get; set; }
 
         [StringLength(200)]
-        public string? Photo { get; set; } = null;
+        public string? ProfilePictureUrl { get; set; } = "";
+
 
         public string Bio { get; set; }
 
         // Navigation property
-        public virtual ICollection<MovieCast> MovieCasts { get; set; } = new List<MovieCast>();
+        public virtual ICollection<Movie> Movies { get; set; } = new List<Movie>();
     }
 }

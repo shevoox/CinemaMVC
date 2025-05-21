@@ -60,5 +60,18 @@ namespace CinemaMVC.Repositories
                    .ThenInclude(t => t.Seats)
                 .FirstOrDefaultAsync(m => m.Id == id);
         }
+
+        public async Task<List<Movie>> SearchAMovie(string name)
+        {
+            return await _context.Movies
+                .Include(e => e.MovieCasts).ThenInclude(e => e.Cast)
+                .Include(m => m.MovieGenres).ThenInclude(mg => mg.Genre)
+                .Include(m => m.Showtimes).ThenInclude(b => b.Bookings)
+                .Include(m => m.Showtimes).ThenInclude(s => s.Theater).ThenInclude(t => t.Seats)
+                .Where(m => m.Title.Contains(name))
+                .ToListAsync();
+        }
+
+
     }
 }

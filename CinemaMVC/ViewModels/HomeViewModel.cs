@@ -1,3 +1,5 @@
+﻿using CinemaMVC.ViewModels;
+
 namespace CinemaMVC.Models.ViewModels
 {
     public class HomeViewModel
@@ -8,6 +10,7 @@ namespace CinemaMVC.Models.ViewModels
         public IEnumerable<Movie> TopRatedMovies { get; set; }
         public IEnumerable<Movie> NowShowingMovies { get; set; }
         public IEnumerable<Genre> Genres { get; set; }
+        public IEnumerable<TodayShowingVM> TodayShowings { get; set; }
 
         public HomeViewModel()
         {
@@ -17,5 +20,7 @@ namespace CinemaMVC.Models.ViewModels
             NowShowingMovies = new List<Movie>();
             Genres = new List<Genre>();
         }
+
     }
+
 }

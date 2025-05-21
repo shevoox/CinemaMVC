@@ -1,0 +1,118 @@
+﻿<!DOCTYPE html>
+
+<html>
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Cinema Admin Dashboard</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link href="~/css/admin/dashboard.css" rel="stylesheet" asp-append-version="true" />
+    <link href="~/css/admin/create.css" rel="stylesheet" asp-append-version="true" />
+    <title>@ViewData["Title"] - Cinema Admin</title>
+</head>
+<body>
+
+    <div class="dashboard-container">
+        <!-- Sidebar -->
+        <aside class="sidebar">
+            <div class="sidebar-header">
+                <h2><i class="fas fa-film"></i> CinemaAdmin</h2>
+            </div>
+            <nav class="sidebar-nav">
+                <ul>
+                    <li class="@(ViewContext.RouteData.Values["action"].ToString() == "Admin" ? "active" : "")">
+                        <i class="fas fa-home"></i>
+                        <a asp-action="Admin">Dashboard</a>
+                    </li>
+
+
+                    <li class="@(ViewContext.RouteData.Values["action"].ToString() == "MoviesManagement" ? "active" : "")">
+                        <i class="fas fa-film"></i>
+                        <a asp-action="MoviesManagement">Movies</a>
+                    </li>
+
+                    <li class="@(ViewContext.RouteData.Values["action"].ToString() == "TheatersManagement" ? "active" : "")">
+                        <i class="fas fa-building"></i>
+                        <a asp-action="TheatersManagement"><span>Theaters</span></a>
+                    </li>
+
+                    <li class="@(ViewContext.RouteData.Values["action"].ToString() == "Showtimes" ? "active" : "")">
+                        <i class="fas fa-calendar-alt"></i>
+                        <a asp-action="Showtimes"><span>Showtimes</span></a>
+                    </li>
+
+                    <li class="@(ViewContext.RouteData.Values["action"].ToString() == "Bookings" ? "active" : "")">
+                        <i class="fas fa-ticket-alt"></i>
+                        <a asp-action="Bookings"><span>Bookings</span></a>
+                    </li>
+
+                    <li class="@(ViewContext.RouteData.Values["action"].ToString() == "Users" ? "active" : "")">
+                        <i class="fas fa-users"></i>
+                        <a asp-action="Users"><span>Users</span></a>
+                    </li>
+
+                    <li class="@(ViewContext.RouteData.Values["action"].ToString() == "Settings" ? "active" : "")">
+                        <i class="fas fa-cog"></i>
+                        <a asp-action="Settings"><span>Settings</span></a>
+                    </li>
+
+                    <li class="nav-item">
+                        <a asp-controller="Admin" asp-action="TheatersManagement" class="nav-link">
+                            <i class="fas fa-theater-masks"></i>
+                            <span>Theaters</span>
+                        </a>
+                    </li>
+                    <li class="nav-item">
+                        <a asp-controller="Admin" asp-action="CastAndDirectors" class="nav-link">
+                            <i class="fas fa-users"></i>
+                            <span>Cast & Directors</span>
+                        </a>
+                    </li>
+                </ul>
+            </nav>
+
+            <div class="sidebar-footer">
+                <a href="#" class="logout">
+                    <i class="fas fa-sign-out-alt"></i>
+                    <span>Logout</span>
+                </a>
+            </div>
+        </aside>
+
+        <!-- Main Content -->
+        <main class="main-content">
+            <!-- Header -->
+            <header class="header">
+                <div class="search-bar">
+                    <i class="fas fa-search"></i>
+                    <input type="text" placeholder="Search...">
+                </div>
+                <div class="user-profile">
+                    <div class="notifications">
+                        <i class="fas fa-bell"></i>
+                        <span class="badge">3</span>
+                    </div>
+                    <div class="profile">
+                        <img src="../images/avatar.jpg" alt="Admin" onerror="this.src='https://via.placeholder.com/40'">
+                        <span>Admin User</span>
+                    </div>
+                </div>
+            </header>
+
+            <!-- Content Sections -->
+            <div class="content-wrapper">
+                <!-- Dashboard Overview -->
+
+                    @RenderBody()
+                <!-- Other sections would go here -->
+            </div>
+        </main>
+    </div>
+
+    @RenderSection("Scripts", required: false)
+    <script src="~/js/admin/dashboard.js" asp-append-version="true"></script>
+</body>
+</html>

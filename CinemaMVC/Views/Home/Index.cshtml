@@ -1,96 +1,55 @@
-﻿@model HomeViewModel
+﻿@using CinemaMVC.Models.ViewModels
+@model HomeViewModel
 @{
     ViewData["Title"] = "Home Page";
 }
-
+@{
+    var random = new Random();
+    var featuredMovie = Model.PopularMovies.OrderBy(x => random.Next()).FirstOrDefault();
+}
 <div class="main-content">
     <aside class="sidebar">
         <div class="now-showing">
             <div class="section-title">
-                <span>🎬 Now Showing</span>
-                <span class="today-tag">Live</span>
+                <span>🎬 Today Showing</span>
             </div>
             <div class="movie-list">
-                <div class="movie-list-item">
+                  @if (Model.TodayShowings.Any())
+            {
+                foreach (var movie in Model.TodayShowings)
+                {
+                  <div class="movie-list-item">
                     <div class="movie-thumb">
-                        <img src="images/Inception.jpg" alt="Inception">
+                                <img src="~/images/@movie.PosterImage"
+                                     alt="@movie.Title">
                     </div>
                     <div class="movie-list-info">
-                        <h4 class="movie-list-title">Inception</h4>
+                                <h4 class="movie-list-title">@movie.Title</h4>
                         <div class="movie-meta">
-                            <span><i class="far fa-clock"></i> 2h 28m</span>
-                            <span><i class="fas fa-star"></i> 4.8</span>
+                                    <span><i class="far fa-clock"></i> @(movie.Duration / 60)h @(movie.Duration % 60)m</span>
+                                    <span><i class="fas fa-star"></i> @movie.Rating.ToString("N1")</span>
                         </div>
                         <div class="movie-meta">
-                            <span><i class="fas fa-film"></i> IMAX</span>
-                            <span><i class="fas fa-couch"></i> 45 seats</span>
+                                    <span><i class="fas fa-film"></i> @movie.Format</span>
+                                    <span><i class="fas fa-couch"></i> @movie.AvailableSeats seats left</span>
                         </div>
-                        <button class="quick-book">
-                            <i class="fas fa-ticket-alt"></i>
-                            Book Now
-                        </button>
+                                <a asp-controller="Booking" asp-action="Booking" asp-route-id="@movie.Id" class="book-btn">
+                                    <i class="fas fa-ticket-alt"></i>
+                                    Booking Now
+                                </a>
                     </div>
                 </div>
-                <div class="movie-list-item">
-                    <div class="movie-thumb">
-                        <img src="images/Interstellar.jpg" alt="Interstellar">
+                    }
+            }
+                else
+                {
+                    <div class="no-shows">
+                        <i class="fas fa-film"></i>
+                        <p>No shows today - Check back later!</p>
                     </div>
-                    <div class="movie-list-info">
-                        <h4 class="movie-list-title">Interstellar</h4>
-                        <div class="movie-meta">
-                            <span><i class="far fa-clock"></i> 2h 49m</span>
-                            <span><i class="fas fa-star"></i> 4.9</span>
-                        </div>
-                        <div class="movie-meta">
-                            <span><i class="fas fa-film"></i> 4DX</span>
-                            <span><i class="fas fa-couch"></i> 32 seats</span>
-                        </div>
-                        <button class="quick-book">
-                            <i class="fas fa-ticket-alt"></i>
-                            Book Now
-                        </button>
-                    </div>
-                </div>
-                <div class="movie-list-item">
-                    <div class="movie-thumb">
-                        <img src="images/John Wick.jpg" alt="John Wick">
-                    </div>
-                    <div class="movie-list-info">
-                        <h4 class="movie-list-title">John Wick: Chapter 4</h4>
-                        <div class="movie-meta">
-                            <span><i class="far fa-clock"></i> 2h 15m</span>
-                            <span><i class="fas fa-star"></i> 4.7</span>
-                        </div>
-                        <div class="movie-meta">
-                            <span><i class="fas fa-film"></i> IMAX</span>
-                            <span><i class="fas fa-couch"></i> 28 seats</span>
-                        </div>
-                        <button class="quick-book">
-                            <i class="fas fa-ticket-alt"></i>
-                            Book Now
-                        </button>
-                    </div>
-                </div>
-                <div class="movie-list-item">
-                    <div class="movie-thumb">
-                        <img src="images/Avatar.jpg" alt="Avatar">
-                    </div>
-                    <div class="movie-list-info">
-                        <h4 class="movie-list-title">Avatar: The Way of Water</h4>
-                        <div class="movie-meta">
-                            <span><i class="far fa-clock"></i> 3h 12m</span>
-                            <span><i class="fas fa-star"></i> 4.7</span>
-                        </div>
-                        <div class="movie-meta">
-                            <span><i class="fas fa-film"></i> IMAX 3D</span>
-                            <span><i class="fas fa-couch"></i> 52 seats</span>
-                        </div>
-                        <button class="quick-book">
-                            <i class="fas fa-ticket-alt"></i>
-                            Book Now
-                        </button>
-                    </div>
-                </div>
+                }
+
+
             </div>
         </div>
 
@@ -99,48 +58,60 @@
     <section class="main-section">
         <div class="hero-banner">
             <div class="hero-image">
-                <img src="images/Inception.jpg" alt="Spider-Man: Across the Spider-Verse">
-                <div class="hero-overlay">
-                    <div class="hero-content">
-                        <div class="featured-tag">Featured Film</div>
-                        <div class="genre-tags">
-                            <span class="genre-tag">Animation</span>
-                            <span class="genre-tag">Adventure</span>
-                            <span class="genre-tag">Action</span>
-                        </div>
-                        <h1 class="hero-title">Spider-Man: Across the Spider-Verse</h1>
-                        <div class="movie-meta-info">
-                            <span class="rating"><i class="fas fa-star"></i> 9.2/10</span>
-                            <span class="duration"><i class="far fa-clock"></i> 140 min</span>
-                            <span class="release"><i class="far fa-calendar"></i> 2023</span>
-                        </div>
-                        <p class="hero-description">2023 sequel to the animated film "Spider-Man: Into the Spider-Verse". The story follows Miles Morales as he embarks on a journey through the multiverse, encountering various Spider-People from different dimensions.</p>
-                        <div class="showtime-preview">
-                            <span class="next-show">Next shows today:</span>
-                            <div class="time-options">
-                                <span class="time-chip">11:30</span>
-                                <span class="time-chip">14:15</span>
-                                <span class="time-chip">17:00</span>
-                                <span class="time-chip">20:30</span>
+                @if (featuredMovie != null)
+                {
+                    <img src="images/@featuredMovie.PosterImage" alt="@featuredMovie.Title">
+                    <div class="hero-overlay">
+                        <div class="hero-content">
+                            <div class="featured-tag">Featured Film</div>
+                            <div class="genre-tags">
+                                @foreach (var genre in featuredMovie.MovieGenres.Take(3))
+                                {
+                                    <span class="genre-tag">@genre.Genre.Name</span>
+                                }
+                            </div>
+                            <h1 class="hero-title">@featuredMovie.Title</h1>
+                            <div class="movie-meta-info">
+                                <span class="rating"><i class="fas fa-star"></i> @featuredMovie.Rating.ToString("N1")/10</span>
+                                <span class="duration"><i class="far fa-clock"></i> @featuredMovie.DurationMinutes min</span>
+                                <span class="release"><i class="far fa-calendar"></i> @featuredMovie.ReleaseYear</span>
+                            </div>
+                            <p class="hero-description">@featuredMovie.Description</p>
+                            <div class="showtime-preview">
+                                <span class="next-show">Next shows today:</span>
+                                <div class="time-options">
+                                    @foreach (var showtime in featuredMovie.Showtimes.Take(4))
+                                    {
+                                        <span class="time-chip">@showtime.StartTime.ToString("hh:mm")</span>
+                                    }
+                                </div>
+                            </div>
+                            <div class="hero-buttons">
+                                <a asp-controller="Booking" asp-action="Booking" asp-route-id="@featuredMovie.Id" class="book-btn">
+                                    <i class="fas fa-ticket-alt"></i>
+                                    Booking Tickets
+                                </a>
+                                <button class="hero-btn trailer-btn">
+                                    <div class="play-icon">
+                                        <i class="fas fa-play"></i>
+                                    </div>
+                                    Watch Trailer
+                                </button>
                             </div>
                         </div>
-                        <div class="hero-buttons">
-                            <button class=" book-btn ">
-                                <i class="fas fa-ticket-alt"></i>
-                                Book Tickets
-                            </button>
-                            <button class="hero-btn trailer-btn">
-                                <div class="play-icon">
-                                    <i class="fas fa-play"></i>
-                                </div>
-                                Watch Trailer
-                            </button>
+                    </div>
+                }
+                else
+                {
+                    <!-- عرض محتوى افتراضي إذا لم توجد أفلام -->
+                    <div class="hero-overlay">
+                        <div class="hero-content">
+                            <h1 class="hero-title">No Featured Movie</h1>
                         </div>
                     </div>
-                </div>
+                }
             </div>
         </div>
-
         <div class="movie-categories">
             <div class="section-title">
                 <i class="fas fa-fire"></i>
@@ -219,7 +190,7 @@
                                         <span>No showtimes</span>
                                     }
                                 <div class="button-container">
-                                    <a asp-controller="Booking" asp-action="Booking" asp-route-id="@item.Id" class="book-btn"><i class="fas fa-ticket-alt"></i> Book Now</a>
+                                    <a asp-controller="Booking" asp-action="Booking" asp-route-id="@item.Id" class="book-btn"><i class="fas fa-ticket-alt"></i> Booking Now</a>
                                     <a asp-controller="Details" asp-action="details" asp-route-id="@item.Id" class="details-btn"><i class="fas fa-info-circle"></i> Details</a>
                                 </div>
                             </div>
@@ -314,8 +285,8 @@
                                     <span>No showtimes</span>
                                 }
                                 <div class="button-container">
-                                    <button class="book-btn"><i class="fas fa-ticket-alt"></i> Book Now</button>
-                                    <a asp-action="details" asp-route-id="@item.Id" class="details-btn"><i class="fas fa-info-circle"></i> Details</a>
+                                    <a asp-controller="Booking" asp-action="Booking" asp-route-id="@item.Id" class="book-btn"><i class="fas fa-ticket-alt"></i> Booking Now</a>
+                                    <a asp-controller="Details" asp-action="details" asp-route-id="@item.Id" class="details-btn"><i class="fas fa-info-circle"></i> Details</a>
                                 </div>
                             </div>
                         </div>
@@ -421,17 +392,17 @@
                             </div>
                         </div>
                         <div class="seats-info">
-                            <span class="seats-available">45 seats available</span>
+                            <span class="seats-available">@item.Showtimes.FirstOrDefault()?.AvailableSeats seats available </span>
                             <span class="price">@item.Showtimes.FirstOrDefault()?.Price.ToString("C0")</span>
                         </div>
                         <div class="booking-actions">
-                            <a asp-action="Book"asp-route-id="@item.Id" class="book-btn">
+                            <a asp-controller="Booking" asp-action="Booking" asp-route-id="@item.Id" class="book-btn">
                                 <i class="fas fa-ticket-alt"></i>
-                                Book Now
+                                Booking Now
                             </a>
-                            <button class="action-btn">
+                            <a asp-controller="details" asp-action="details" asp-route-id="@item.Id" class="action-btn">
                                 <i class="fas fa-info-circle"></i>
-                            </button>
+                            </a>
                         </div>
                     </div>
                 </div>

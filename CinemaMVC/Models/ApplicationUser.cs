@@ -3,7 +3,7 @@ using System.ComponentModel.DataAnnotations;
 
 namespace CinemaMVC.Models
 {
-    public class User : IdentityUser
+    public class ApplicationUser : IdentityUser
     {
         [StringLength(100)]
         public string FirstName { get; set; }
@@ -20,7 +20,7 @@ namespace CinemaMVC.Models
         // Helper properties
         public string FullName => $"{FirstName} {LastName}";
 
-        public User()
+        public ApplicationUser()
         {
             Bookings = new HashSet<Booking>();
         }

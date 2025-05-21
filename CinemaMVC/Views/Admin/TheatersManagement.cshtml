@@ -1,0 +1,71 @@
+﻿@model IEnumerable<Theater>
+@{
+    ViewData["Title"] = "TheatersManagement";
+    Layout = "~/Views/Shared/_AdminLayout.cshtml";
+}
+
+<section class="content-section" id="theaters">
+    <div class="section-header">
+        <h1>Theaters Management</h1>
+        <a asp-action="AddTheater" class="add-btn">
+            <i class="fas fa-plus"></i> Add New Theater
+        </a>
+    </div>
+    <div class="theater-list">
+        <table>
+            <thead>
+                <tr>
+                    <th>Name</th>
+                    <th>Type</th>
+                    <th>Capacity</th>
+                    <th>Status</th>
+                    <th>Actions</th>
+                </tr>
+            </thead>
+            <tbody>
+                @if (Model != null && Model.Any())
+                {
+                    foreach (var theater in Model)
+                    {
+                        <tr data-id="@theater.Id">
+                            <td>@theater.Name</td>
+                            <td>
+                                <span class="theater-type @theater.TheaterType.ToLower()">@theater.TheaterType</span>
+                            </td>
+                            <td>@theater.Capacity</td>
+                            <td>
+                                @{
+                                    var hasActiveShowtimes = theater.Showtimes != null && 
+                                        theater.Showtimes.Any(s => s.StartTime > DateTime.Now);
+                                    
+                                    if (hasActiveShowtimes)
+                                    {
+                                        <span class="status-badge success">Active</span>
+                                    }
+                                    else
+                                    {
+                                        <span class="status-badge maintenance">Inactive</span>
+                                    }
+                                }
+                            </td>
+                            <td>
+                                <button class="action-icon edit" data-id="@theater.Id"><i class="fas fa-edit"></i></button>
+                                <form method="post" asp-action="DeleteTheater" asp-route-id="@theater.Id" style="display:inline;">
+                                    <button type="submit" class="action-icon delete" data-id="@theater.Id">
+                                        <i class="fas fa-trash"></i>
+                                    </button>
+                                </form>
+                            </td>
+                        </tr>
+                    }
+                }
+                else
+                {
+                    <tr>
+                        <td colspan="5" class="text-center">No theaters found</td>
+                    </tr>
+                }
+            </tbody>
+        </table>
+    </div>
+</section>

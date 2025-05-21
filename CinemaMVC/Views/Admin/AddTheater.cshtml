@@ -1,0 +1,47 @@
+@model Theater
+@{
+    ViewData["Title"] = "Add Theater";
+    Layout = "~/Views/Shared/_AdminLayout.cshtml";
+}
+
+<section class="content-section">
+    <div class="section-header">
+        <h1>Add New Theater</h1>
+    </div>
+
+    <div class="form-container">
+        <form asp-action="AddTheater" method="post">
+            <div class="form-group">
+                <label asp-for="Name">Theater Name</label>
+                <input asp-for="Name" class="form-control" required />
+                <span asp-validation-for="Name" class="text-danger"></span>
+            </div>
+
+            <div class="form-group">
+                <label asp-for="Seats">Capacity</label>
+                <input asp-for="Seats" class="form-control" type="number" min="1" required />
+                <span asp-validation-for="Seats" class="text-danger"></span>
+            </div>
+
+            <div class="form-group">
+                <label asp-for="TheaterType">Theater Type</label>
+                <select asp-for="TheaterType" class="form-control">
+                    <option value="Standard">Standard</option>
+                    <option value="IMAX">IMAX</option>
+                    <option value="3D">3D</option>
+                    <option value="4DX">4DX</option>
+                </select>
+                <span asp-validation-for="TheaterType" class="text-danger"></span>
+            </div>
+
+            <div class="form-actions">
+                <a asp-action="TheatersManagement" class="cancel-btn">Cancel</a>
+                <button type="submit" class="submit-btn">Add Theater</button>
+            </div>
+        </form>
+    </div>
+</section>
+
+@section Scripts {
+    @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
+}

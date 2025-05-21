@@ -1,0 +1,112 @@
+﻿@model CinemaMVC.Models.ViewModels.AdminDashboardViewModel
+@{
+    ViewData["Title"] = "Dashboard";
+    Layout = "~/Views/Shared/_AdminLayout.cshtml";
+}
+
+<section class="content-section" id="dashboard">
+    <h1>Dashboard Overview</h1>
+    <div class="stats-cards">
+        <div class="stat-card">
+            <i class="fas fa-film"></i>
+            <div class="stat-info">
+                <h3>Total Movies</h3>
+                <p>@Model.TotalMovies</p>
+            </div>
+        </div>
+        <div class="stat-card">
+            <i class="fas fa-building"></i>
+            <div class="stat-info">
+                <h3>Theaters</h3>
+                <p>@Model.TotalTheaters</p>
+            </div>
+        </div>
+        <div class="stat-card">
+            <i class="fas fa-ticket-alt"></i>
+            <div class="stat-info">
+                <h3>Bookings Today</h3>
+                <p>@Model.TodayBookingsCount</p>
+            </div>
+        </div>
+        <div class="stat-card">
+            <i class="fas fa-dollar-sign"></i>
+            <div class="stat-info">
+                <h3>Revenue Today</h3>
+                <p>$@Model.TodayRevenue.ToString("N2")</p>
+            </div>
+        </div>
+    </div>
+
+    <div class="quick-actions">
+        <h2>Quick Actions</h2>
+        <div class="action-buttons">
+            <a asp-action="AddMovie" class="action-btn">
+                <i class="fas fa-plus"></i> Add New Movie
+            </a>
+            <a asp-action="AddTheater" class="action-btn">
+                <i class="fas fa-plus"></i> Add New Theater
+            </a>
+            <button class="action-btn">
+                <i class="fas fa-calendar-plus"></i> Schedule Showtime
+            </button>
+            <button class="action-btn">
+                <i class="fas fa-download"></i> Export Reports
+            </button>
+        </div>
+    </div>
+
+    <!-- Recent Bookings -->
+    <div class="section-header">
+        <h2>Recent Bookings</h2>
+        <a href="#" class="view-all">View All <i class="fas fa-arrow-right"></i></a>
+    </div>
+    <table>
+        <thead>
+            <tr>
+                <th>Booking ID</th>
+                <th>Customer</th>
+                <th>Movie</th>
+                <th>Date & Time</th>
+                <th>Seats</th>
+                <th>Amount</th>
+                <th>Status</th>
+            </tr>
+        </thead>
+        <tbody>
+            @if (Model.RecentBookings != null && Model.RecentBookings.Any())
+            {
+                foreach (var booking in Model.RecentBookings)
+                {
+                    <tr>
+                        <td>#BK@booking.Id</td>
+                        <td>@(booking.User?.UserName ?? "Guest")</td>
+                        <td>@booking.Showtime?.Movie?.Title</td>
+                        <td>@booking.BookingDate.ToString("MMM dd, yyyy - h:mm tt")</td>
+                        <td>@booking.NumberOfSeats</td>
+                        <td>$@booking.TotalPrice.ToString("N2")</td>
+                        <td>
+                            @if (booking.BookingStatus == "Confirmed")
+                            {
+                                <span class="status-badge success">Confirmed</span>
+                            }
+                            else if (booking.BookingStatus == "Pending")
+                            {
+                                <span class="status-badge pending">Pending</span>
+                            }
+                            else
+                            {
+                                <span class="status-badge cancelled">@booking.BookingStatus</span>
+                            }
+                        </td>
+                    </tr>
+                }
+            }
+            else
+            {
+                <tr>
+                    <td colspan="7" class="text-center">No recent bookings found</td>
+                </tr>
+            }
+        </tbody>
+    </table>
+</section>

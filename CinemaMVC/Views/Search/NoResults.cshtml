@@ -1,0 +1,19 @@
+﻿@model string
+@{
+    ViewData["Title"] = "No results";
+}
+@section Styles {
+    <link href="~/css/search-results.css" rel="stylesheet" asp-append-version="true" />
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700&display=swap" rel="stylesheet">
+
+}
+
+
+<div class="sr-no-results">
+    <div class="sr-no-results-icon">
+        <i class="fas fa-search"></i>
+    </div>
+    <h2>No results found for "@Model"</h2>
+    <p>We couldn't find any movies matching your search. Try different keywords or browse our categories.</p>
+    <a asp-action="Index" asp-controller="Home" class="sr-browse-all-btn">Browse All Movies</a>
+</div>
