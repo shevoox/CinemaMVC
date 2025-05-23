@@ -1,21 +1,20 @@
 /* Booking Modal Styles */
 :root {
     /* Primary Theme Colors */
-    --primary-color: #e94560; /* Accent color */
-    --primary-hover: #ff5e75; /* Lighter hover version */
+    --primary-color: #e94560;
+    --primary-hover: #ff6b81;
     /* Background Colors */
-    --dark-bg: #1a1a2e; /* Main dark background */
-    --dark-bg-lighter: #16213e; /* Slightly lighter background */
-    --glass-bg: rgba(255, 255, 255, 0.1); /* Transparent white overlay */
-    --glass-border: rgba(255, 255, 255, 0.15); /* Light border for glassmorphism */
+    --dark-bg: #1a1a2e;
+    --dark-bg-lighter: #16213e;
+    --glass-bg: rgba(255, 255, 255, 0.1);
+    --glass-border: rgba(255, 255, 255, 0.15);
     /* Text Colors */
-    --text-color: #ffffff; /* Primary text */
-    --text-secondary: #e0e0e0; /* Secondary text */
+    --text-color: #ffffff;
+    --text-secondary: #e0e0e0;
     /* Status Colors */
-    --success-color: #4CAF50; /* Green success */
-    --warning-color: #FFC107; /* Yellow warning */
-    --premium-color: #9C27B0; /* Optional: can be replaced with --danger-color if needed */
-    --danger-color: #FF5252; /* Red danger */
+    --success-color: #4CAF50;
+    --warning-color: #FFC107;
+    --danger-color: #FF5252;
     /* Optional Enhancements */
     --highlight-color: #e94560;
     --gradient-start: #1a1a2e;
@@ -677,12 +676,12 @@ body {
 }
 
 .seat.premium::after {
-    background-color: var(--premium-color);
+    background-color: var(--primary-color);
 }
 
 .seat.premium.selected {
     background-color: rgba(156, 39, 176, 0.3);
-    color: var(--premium-color);
+    color: var(--primary-color);
 }
 
 .seat-legend {
@@ -745,7 +744,7 @@ body {
 }
 
 .seat-demo.premium::after {
-    background-color: var(--premium-color);
+    background-color: var(--primary-color);
 }
 
 .seat-selection-summary {

@@ -16,6 +16,7 @@ namespace CinemaMVC.Models
 
         // Navigation properties
         public virtual ICollection<Booking> Bookings { get; set; }
+        public virtual ICollection<UserFavorite> UserFavorites { get; set; }
 
         // Helper properties
         public string FullName => $"{FirstName} {LastName}";
@@ -23,6 +24,7 @@ namespace CinemaMVC.Models
         public ApplicationUser()
         {
             Bookings = new HashSet<Booking>();
+            UserFavorites = new HashSet<UserFavorite>();
         }
     }
 }

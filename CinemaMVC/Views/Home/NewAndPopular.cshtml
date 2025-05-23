@@ -1,0 +1,65 @@
+@model IEnumerable<CinemaMVC.Models.Movie>
+
+@{
+    ViewData["Title"] = "New & Popular";
+}
+
+@section Styles {
+    <link rel="stylesheet" href="~/css/pages.css" />
+}
+
+<div class="movies-page-header">
+    <h1 class="movies-page-title">New & Popular</h1>
+    <p class="movies-page-description">Stay up to date with the latest releases and trending content</p>
+</div>
+
+<div class="movies-page-container">
+    <div class="movies-grid-container">
+        @foreach (var movie in Model)
+        {
+            <div class="movie-card-item">
+                <div class="movie-poster-container">
+                    <img src="~/images/@movie.PosterImage" alt="@movie.Title" class="movie-poster-img">
+                </div>
+                <div class="movie-info-container">
+                    <h3 class="movie-title-text">@movie.Title</h3>
+                    <div class="movie-meta-info">
+                        <span><i class="fas fa-calendar"></i> @movie.ReleaseYear</span>
+                        <span><i class="fas fa-clock"></i> @movie.DurationMinutes min</span>
+                    </div>
+                    <div class="movie-meta-info">
+                        <span><i class="fas fa-film"></i> @movie.Format</span>
+                        <span><i class="fas fa-star"></i> @movie.Rating.ToString("N1")</span>
+                    </div>
+                    <div class="movie-actions-container">
+                        <a href="@Url.Action("Details", "Details", new { id = movie.Id })" class="movie-details-btn">
+                            <i class="fas fa-info-circle"></i> Details
+                        </a>
+                        @if (User.Identity.IsAuthenticated)
+                        {
+                            var isFavorite = ViewBag.FavoriteMovies != null && ViewBag.FavoriteMovies.Contains(movie.Id);
+                            <form asp-action="ToggleFavorite" asp-controller="Home" method="post" style="display: inline;">
+                                <input type="hidden" name="movieId" value="@movie.Id" />
+                                <button type="submit" class="movie-favorite-btn @(isFavorite ? "active" : "")"
+                                        data-bs-toggle="tooltip"
+                                        title="@(isFavorite ? "Remove from My List" : "Add to My List")">
+                                    <i class="@(isFavorite ? "fas" : "far") fa-heart"></i>
+                                </button>
+                            </form>
+                        }
+                        else
+                        {
+                            <a href="@Url.Action("Register", "Register")" class="movie-favorite-btn" data-bs-toggle="tooltip" title="Sign in to add to My List">
+                                <i class="far fa-heart"></i>
+                            </a>
+                        }
+                    </div>
+                </div>
+            </div>
+        }
+    </div>
+</div>
+
+@section Scripts {
+    <script src="~/js/pages.js"></script>
+}

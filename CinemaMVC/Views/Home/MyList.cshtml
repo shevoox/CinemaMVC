@@ -1,0 +1,86 @@
+@model IEnumerable<CinemaMVC.Models.Movie>
+
+@{
+    ViewData["Title"] = "My List";
+}
+
+@section Styles {
+    <link rel="stylesheet" href="~/css/pages.css" />
+}
+
+<div class="my-list-container">
+    <div class="my-list-header">
+        <h1>My List</h1>
+        <p>Your favorite movies and TV shows</p>
+    </div>
+
+    @if (!Model.Any())
+    {
+        <div class="empty-list-message">
+            <i class="fas fa-heart-broken"></i>
+            <h3>Your list is empty</h3>
+            <p>Start adding your favorite movies and TV shows to your list</p>
+            <a href="@Url.Action("Movies")" class="btn btn-primary">Browse Movies</a>
+        </div>
+    }
+    else
+    {
+        <div class="my-list-grid">
+            @foreach (var item in Model)
+            {
+                <div class="my-list-card">
+                    <div class="my-list-image">
+                        <img src="~/images/@item.PosterImage" alt="@item.Title">
+                        <div class="my-list-overlay">
+                            <a href="@Url.Action("Details", "Details", new { id = item.Id })" class="btn btn-primary">View Details</a>
+                            <form asp-action="ToggleFavorite" asp-controller="Home" method="post" style="display: inline;">
+                                <input type="hidden" name="movieId" value="@item.Id" />
+                                <button type="submit" class="btn btn-danger">
+                                    <i class="fas fa-trash"></i> Remove
+                                </button>
+                            </form>
+                        </div>
+                    </div>
+                    <div class="my-list-info">
+                        <h3>@item.Title</h3>
+                        <p class="my-list-genre">@string.Join(", ", item.MovieGenres.Select(g => g.Genre).Select(g=>g.Name))</p>
+                        <div class="my-list-meta">
+                            @* <span class="type"><i class="fas fa-film"></i> @(item.Format ? "TV Show" : "Movie")</span> *@
+                            <span class="rating"><i class="fas fa-star"></i> @item.Rating.ToString("F1")</span>
+                        </div>
+                    </div>
+                </div>
+            }
+        </div>
+
+        @if (ViewBag.TotalPages > 1)
+        {
+            <div class="pagination-container">
+                <nav>
+                    <ul class="pagination">
+                        <li class="page-item @(!ViewBag.HasPreviousPage ? "disabled" : "")">
+                            <a class="page-link" href="@Url.Action("MyList", new { page = ViewBag.CurrentPage - 1 })" aria-label="Previous">
+                                <span aria-hidden="true">&laquo;</span>
+                            </a>
+                        </li>
+                        @for (int i = 1; i <= ViewBag.TotalPages; i++)
+                        {
+                            <li class="page-item @(i == ViewBag.CurrentPage ? "active" : "")">
+                                <a class="page-link" href="@Url.Action("MyList", new { page = i })">@i</a>
+                            </li>
+                        }
+                        <li class="page-item @(!ViewBag.HasNextPage ? "disabled" : "")">
+                            <a class="page-link" href="@Url.Action("MyList", new { page = ViewBag.CurrentPage + 1 })" aria-label="Next">
+                                <span aria-hidden="true">&raquo;</span>
+                            </a>
+                        </li>
+                    </ul>
+                </nav>
+            </div>
+        }
+    }
+</div>
+
+@section Scripts {
+    <script src="~/js/pages.js"></script>
+}

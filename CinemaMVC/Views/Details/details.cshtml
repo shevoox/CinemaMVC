@@ -55,18 +55,31 @@
 
                 <!-- Action Buttons -->
                 <div class="mdp-action-buttons">
-                    <button class="mdp-book-btn">
+                    <a asp-action="Booking" asp-controller="Booking" asp-route-id="@Model.Id" class="mdp-book-btn">
                         <i class="fas fa-ticket-alt"></i>
                         Book Now
-                    </button>
+                    </a>
                     <button class="mdp-trailer-btn">
                         <i class="fas fa-play"></i>
                         Watch Trailer
                     </button>
-                    <button class="mdp-add-list-btn">
-                        <i class="fas fa-plus"></i>
-                        Add to List
-                    </button>
+                    @if (User.Identity.IsAuthenticated)
+                    {
+                        <form asp-action="ToggleFavorite" asp-controller="Home" method="post" style="display: inline;">
+                            <input type="hidden" name="movieId" value="@Model.Id" />
+                            <button type="submit" class="mdp-add-list-btn @(ViewBag.FavoriteMovies?.Contains(Model.Id) == true ? "active" : "")">
+                                <i class="@(ViewBag.FavoriteMovies?.Contains(Model.Id) == true ? "fas" : "far") fa-heart"></i>
+                                @(ViewBag.FavoriteMovies?.Contains(Model.Id) == true ? "Remove from List" : "Add to List")
+                            </button>
+                        </form>
+                    }
+                    else
+                    {
+                        <a href="@Url.Action("Register", "Register")" class="mdp-add-list-btn">
+                            <i class="far fa-heart"></i>
+                            Add to List
+                        </a>
+                    }
                 </div>
 
                 <!-- Showtimes Section -->

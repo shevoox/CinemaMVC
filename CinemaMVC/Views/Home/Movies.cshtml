@@ -1,0 +1,97 @@
+@model IEnumerable<CinemaMVC.Models.Movie>
+
+@{
+    ViewData["Title"] = "Movies";
+}
+
+@section Styles {
+    <link rel="stylesheet" href="~/css/pages.css" />
+}
+
+<div class="movies-page-header">
+    <h1 class="movies-page-title">Movies</h1>
+    <p class="movies-page-description">Discover our collection of the latest and greatest movies</p>
+</div>
+
+<div class="movies-page-container">
+    <div class="movies-grid-container">
+        @foreach (var movie in Model)
+        {
+            <div class="movie-card-item">
+                <img src="~/images/@movie.PosterImage" alt="@movie.Title" class="movie-poster-img">
+                <div class="movie-info-container">
+                    <h3 class="movie-title-text">@movie.Title</h3>
+                    <div class="movie-meta-info">
+                        <span><i class="fas fa-calendar"></i> @movie.ReleaseYear</span>
+                        <span><i class="fas fa-clock"></i> @movie.DurationMinutes min</span>
+                    </div>
+                    <div class="movie-meta-info">
+                        <span><i class="fas fa-film"></i> @movie.Format</span>
+                        <span><i class="fas fa-star"></i> @movie.Rating.ToString("N1")</span>
+                    </div>
+                    <div class="movie-actions-container">
+                        <a href="@Url.Action("Details", "Details", new { id = movie.Id })" class="movie-details-btn">
+                            <i class="fas fa-info-circle"></i> Details
+                        </a>
+                        @if (User.Identity.IsAuthenticated)
+                        {
+                            <form asp-action="ToggleFavorite" asp-controller="Home" method="post" style="display: inline;">
+                                <input type="hidden" name="movieId" value="@movie.Id" />
+                                <button type="submit" class="movie-favorite-btn @(ViewBag.FavoriteMovies?.Contains(movie.Id) == true ? "active" : "")"
+                                        data-bs-toggle="tooltip"
+                                        title="@(ViewBag.FavoriteMovies?.Contains(movie.Id) == true ? "Remove from My List" : "Add to My List")">
+                                    <i class="@(ViewBag.FavoriteMovies?.Contains(movie.Id) == true ? "fas" : "far") fa-heart"></i>
+                                </button>
+                            </form>
+                        }
+                        else
+                        {
+                            <a href="@Url.Action("Register", "Register")" class="movie-favorite-btn" data-bs-toggle="tooltip" title="Sign in to add to My List">
+                                <i class="far fa-heart"></i>
+                            </a>
+                        }
+                    </div>
+                </div>
+            </div>
+        }
+    </div>
+
+    @if (ViewBag.TotalPages > 1)
+    {
+        <div class="pagination-container">
+            <nav aria-label="Page navigation">
+                <ul class="pagination justify-content-center">
+                    @if (ViewBag.HasPreviousPage)
+                    {
+                        <li class="page-item">
+                            <a class="page-link" href="@Url.Action("Movies", new { page = ViewBag.CurrentPage - 1 })" aria-label="Previous">
+                                <span aria-hidden="true">&laquo;</span>
+                            </a>
+                        </li>
+                    }
+
+                    @for (int i = 1; i <= ViewBag.TotalPages; i++)
+                    {
+                        <li class="page-item @(i == ViewBag.CurrentPage ? "active" : "")">
+                            <a class="page-link" href="@Url.Action("Movies", new { page = i })">@i</a>
+                        </li>
+                    }
+
+                    @if (ViewBag.HasNextPage)
+                    {
+                        <li class="page-item">
+                            <a class="page-link" href="@Url.Action("Movies", new { page = ViewBag.CurrentPage + 1 })" aria-label="Next">
+                                <span aria-hidden="true">&raquo;</span>
+                            </a>
+                        </li>
+                    }
+                </ul>
+            </nav>
+        </div>
+    }
+</div>
+
+@section Scripts {
+    <script src="~/js/pages.js"></script>
+    <script src="~/js/favorites.js"></script>
+}

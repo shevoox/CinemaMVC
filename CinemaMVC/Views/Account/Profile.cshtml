@@ -3,6 +3,10 @@
     ViewData["Title"] = "Profile";
 }
 
+@section Styles {
+    <link rel="stylesheet" href="~/css/profile.css" />
+}
+
 <div class="profile-container">
     <div class="profile-header">
         <div class="profile-cover"></div>
@@ -58,11 +62,33 @@
         <div class="profile-section">
             <h2><i class="fas fa-heart"></i> Favorite Movies</h2>
             <div class="favorites-list">
-                <div class="no-favorites">
-                    <i class="fas fa-heart"></i>
-                    <p>No favorite movies yet</p>
-                    <a href="/" class="btn-primary">Discover Movies</a>
-                </div>
+                @if (ViewBag.FavoriteMovies != null && ViewBag.FavoriteMovies.Count > 0)
+                {
+                    <div class="simple-favorites-list">
+                        @foreach (var movie in ViewBag.FavoriteMovies)
+                        {
+                            <div class="favorite-movie-item">
+                                <i class="fas fa-film"></i>
+                                <span>@movie.Title</span>
+                                <form asp-action="ToggleFavorite" asp-controller="Home" method="post" style="display: inline;">
+                                    <input type="hidden" name="movieId" value="@movie.Id" />
+                                    <input type="hidden" name="returnUrl" value="@Url.Action("Profile", "Account")" />
+                                    <button type="submit" class="remove-btn">
+                                        <i class="fas fa-times"></i>
+                                    </button>
+                                </form>
+                            </div>
+                        }
+                    </div>
+                }
+                else
+                {
+                    <div class="no-favorites">
+                        <i class="fas fa-heart"></i>
+                        <p>No favorite movies yet</p>
+                        <a  asp-action="Movies" asp-controller="Home" class="btn-primary">Discover Movies</a>
+                    </div>
+                }
             </div>
         </div>
     </div>

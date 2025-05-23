@@ -1,0 +1,89 @@
+@{
+    ViewData["Title"] = "Our Theaters";
+}
+
+@section Styles {
+    <link rel="stylesheet" href="~/css/pages.css" />
+}
+
+<div class="page-header">
+    <h1 class="page-title">Our Theaters</h1>
+    <p class="page-description">Find the perfect location for your next movie experience</p>
+</div>
+
+<div class="page-container">
+    <div class="theaters-grid">
+        <div class="theater-card">
+            <h3 class="theater-name">Downtown Cinema</h3>
+            <div class="theater-info">
+                <i class="fas fa-map-marker-alt"></i>
+                123 Main Street, Downtown
+            </div>
+            <div class="theater-info">
+                <i class="fas fa-phone"></i>
+                (555) 123-4567
+            </div>
+            <div class="theater-info">
+                <i class="fas fa-clock"></i>
+                Open Daily: 10:00 AM - 11:00 PM
+            </div>
+            <div class="theater-info">
+                <i class="fas fa-film"></i>
+                8 Screens, IMAX, 3D
+            </div>
+            <button class="btn btn-primary mt-3 view-map" data-theater-id="1">
+                <i class="fas fa-map"></i> View on Map
+            </button>
+        </div>
+
+        <div class="theater-card">
+            <h3 class="theater-name">Westside Cinema</h3>
+            <div class="theater-info">
+                <i class="fas fa-map-marker-alt"></i>
+                456 West Avenue, Westside
+            </div>
+            <div class="theater-info">
+                <i class="fas fa-phone"></i>
+                (555) 234-5678
+            </div>
+            <div class="theater-info">
+                <i class="fas fa-clock"></i>
+                Open Daily: 10:00 AM - 11:00 PM
+            </div>
+            <div class="theater-info">
+                <i class="fas fa-film"></i>
+                6 Screens, 4DX, 3D
+            </div>
+            <button class="btn btn-primary mt-3 view-map" data-theater-id="2">
+                <i class="fas fa-map"></i> View on Map
+            </button>
+        </div>
+
+        <div class="theater-card">
+            <h3 class="theater-name">Eastside Cinema</h3>
+            <div class="theater-info">
+                <i class="fas fa-map-marker-alt"></i>
+                789 East Boulevard, Eastside
+            </div>
+            <div class="theater-info">
+                <i class="fas fa-phone"></i>
+                (555) 345-6789
+            </div>
+            <div class="theater-info">
+                <i class="fas fa-clock"></i>
+                Open Daily: 10:00 AM - 11:00 PM
+            </div>
+            <div class="theater-info">
+                <i class="fas fa-film"></i>
+                5 Screens, Premium Seating
+            </div>
+            <button class="btn btn-primary mt-3 view-map" data-theater-id="3">
+                <i class="fas fa-map"></i> View on Map
+            </button>
+        </div>
+    </div>
+</div>
+
+@section Scripts {
+    <script src="~/js/pages.js"></script>
+} 

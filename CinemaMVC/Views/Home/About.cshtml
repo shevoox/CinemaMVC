@@ -1,0 +1,66 @@
+@{
+    ViewData["Title"] = "About Us";
+}
+
+@section Styles {
+    <link rel="stylesheet" href="~/css/pages.css" />
+}
+
+<div class="page-header">
+    <h1 class="page-title">About Us</h1>
+    <p class="page-description">Learn more about our cinema and our mission</p>
+</div>
+
+<div class="page-container">
+    <div class="about-section">
+        <h2>Our Story</h2>
+        <p>
+            Welcome to CinemaMVC, your premier destination for the ultimate movie-going experience. 
+            Founded with a passion for bringing the magic of cinema to life, we've been serving movie 
+            enthusiasts since our establishment.
+        </p>
+
+        <h2>Our Mission</h2>
+        <p>
+            At CinemaMVC, we strive to create unforgettable cinematic experiences by combining 
+            state-of-the-art technology with exceptional customer service. We believe that going to 
+            the movies should be more than just watching a film – it should be an immersive journey 
+            that transports you to another world.
+        </p>
+
+        <h2>Our Facilities</h2>
+        <p>
+            Our theaters are equipped with the latest in audio-visual technology, including:
+        </p>
+        <ul>
+            <li>4K Digital Projection</li>
+            <li>Dolby Atmos Sound Systems</li>
+            <li>Comfortable Reclining Seats</li>
+            <li>IMAX and 3D Capabilities</li>
+            <li>Premium Food and Beverage Services</li>
+        </ul>
+
+        <h2>Our Commitment</h2>
+        <p>
+            We are committed to providing:
+        </p>
+        <ul>
+            <li>The latest blockbuster releases</li>
+            <li>Independent and art house films</li>
+            <li>Special screenings and events</li>
+            <li>Family-friendly entertainment</li>
+            <li>Accessible facilities for all guests</li>
+        </ul>
+
+        <h2>Join Our Team</h2>
+        <p>
+            We're always looking for passionate individuals to join our team. If you love movies and 
+            enjoy creating memorable experiences for others, check out our 
+            <a href="@Url.Action("Careers", "Home")">careers page</a> for current opportunities.
+        </p>
+    </div>
+</div>
+
+@section Scripts {
+    <script src="~/js/pages.js"></script>
+} 

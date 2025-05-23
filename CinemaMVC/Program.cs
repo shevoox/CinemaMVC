@@ -23,10 +23,9 @@ namespace CinemaMVC
             {
                 option.Password.RequireLowercase = false;
                 option.Password.RequireUppercase = false;
-                option.Password.RequiredLength = 6;
+                option.Password.RequiredLength = 4;
                 option.Password.RequireNonAlphanumeric = false;
-
-
+                option.Password.RequireDigit = false;
             })
                 .AddEntityFrameworkStores<ApplicationDbContext>()
                 .AddDefaultTokenProviders();
@@ -46,6 +45,7 @@ namespace CinemaMVC
 
             app.UseRouting();
 
+            app.UseAuthentication();
             app.UseAuthorization();
 
             app.MapControllerRoute(

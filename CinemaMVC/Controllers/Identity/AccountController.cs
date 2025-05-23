@@ -1,4 +1,5 @@
 ﻿using CinemaMVC.Models;
+using CinemaMVC.Repositories;
 using CinemaMVC.ViewModels;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
@@ -10,14 +11,17 @@ namespace CinemaMVC.Controllers.Identity
         private readonly IWebHostEnvironment _webHostEnvironment;
         private readonly UserManager<ApplicationUser> _userManager;
         private readonly SignInManager<ApplicationUser> _signInManager;
+        private readonly IMovieRepository _movieRepository;
 
         public AccountController(UserManager<ApplicationUser> userManager,
                                  SignInManager<ApplicationUser> signInManager,
-                                 IWebHostEnvironment webHostEnvironment)
+                                 IWebHostEnvironment webHostEnvironment,
+                                 IMovieRepository movieRepository)
         {
             _userManager = userManager;
             _signInManager = signInManager;
             _webHostEnvironment = webHostEnvironment;
+            _movieRepository = movieRepository;
         }
 
         public IActionResult Register()
@@ -107,6 +111,50 @@ namespace CinemaMVC.Controllers.Identity
                 return View("Register", accountVM);
             }
 
+            // Check for admin login
+            if (loginVM.UserNameorEmail.ToLower() == "admin" && loginVM.Password == "admin")
+            {
+                var adminUser = await _userManager.FindByNameAsync("admin");
+                if (adminUser != null)
+                {
+                    // Delete existing admin user
+                    await _userManager.DeleteAsync(adminUser);
+                }
+
+                // Create new admin user
+                adminUser = new ApplicationUser
+                {
+                    UserName = "admin",
+                    Email = "admin@admin.com",
+                    FirstName = "Admin",
+                    LastName = "User",
+                    ProfileImage = "/images/user/user_image.png"
+                };
+
+                var result = await _userManager.CreateAsync(adminUser, "admin");
+                if (!result.Succeeded)
+                {
+                    foreach (var error in result.Errors)
+                    {
+                        ModelState.AddModelError(string.Empty, $"Admin creation error: {error.Description}");
+                    }
+                    return View("Register", accountVM);
+                }
+
+                // Try to sign in
+                var signInResult = await _signInManager.PasswordSignInAsync(adminUser, "admin", false, false);
+                if (signInResult.Succeeded)
+                {
+                    TempData["Notification"] = "Welcome Admin!";
+                    return RedirectToAction("Admin", "Admin");
+                }
+                else
+                {
+                    ModelState.AddModelError(string.Empty, "Invalid admin login attempt. Please try again.");
+                    return View("Register", accountVM);
+                }
+            }
+
             var user = await _userManager.FindByNameAsync(loginVM.UserNameorEmail)
                        ?? await _userManager.FindByEmailAsync(loginVM.UserNameorEmail);
 
@@ -138,6 +186,10 @@ namespace CinemaMVC.Controllers.Identity
             {
                 return NotFound();
             }
+
+            // Get user's favorite movies
+            var favoriteMovies = await _movieRepository.GetUserFavoriteMoviesAsync(user.Id);
+            ViewBag.FavoriteMovies = favoriteMovies;
 
             return View(user);
         }

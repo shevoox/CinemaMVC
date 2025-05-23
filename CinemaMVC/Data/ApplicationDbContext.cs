@@ -1,4 +1,3 @@
-
 using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore;
 
@@ -21,9 +20,24 @@ namespace CinemaMVC.Models
         public DbSet<Cast> Casts { get; set; }
         public DbSet<Director> Directors { get; set; }
         public DbSet<MovieCast> MovieCasts { get; set; }
+        public DbSet<UserFavorite> UserFavorites { get; set; }
+
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
             base.OnModelCreating(modelBuilder);
+
+            // Configure UserFavorite relationships
+            modelBuilder.Entity<UserFavorite>()
+                .HasOne(uf => uf.User)
+                .WithMany(u => u.UserFavorites)
+                .HasForeignKey(uf => uf.UserId)
+                .OnDelete(DeleteBehavior.Cascade);
+
+            modelBuilder.Entity<UserFavorite>()
+                .HasOne(uf => uf.Movie)
+                .WithMany(m => m.UserFavorites)
+                .HasForeignKey(uf => uf.MovieId)
+                .OnDelete(DeleteBehavior.Cascade);
 
             // Configure many-to-many relationship between Movie and Genre
             modelBuilder.Entity<MovieGenre>()
@@ -77,7 +91,7 @@ namespace CinemaMVC.Models
                 .IsRequired(false);
 
             modelBuilder.Entity<MovieCast>()
-    .HasKey(mc => new { mc.MovieId, mc.CastId }); // ????? ????
+                .HasKey(mc => new { mc.MovieId, mc.CastId });
 
             modelBuilder.Entity<MovieCast>()
                 .HasOne(mc => mc.Movie)

@@ -9,6 +9,7 @@
     <link rel="stylesheet" href="~/CinemaMVC.styles.css" asp-append-version="true" />
     <link href="~/css/style-fix.css" rel="stylesheet" asp-append-version="true" />
     <link href="~/css/style.css" rel="stylesheet" asp-append-version="true" />
+    <link href="~/css/nav.css" rel="stylesheet" asp-append-version="true" />
 
     <link rel="icon" href="https://img.icons8.com/color/48/000000/movie-projector.png" type="image/png">
     <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600&display=swap" rel="stylesheet">
@@ -23,9 +24,9 @@
                 <i class="fas fa-bars"></i>
             </button>
 
-            <div class="site-logo">
+            <a asp-controller="Home" asp-action="Index" class="site-logo">
                 <span class="logo-text">Cinema</span>
-            </div>
+            </a>
 
             <form asp-action="Search" asp-controller="Search" method="get" class="search-bar">
                 <i class="fas fa-search"></i>
@@ -33,23 +34,23 @@
             </form>
 
             <div class="nav-menu">
-                <a href="#" class="active">
+                <a asp-controller="Home" asp-action="Index">
                     <i class="fas fa-home"></i>
                     <span>Home</span>
                 </a>
-                <a href="#">
+                <a asp-controller="Home" asp-action="Movies">
                     <i class="fas fa-film"></i>
                     <span>Movies</span>
                 </a>
-                <a href="#">
+                <a asp-controller="Home" asp-action="TVShows">
                     <i class="fas fa-tv"></i>
                     <span>TV Shows</span>
                 </a>
-                <a href="#">
+                <a asp-controller="Home" asp-action="NewAndPopular">
                     <i class="fas fa-star"></i>
                     <span>New & Popular</span>
                 </a>
-                <a href="#">
+                <a asp-controller="Home" asp-action="MyList">
                     <i class="fas fa-list"></i>
                     <span>My List</span>
                 </a>
@@ -116,38 +117,39 @@
                 <div class="footer-column">
                     <h4>About</h4>
                     <ul>
-                        <li><a href="#">About Us</a></li>
-                        <li><a href="#">Our Theaters</a></li>
-                        <li><a href="#">Careers</a></li>
+                        <li><a asp-controller="Home" asp-action="About">About Us</a></li>
+                        <li><a asp-controller="Home" asp-action="Theaters">Our Theaters</a></li>
+                        <li><a asp-controller="Home" asp-action="Careers">Careers</a></li>
                     </ul>
                 </div>
                 <div class="footer-column">
                     <h4>Help</h4>
                     <ul>
-                        <li><a href="#">FAQ</a></li>
-                        <li><a href="#">Contact Us</a></li>
-                        <li><a href="#">Terms of Service</a></li>
+                        <li><a asp-controller="Home" asp-action="FAQ">FAQ</a></li>
+                        <li><a asp-controller="Home" asp-action="Contact">Contact Us</a></li>
+                        <li><a asp-controller="Home" asp-action="Terms">Terms of Service</a></li>
                     </ul>
                 </div>
                 <div class="footer-column">
                     <h4>Follow Us</h4>
                     <div class="social-icons">
-                        <a href="#"><i class="fab fa-facebook-f"></i></a>
-                        <a href="#"><i class="fab fa-twitter"></i></a>
-                        <a href="#"><i class="fab fa-instagram"></i></a>
-                        <a href="#"><i class="fab fa-youtube"></i></a>
+                        <a href="https://facebook.com" target="_blank"><i class="fab fa-facebook-f"></i></a>
+                        <a href="https://twitter.com" target="_blank"><i class="fab fa-twitter"></i></a>
+                        <a href="https://instagram.com" target="_blank"><i class="fab fa-instagram"></i></a>
+                        <a href="https://youtube.com" target="_blank"><i class="fab fa-youtube"></i></a>
                     </div>
                 </div>
             </div>
         </div>
         <div class="footer-bottom">
-            <p>&copy; 2023 Cinema Booking. All Rights Reserved.</p>
+            <p>&copy; @DateTime.Now.Year Cinema Booking. All Rights Reserved.</p>
         </div>
     </footer>
     <script src="~/lib/jquery/dist/jquery.min.js"></script>
     <script src="~/lib/bootstrap/dist/js/bootstrap.bundle.min.js"></script>
     <script src="~/js/site.js" asp-append-version="true"></script>
     <script src="~/js/script.js" asp-append-version="true"></script>
+    <script src="~/js/nav.js" asp-append-version="true"></script>
 
     <script>
         console.log("Page loaded! Checking carousel initialization");

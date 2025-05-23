@@ -1,0 +1,68 @@
+@model IEnumerable<CinemaMVC.Models.Movie>
+
+@{
+    ViewData["Title"] = "TV Shows";
+}
+
+@section Styles {
+    <link rel="stylesheet" href="~/css/pages.css" />
+}
+
+<div class="tv-shows-container">
+    <div class="tv-shows-header">
+        <h1>TV Shows</h1>
+        <p>Discover our collection of TV shows and series</p>
+    </div>
+
+    <div class="tv-shows-grid">
+        @foreach (var show in Model)
+        {
+            <div class="tv-show-card">
+                <div class="tv-show-image">
+                    <img src="~/images/@show.PosterImage" alt="@show.Title">
+                    <div class="tv-show-overlay">
+                        <a href="@Url.Action("Details", "Movies", new { id = show.Id })" class="btn btn-primary">View Details</a>
+                    </div>
+                </div>
+                <div class="tv-show-info">
+                    <h3>@show.Title</h3>
+                    <p class="tv-show-genre">@string.Join(", ", show.MovieGenres.Select(g => g.Genre))</p>
+                    <div class="tv-show-rating">
+                        <i class="fas fa-star"></i>
+                        <span>@show.Rating.ToString("N1")</span>
+                    </div>
+                </div>
+            </div>
+        }
+    </div>
+
+    @if (ViewBag.TotalPages > 1)
+    {
+        <div class="pagination-container">
+            <nav>
+                <ul class="pagination">
+                    <li class="page-item @(!ViewBag.HasPreviousPage ? "disabled" : "")">
+                        <a class="page-link" href="@Url.Action("TVShows", new { page = ViewBag.CurrentPage - 1 })" aria-label="Previous">
+                            <span aria-hidden="true">&laquo;</span>
+                        </a>
+                    </li>
+                    @for (int i = 1; i <= ViewBag.TotalPages; i++)
+                    {
+                        <li class="page-item @(i == ViewBag.CurrentPage ? "active" : "")">
+                            <a class="page-link" href="@Url.Action("TVShows", new { page = i })">@i</a>
+                        </li>
+                    }
+                    <li class="page-item @(!ViewBag.HasNextPage ? "disabled" : "")">
+                        <a class="page-link" href="@Url.Action("TVShows", new { page = ViewBag.CurrentPage + 1 })" aria-label="Next">
+                            <span aria-hidden="true">&raquo;</span>
+                        </a>
+                    </li>
+                </ul>
+            </nav>
+        </div>
+    }
+</div>
+
+@section Scripts {
+    <script src="~/js/pages.js"></script>
+}

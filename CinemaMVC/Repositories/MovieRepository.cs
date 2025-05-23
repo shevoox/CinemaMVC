@@ -72,6 +72,18 @@ namespace CinemaMVC.Repositories
                 .ToListAsync();
         }
 
+        public async Task<IEnumerable<Movie>> GetUserFavoriteMoviesAsync(string userId)
+        {
+            return await _context.Movies
+                .Include(m => m.MovieGenres)
+                .ThenInclude(mg => mg.Genre)
+                .Include(m => m.Showtimes)
+                .ThenInclude(s => s.Theater)
+                .ThenInclude(t => t.Seats)
+                .Where(m => m.UserFavorites.Any(f => f.UserId == userId))
+                .ToListAsync();
+        }
+
 
     }
 }

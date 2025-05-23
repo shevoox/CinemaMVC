@@ -15,6 +15,7 @@ namespace CinemaMVC.Controllers
             _repository = repository;
             _movieRepository = movieRepository;
         }
+        [HttpGet]
         public async Task<IActionResult> Search(string FilmName)
         {
             var movies = await _movieRepository.SearchAMovie(FilmName);

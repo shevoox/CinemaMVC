@@ -51,5 +51,6 @@ namespace CinemaMVC.Models
         public virtual ICollection<MovieGenre> MovieGenres { get; set; }
         public virtual ICollection<Showtime> Showtimes { get; set; }
         public virtual ICollection<MovieCast> MovieCasts { get; set; } = new List<MovieCast>();
+        public virtual ICollection<UserFavorite> UserFavorites { get; set; } = new List<UserFavorite>();
     }
 }
