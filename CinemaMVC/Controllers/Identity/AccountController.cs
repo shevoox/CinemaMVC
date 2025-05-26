@@ -25,6 +25,7 @@ namespace CinemaMVC.Controllers.Identity
             _signInManager = signInManager;
             _webHostEnvironment = webHostEnvironment;
             _movieRepository = movieRepository;
+            _emailSender = emailSender;
         }
 
         public IActionResult Register()
@@ -344,6 +345,8 @@ namespace CinemaMVC.Controllers.Identity
         [HttpPost]
         public async Task<IActionResult> ResetPassword(ResetPasswordVM model)
         {
+            ModelState.Remove("Email");
+            ModelState.Remove("Token");
             if (!ModelState.IsValid)
                 return View(model);
 
