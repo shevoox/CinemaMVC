@@ -1,6 +1,8 @@
 using CinemaMVC.Models;
 using CinemaMVC.Repositories;
+using CinemaMVC.Utility;
 using Microsoft.AspNetCore.Identity;
+using Microsoft.AspNetCore.Identity.UI.Services;
 using Microsoft.EntityFrameworkCore;
 
 namespace CinemaMVC
@@ -29,6 +31,8 @@ namespace CinemaMVC
             })
                 .AddEntityFrameworkStores<ApplicationDbContext>()
                 .AddDefaultTokenProviders();
+            builder.Services.AddTransient<IEmailSender, EmailSender>();
+
 
             var app = builder.Build();
 

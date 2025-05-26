@@ -2,6 +2,7 @@
 using CinemaMVC.Repositories;
 using CinemaMVC.ViewModels;
 using Microsoft.AspNetCore.Identity;
+using Microsoft.AspNetCore.Identity.UI.Services;
 using Microsoft.AspNetCore.Mvc;
 
 namespace CinemaMVC.Controllers.Identity
@@ -12,11 +13,13 @@ namespace CinemaMVC.Controllers.Identity
         private readonly UserManager<ApplicationUser> _userManager;
         private readonly SignInManager<ApplicationUser> _signInManager;
         private readonly IMovieRepository _movieRepository;
+        private readonly IEmailSender _emailSender;
+
 
         public AccountController(UserManager<ApplicationUser> userManager,
                                  SignInManager<ApplicationUser> signInManager,
                                  IWebHostEnvironment webHostEnvironment,
-                                 IMovieRepository movieRepository)
+                                 IMovieRepository movieRepository, IEmailSender emailSender)
         {
             _userManager = userManager;
             _signInManager = signInManager;
@@ -51,7 +54,6 @@ namespace CinemaMVC.Controllers.Identity
             ModelState.Remove("LoginVM.UserNameorEmail");
             ModelState.Remove("LoginVM.Password");
             ModelState.Remove("LoginVM.RemmberMe");
-
             ModelState.Remove("ProfileImage");
             if (!ModelState.IsValid)
             {
@@ -291,5 +293,73 @@ namespace CinemaMVC.Controllers.Identity
 
             return RedirectToAction("Settings");
         }
+        public IActionResult ForgetPassword()
+        {
+            return View();
+        }
+        [HttpPost]
+        public async Task<IActionResult> ForgetPassword(ForgetPasswordVM forgetPasswordVM)
+        {
+            if (!ModelState.IsValid)
+            {
+                return View(forgetPasswordVM);
+            }
+            var user = await _userManager.FindByNameAsync(forgetPasswordVM.UserNameOrEmail)
+                      ?? await _userManager.FindByEmailAsync(forgetPasswordVM.UserNameOrEmail);
+            if (user == null)
+            {
+                return View("ForgetPasswordConfirmation");
+            }
+            if (user != null)
+            {
+
+                string token = await _userManager.GeneratePasswordResetTokenAsync(user);
+                var confirmationLink = Url.Action("ResetPassword", "Account", new { email = forgetPasswordVM.UserNameOrEmail, token = token }, Request.Scheme);
+                await _emailSender.SendEmailAsync(
+     email: forgetPasswordVM.UserNameOrEmail,
+     subject: "Reset your password",
+     htmlMessage: $"Click here to reset your password: <a href='{confirmationLink}'>Reset Password</a>"
+ );
+
+                return View("ForgetPasswordConfirmation");
+            }
+
+            ModelState.AddModelError(string.Empty, "Invalid login attempt.");
+            return View("Register", forgetPasswordVM);
+
+        }
+        [HttpGet]
+        public IActionResult ResetPassword(string email, string token)
+        {
+            if (string.IsNullOrEmpty(email) || string.IsNullOrEmpty(token))
+                return BadRequest("Invalid password reset request.");
+
+            var model = new ResetPasswordVM
+            {
+                Email = email,
+                Token = token
+            };
+            return View(model);
+        }
+        [HttpPost]
+        public async Task<IActionResult> ResetPassword(ResetPasswordVM model)
+        {
+            if (!ModelState.IsValid)
+                return View(model);
+
+            var user = await _userManager.FindByEmailAsync(model.Email);
+            if (user == null)
+                return View("ResetPasswordConfirmation");
+
+            var result = await _userManager.ResetPasswordAsync(user, model.Token, model.Password);
+            if (result.Succeeded)
+                return View("ResetPasswordConfirmation");
+
+            foreach (var error in result.Errors)
+                ModelState.AddModelError("", error.Description);
+
+            return View(model);
+        }
+
     }
 }

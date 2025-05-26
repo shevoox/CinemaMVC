@@ -87,33 +87,33 @@ namespace CinemaMVC.Controllers.dashboard
         [HttpPost]
         public async Task<IActionResult> AddMovie(MovieFormViewModel viewModel)
         {
-            // Remove PosterImage from ModelState validation since it's populated from PosterFile
+
             ModelState.Remove("PosterImage");
 
             if (ModelState.IsValid)
             {
-                // Handle file upload
+
                 string posterImagePath = null;
                 if (viewModel.PosterFile != null && viewModel.PosterFile.Length > 0)
                 {
-                    // Create uploads directory if it doesn't exist
+
                     string uploadsFolder = Path.Combine(_webHostEnvironment.WebRootPath, "images");
                     if (!Directory.Exists(uploadsFolder))
                     {
                         Directory.CreateDirectory(uploadsFolder);
                     }
 
-                    // Generate unique filename
+
                     string uniqueFileName = Guid.NewGuid().ToString() + "_" + viewModel.PosterFile.FileName;
                     string filePath = Path.Combine(uploadsFolder, uniqueFileName);
 
-                    // Save file
+
                     using (var fileStream = new FileStream(filePath, FileMode.Create))
                     {
                         await viewModel.PosterFile.CopyToAsync(fileStream);
                     }
 
-                    // Store only the filename in the database
+
                     posterImagePath = uniqueFileName;
                 }
 
