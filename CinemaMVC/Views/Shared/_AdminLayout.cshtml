@@ -1,4 +1,5 @@
-﻿<!DOCTYPE html>
+﻿@using CinemaMVC.Utility
+<!DOCTYPE html>
 
 <html>
 <head>
@@ -98,6 +99,17 @@
                             <a asp-controller="Account" asp-action="Settings">
                                 <i class="fas fa-cog"></i> Settings
                             </a>
+                            @if (User.IsInRole(SD.Admin))
+                            {
+@*                                 <a asp-controller="Admin" asp-action="Admin">
+                                    <i class="fas fa-sign-out-alt"></i>
+                                    Dashboard
+                                </a> *@
+                                <a asp-controller="Home" asp-action="Index">
+                                    <i class="fas fa-sign-out-alt"></i>
+                                    Home
+                                </a>
+                            }
                             <form asp-controller="Account" asp-action="Logout" method="post" class="logout-form">
                                 <button type="submit" class="logout-btn">
                                     <i class="fas fa-sign-out-alt"></i> Logout

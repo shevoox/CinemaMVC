@@ -28,6 +28,7 @@ namespace CinemaMVC
                 option.Password.RequiredLength = 4;
                 option.Password.RequireNonAlphanumeric = false;
                 option.Password.RequireDigit = false;
+                option.SignIn.RequireConfirmedAccount = false;
             })
                 .AddEntityFrameworkStores<ApplicationDbContext>()
                 .AddDefaultTokenProviders();

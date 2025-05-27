@@ -1,11 +1,14 @@
 ﻿using CinemaMVC.Models;
 using CinemaMVC.Models.ViewModels;
 using CinemaMVC.Repositories;
+using CinemaMVC.Utility;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 
 namespace CinemaMVC.Controllers.dashboard
 {
+
     public class AdminController : Controller
     {
         private readonly IRepository<Movie> _movieRepository;
@@ -39,7 +42,7 @@ namespace CinemaMVC.Controllers.dashboard
             _webHostEnvironment = webHostEnvironment;
             _context = context;
         }
-
+        [Authorize(Roles = SD.Admin)]
         public async Task<IActionResult> Admin()
         {
             var movies = await _movieRepository.GetAllAsync();
@@ -60,13 +63,13 @@ namespace CinemaMVC.Controllers.dashboard
 
             return View(viewModel);
         }
-
+        [Authorize(Roles = SD.Admin)]
         public async Task<IActionResult> MoviesManagement()
         {
             var movies = await _movieDetailRepository.GetAllMovieAsync();
             return View(movies);
         }
-
+        [Authorize(Roles = $"{SD.Admin}")]
         public async Task<IActionResult> AddMovie()
         {
             var genres = await _genreRepository.GetAllAsync();
@@ -83,7 +86,7 @@ namespace CinemaMVC.Controllers.dashboard
             };
             return View(viewModel);
         }
-
+        [Authorize(Roles = $"{SD.Admin}")]
         [HttpPost]
         public async Task<IActionResult> AddMovie(MovieFormViewModel viewModel)
         {
@@ -195,7 +198,7 @@ namespace CinemaMVC.Controllers.dashboard
             viewModel.Casts = (await _castRepository.GetAllAsync()).ToList();
             return View(viewModel);
         }
-
+        [Authorize(Roles = $"{SD.Admin}")]
         public async Task<IActionResult> EditMovie(int id)
         {
             var movie = await _movieDetailRepository.GetMovieWithGenres(id);
@@ -236,7 +239,7 @@ namespace CinemaMVC.Controllers.dashboard
 
             return View(viewModel);
         }
-
+        [Authorize(Roles = $"{SD.Admin}")]
         [HttpPost]
         public async Task<IActionResult> EditMovie(MovieFormViewModel viewModel)
         {
@@ -389,7 +392,7 @@ namespace CinemaMVC.Controllers.dashboard
             viewModel.Casts = (await _castRepository.GetAllAsync()).ToList();
             return View(viewModel);
         }
-
+        [Authorize(Roles = $"{SD.Admin}")]
         [HttpPost]
         public async Task<IActionResult> DeleteMovie(int id)
         {
@@ -412,7 +415,7 @@ namespace CinemaMVC.Controllers.dashboard
 
             return RedirectToAction(nameof(MoviesManagement));
         }
-
+        [Authorize(Roles = $"{SD.Admin}")]
         public async Task<IActionResult> TheatersManagement()
         {
             var theaters = await _theaterRepository.GetAllTheatersAsync();
@@ -432,7 +435,7 @@ namespace CinemaMVC.Controllers.dashboard
 
             return View(viewModel);
         }
-
+        [Authorize(Roles = $"{SD.Admin}")]
         [HttpPost]
         public async Task<IActionResult> AddCast(Cast cast)
         {
@@ -446,7 +449,7 @@ namespace CinemaMVC.Controllers.dashboard
             }
             return RedirectToAction(nameof(CastAndDirectors));
         }
-
+        [Authorize(Roles = $"{SD.Admin}")]
         [HttpPost]
         public async Task<IActionResult> AddDirector(Director director)
         {
@@ -460,7 +463,7 @@ namespace CinemaMVC.Controllers.dashboard
             }
             return RedirectToAction(nameof(CastAndDirectors));
         }
-
+        [Authorize(Roles = $"{SD.Admin}")]
         [HttpPost]
         public async Task<IActionResult> DeleteCast(int id)
         {
@@ -473,6 +476,7 @@ namespace CinemaMVC.Controllers.dashboard
             }
             return RedirectToAction(nameof(CastAndDirectors));
         }
+        [Authorize(Roles = $"{SD.Admin}")]
 
         [HttpPost]
         public async Task<IActionResult> DeleteDirector(int id)
@@ -486,7 +490,7 @@ namespace CinemaMVC.Controllers.dashboard
             }
             return RedirectToAction(nameof(CastAndDirectors));
         }
-
+        [Authorize(Roles = $"{SD.Admin}")]
         public IActionResult AddTheater()
         {
             return View();
@@ -503,7 +507,7 @@ namespace CinemaMVC.Controllers.dashboard
             }
             return View(theater);
         }
-
+        [Authorize(Roles = $"{SD.Admin}")]
         [HttpPost]
         public async Task<IActionResult> DeleteTheater(int id)
         {

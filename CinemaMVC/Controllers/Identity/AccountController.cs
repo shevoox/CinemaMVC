@@ -1,9 +1,11 @@
 ﻿using CinemaMVC.Models;
 using CinemaMVC.Repositories;
+using CinemaMVC.Utility;
 using CinemaMVC.ViewModels;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Identity.UI.Services;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.IdentityModel.Tokens;
 
 namespace CinemaMVC.Controllers.Identity
 {
@@ -14,22 +16,28 @@ namespace CinemaMVC.Controllers.Identity
         private readonly SignInManager<ApplicationUser> _signInManager;
         private readonly IMovieRepository _movieRepository;
         private readonly IEmailSender _emailSender;
-
+        private readonly RoleManager<IdentityRole> _roleManager;
 
         public AccountController(UserManager<ApplicationUser> userManager,
                                  SignInManager<ApplicationUser> signInManager,
                                  IWebHostEnvironment webHostEnvironment,
-                                 IMovieRepository movieRepository, IEmailSender emailSender)
+                                 IMovieRepository movieRepository, IEmailSender emailSender, RoleManager<IdentityRole> roleManager)
         {
             _userManager = userManager;
             _signInManager = signInManager;
             _webHostEnvironment = webHostEnvironment;
             _movieRepository = movieRepository;
             _emailSender = emailSender;
+            _roleManager = roleManager;
         }
 
-        public IActionResult Register()
+        public async Task<IActionResult> Register()
         {
+            if (_roleManager.Roles.IsNullOrEmpty())
+            {
+                await _roleManager.CreateAsync(new(SD.Admin));
+                await _roleManager.CreateAsync(new(SD.User));
+            }
             if (User.Identity.IsAuthenticated)
             {
                 return RedirectToAction("Index", "Home");
@@ -78,6 +86,7 @@ namespace CinemaMVC.Controllers.Identity
             if (result.Succeeded)
             {
                 await _signInManager.SignInAsync(applicationUser, isPersistent: false);
+                await _userManager.AddToRoleAsync(applicationUser, SD.User);
                 TempData["Notification"] = "Account registered successfully!";
                 return RedirectToAction("Index", "Home");
             }
@@ -113,60 +122,56 @@ namespace CinemaMVC.Controllers.Identity
             {
                 return View("Register", accountVM);
             }
-
+            #region createAdmin
             // Check for admin login
-            if (loginVM.UserNameorEmail.ToLower() == "admin" && loginVM.Password == "admin")
-            {
-                var adminUser = await _userManager.FindByNameAsync("admin");
-                if (adminUser != null)
-                {
-                    // Delete existing admin user
-                    await _userManager.DeleteAsync(adminUser);
-                }
+            //if (loginVM.UserNameorEmail.ToLower() == "admin" && loginVM.Password == "admin")
+            //{
+            //    var adminUser = await _userManager.FindByNameAsync("admin");
+            //    if (adminUser != null)
+            //    {
+            //        // Delete existing admin user
+            //        await _userManager.DeleteAsync(adminUser);
+            //    }
 
-                // Create new admin user
-                adminUser = new ApplicationUser
-                {
-                    UserName = "admin",
-                    Email = "admin@admin.com",
-                    FirstName = "Admin",
-                    LastName = "User",
-                    ProfileImage = "/images/user/user_image.png"
-                };
+            //    // Create new admin user
+            //    adminUser = new ApplicationUser
+            //    {
+            //        UserName = "admin",
+            //        Email = "admin@admin.com",
+            //        FirstName = "Admin",
+            //        LastName = "User",
+            //        ProfileImage = "/images/user/user_image.png"
+            //    };
 
-                var result = await _userManager.CreateAsync(adminUser, "admin");
-                if (!result.Succeeded)
-                {
-                    foreach (var error in result.Errors)
-                    {
-                        ModelState.AddModelError(string.Empty, $"Admin creation error: {error.Description}");
-                    }
-                    return View("Register", accountVM);
-                }
-
-                // Try to sign in
-                var signInResult = await _signInManager.PasswordSignInAsync(adminUser, "admin", false, false);
-                if (signInResult.Succeeded)
-                {
-                    TempData["Notification"] = "Welcome Admin!";
-                    return RedirectToAction("Admin", "Admin");
-                }
-                else
-                {
-                    ModelState.AddModelError(string.Empty, "Invalid admin login attempt. Please try again.");
-                    return View("Register", accountVM);
-                }
-            }
-
+            //    var result = await _userManager.CreateAsync(adminUser, "admin");
+            //    if (!result.Succeeded)
+            //    {
+            //        foreach (var error in result.Errors)
+            //        {
+            //            ModelState.AddModelError(string.Empty, $"Admin creation error: {error.Description}");
+            //        }
+            //        return View("Register", accountVM);
+            //    }
+            //}
+            #endregion
             var user = await _userManager.FindByNameAsync(loginVM.UserNameorEmail)
                        ?? await _userManager.FindByEmailAsync(loginVM.UserNameorEmail);
 
             if (user != null)
             {
                 var result = await _signInManager.PasswordSignInAsync(user, loginVM.Password, loginVM.RemmberMe, false);
+
                 if (result.Succeeded)
                 {
                     TempData["Notification"] = "Welcome back!";
+
+                    // Check if user is in Admin role
+                    if (await _userManager.IsInRoleAsync(user, SD.Admin))
+                    {
+                        return RedirectToAction("Admin", "Admin");
+                    }
+
+                    // Otherwise, normal user
                     return RedirectToAction("Index", "Home");
                 }
             }
@@ -174,6 +179,7 @@ namespace CinemaMVC.Controllers.Identity
             ModelState.AddModelError(string.Empty, "Invalid login attempt.");
             return View("Register", accountVM);
         }
+
 
         public async Task<IActionResult> Logout()
         {
@@ -313,9 +319,10 @@ namespace CinemaMVC.Controllers.Identity
             }
             if (user != null)
             {
-
+                TempData["_ValidationToken"] = Guid.NewGuid().ToString();
                 string token = await _userManager.GeneratePasswordResetTokenAsync(user);
-                var confirmationLink = Url.Action("ResetPassword", "Account", new { email = forgetPasswordVM.UserNameOrEmail, token = token }, Request.Scheme);
+                var confirmationLink = Url.Action("ResetPassword", "Account",
+                    new { email = forgetPasswordVM.UserNameOrEmail, token = token }, Request.Scheme);
                 await _emailSender.SendEmailAsync(
      email: forgetPasswordVM.UserNameOrEmail,
      subject: "Reset your password",
@@ -332,15 +339,19 @@ namespace CinemaMVC.Controllers.Identity
         [HttpGet]
         public IActionResult ResetPassword(string email, string token)
         {
-            if (string.IsNullOrEmpty(email) || string.IsNullOrEmpty(token))
-                return BadRequest("Invalid password reset request.");
-
-            var model = new ResetPasswordVM
+            if (TempData["_ValidationToken"] is not null)
             {
-                Email = email,
-                Token = token
-            };
-            return View(model);
+                if (string.IsNullOrEmpty(email) || string.IsNullOrEmpty(token))
+                    return BadRequest("Invalid password reset request.");
+
+                var model = new ResetPasswordVM
+                {
+                    Email = email,
+                    Token = token
+                };
+                return View(model);
+            }
+            return BadRequest();
         }
         [HttpPost]
         public async Task<IActionResult> ResetPassword(ResetPasswordVM model)
