@@ -3,7 +3,9 @@ using CinemaMVC.Models.ViewModels;
 using CinemaMVC.Repositories;
 using CinemaMVC.Utility;
 using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
 
 namespace CinemaMVC.Controllers.dashboard
@@ -19,10 +21,16 @@ namespace CinemaMVC.Controllers.dashboard
         private readonly IRepository<Director> _directorRepository;
         private readonly IRepository<Cast> _castRepository;
         private readonly IWebHostEnvironment _webHostEnvironment;
+        private readonly IApplicationUserRepository _applicationUserRepository;
+        private readonly IRoleRepository _roleRepository;
+        private readonly UserManager<ApplicationUser> _userManager;
+
+
         private readonly ApplicationDbContext _context;
 
         public AdminController(
             IRepository<Movie> movieRepository,
+            IApplicationUserRepository applicationUserRepository,
             ITheaterRepository theaterRepository,
             IBookingRepository bookingRepository,
             IMovieRepository movieDetailRepository,
@@ -30,7 +38,7 @@ namespace CinemaMVC.Controllers.dashboard
             IRepository<Director> directorRepository,
             IRepository<Cast> castRepository,
             IWebHostEnvironment webHostEnvironment,
-            ApplicationDbContext context)
+            ApplicationDbContext context, UserManager<ApplicationUser> userManager, IRoleRepository roleRepository)
         {
             _movieRepository = movieRepository;
             _theaterRepository = theaterRepository;
@@ -41,6 +49,9 @@ namespace CinemaMVC.Controllers.dashboard
             _castRepository = castRepository;
             _webHostEnvironment = webHostEnvironment;
             _context = context;
+            _applicationUserRepository = applicationUserRepository;
+            _userManager = userManager;
+            _roleRepository = roleRepository;
         }
         [Authorize(Roles = SD.Admin)]
         public async Task<IActionResult> Admin()
@@ -514,5 +525,51 @@ namespace CinemaMVC.Controllers.dashboard
             await _theaterRepository.DeleteTheaterAsync(id);
             return RedirectToAction(nameof(TheatersManagement));
         }
+        public async Task<IActionResult> Users()
+        {
+            var users = await _applicationUserRepository.GetAllAsync();
+            var keyValuePairs = new Dictionary<ApplicationUser, string>();
+            foreach (var item in users)
+            {
+                var roles = await _userManager.GetRolesAsync(item);
+                keyValuePairs.Add(item, String.Join(",", roles));
+            }
+
+            return View(keyValuePairs);
+        }
+        [HttpGet]
+        public async Task<IActionResult> ChangeRole(string id)
+        {
+            var user = await _userManager.FindByIdAsync(id);
+            if (user == null) return NotFound();
+
+            var roles = await _roleRepository.GetAllAsync();
+
+            var model = new UserWithRoles
+            {
+                applicationUser = user,
+                RoleItems = roles.Select(r => new SelectListItem
+                {
+                    Value = r.Name,
+                    Text = r.Name
+                }).ToList()
+            };
+
+            return View(model);
+        }
+        [HttpPost]
+        public async Task<IActionResult> ChangeRole(UserWithRoles model)
+        {
+            var user = await _userManager.FindByIdAsync(model.applicationUser.Id);
+            if (user == null) return NotFound();
+
+            var currentRoles = await _userManager.GetRolesAsync(user);
+            await _userManager.RemoveFromRolesAsync(user, currentRoles);
+            await _userManager.AddToRoleAsync(user, model.SelectedRole);
+
+            TempData["Notification"] = "Role updated successfully!";
+            return RedirectToAction(nameof(Users));
+        }
+
     }
 }

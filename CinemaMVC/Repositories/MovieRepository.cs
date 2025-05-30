@@ -53,12 +53,14 @@ namespace CinemaMVC.Repositories
 
         public async Task<Movie> BookingMovie(int id)
         {
-            return await _context.Movies.Include(e => e.MovieCasts).ThenInclude(e => e.Cast)
-                .Include(m => m.MovieGenres)
-                .ThenInclude(mg => mg.Genre).Include(m => m.Showtimes).ThenInclude(b => b.Bookings).Include(m => m.Showtimes)
-                 .ThenInclude(s => s.Theater)
-                   .ThenInclude(t => t.Seats)
+            return await _context.Movies
+                .Include(m => m.MovieCasts).ThenInclude(mc => mc.Cast)
+                .Include(m => m.MovieGenres).ThenInclude(mg => mg.Genre)
+                .Include(m => m.Showtimes).ThenInclude(s => s.Bookings)
+                .Include(m => m.Showtimes).ThenInclude(s => s.Theater).ThenInclude(t => t.Seats)
+                .AsNoTracking()
                 .FirstOrDefaultAsync(m => m.Id == id);
+
         }
 
         public async Task<List<Movie>> SearchAMovie(string name)

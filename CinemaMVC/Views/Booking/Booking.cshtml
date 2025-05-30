@@ -1,4 +1,4 @@
-﻿@model Movie
+﻿@model BookingVM
 @{
     ViewData["Title"] = "Booking";
 }
@@ -32,11 +32,17 @@
 </div>
 
 <div class="modal-grid">
+    <form asp-action="ConfirmBooking" asp-controller="Booking" method="post" id="bookingForm">
+        <input type="hidden" name="MovieId" value="@Model.Movie.Id" />
+        <input type="hidden" name="ShowtimeId" value="@Model.Showtime.Id" />
+        <input type="hidden" name="SelectedSeats" id="SelectedSeatsInput" />
+        <input type="hidden" name="TotalPrice" id="TotalPriceInput" />
+
     <!-- Movie Info Section -->
     <div class="movie-info-section">
         <div class="movie-badge">NOW SHOWING</div>
         <div class="movie-poster-container">
-            <img src="@Url.Content(Model.PosterImage != null ? "~/images/" + Model.PosterImage : "~/images/default-poster.jpg")" alt="@Model.Title" class="movie-poster" id="modalMoviePoster" />
+            <img src="@Url.Content(Model.Movie.PosterImage != null ? "~/images/" + Model.Movie.PosterImage : "~/images/default-poster.jpg")" alt="@Model.Movie.Title" class="movie-poster" id="modalMoviePoster" />
             <div class="movie-poster-overlay">
                 <button class="trailer-btn">
                     <i class="fas fa-play"></i>
@@ -45,8 +51,8 @@
             </div>
         </div>
         <div class="movie-details">
-            <h2 class="movie-title" id="modalMovieTitle">@Model.Title</h2>
-            <p class="movie-duration"><i class="far fa-clock"></i> <span id="modalDuration">@Model.DurationMinutes</span></p>
+            <h2 class="movie-title" id="modalMovieTitle">@Model.Movie.Title</h2>
+            <p class="movie-duration"><i class="far fa-clock"></i> <span id="modalDuration">@Model.Movie.DurationMinutes</span></p>
             <div class="movie-rating">
                 <i class="fas fa-star"></i>
                 <span id="modalRating">4.8</span>
@@ -57,16 +63,16 @@
             <div class="movie-meta">
                 <div class="meta-item">
                     <i class="fas fa-film"></i>
-                    <span>@Model.Format</span>
+                    <span>@Model.Movie.Format</span>
                 </div>
                 <div class="meta-item">
                     <i class="fas fa-closed-captioning"></i>
-                    <span>@Model.HasSubtitles </span>
+                    <span>@Model.Movie.HasSubtitles </span>
 
                 </div>
                 <div class="meta-item">
                     <i class="fas fa-language"></i>
-                    <span>@Model.Language</span>
+                    <span>@Model.Movie.Language</span>
                 </div>
             </div>
         </div>
@@ -118,14 +124,13 @@
             <h3>Select Time</h3>
             <div class="time-slots">
                 @{
-                    var times = new List<string> { "10:30 AM", "1:00 PM", "4:30 PM", "7:15 PM", "9:45 PM", "11:30 PM" };
-                    for (int i = 0; i < times.Count; i++)
-                    {
-                        var time = times[i];
-                        var isSoldOut = time == "11:30 PM"; // مجرد مثال
-                        var isActive = time == "4:30 PM";
-                        <button class="time-slot @(isSoldOut ? "sold-out" : "") @(isActive ? "active" : "")" @(isSoldOut ? "sold-out" : "")>@time</button>
-                    }
+
+
+                    var time = Model.Showtime.StartTime.ToString("h:mm tt");
+                    var isSoldOut = Model.IsSoldOut;
+                    var isActive = time != null ? true : false;
+                        <button class="time-slot @(isSoldOut ? "sold-out" : "") @(isActive ? "active" : "")" @(isSoldOut ? "disabled" : "") style="margin-top:5px">@time</button>
+
                 }
             </div>
         </div>
@@ -149,104 +154,25 @@
                 <div class="seats-container" id="seatsContainer">
                     <!-- Interactive Seat Map -->
                     <div class="seat-map">
-                        <div class="seat-row">
-                            <span class="row-label">A</span>
-                            <div class="seat available" data-seat="A1">A1</div>
-                            <div class="seat available" data-seat="A2">A2</div>
-                            <div class="seat taken" data-seat="A3">A3</div>
-                            <div class="seat available" data-seat="A4">A4</div>
-                            <div class="seat available" data-seat="A5">A5</div>
-                            <div class="seat available" data-seat="A6">A6</div>
-                            <div class="seat taken" data-seat="A7">A7</div>
-                            <div class="seat taken" data-seat="A8">A8</div>
-                            <div class="seat available" data-seat="A9">A9</div>
-                            <div class="seat available" data-seat="A10">A10</div>
-                            <span class="row-label">A</span>
-                        </div>
-                        <div class="seat-row">
-                            <span class="row-label">B</span>
-                            <div class="seat available" data-seat="B1">B1</div>
-                            <div class="seat available" data-seat="B2">B2</div>
-                            <div class="seat available" data-seat="B3">B3</div>
-                            <div class="seat taken" data-seat="B4">B4</div>
-                            <div class="seat taken" data-seat="B5">B5</div>
-                            <div class="seat available" data-seat="B6">B6</div>
-                            <div class="seat available" data-seat="B7">B7</div>
-                            <div class="seat available" data-seat="B8">B8</div>
-                            <div class="seat available" data-seat="B9">B9</div>
-                            <div class="seat available" data-seat="B10">B10</div>
-                            <span class="row-label">B</span>
-                        </div>
-                        <div class="seat-row">
-                            <span class="row-label">C</span>
-                            <div class="seat available" data-seat="C1">C1</div>
-                            <div class="seat available" data-seat="C2">C2</div>
-                            <div class="seat available" data-seat="C3">C3</div>
-                            <div class="seat available" data-seat="C4">C4</div>
-                            <div class="seat available" data-seat="C5">C5</div>
-                            <div class="seat available" data-seat="C6">C6</div>
-                            <div class="seat available" data-seat="C7">C7</div>
-                            <div class="seat available" data-seat="C8">C8</div>
-                            <div class="seat taken" data-seat="C9">C9</div>
-                            <div class="seat taken" data-seat="C10">C10</div>
-                            <span class="row-label">C</span>
-                        </div>
-                        <div class="seat-row">
-                            <span class="row-label">D</span>
-                            <div class="seat available" data-seat="D1">D1</div>
-                            <div class="seat available" data-seat="D2">D2</div>
-                            <div class="seat premium" data-seat="D3">D3</div>
-                            <div class="seat premium" data-seat="D4">D4</div>
-                            <div class="seat premium" data-seat="D5">D5</div>
-                            <div class="seat premium" data-seat="D6">D6</div>
-                            <div class="seat premium" data-seat="D7">D7</div>
-                            <div class="seat premium" data-seat="D8">D8</div>
-                            <div class="seat available" data-seat="D9">D9</div>
-                            <div class="seat available" data-seat="D10">D10</div>
-                            <span class="row-label">D</span>
-                        </div>
-                        <div class="seat-row">
-                            <span class="row-label">E</span>
-                            <div class="seat available" data-seat="E1">E1</div>
-                            <div class="seat available" data-seat="E2">E2</div>
-                            <div class="seat premium" data-seat="E3">E3</div>
-                            <div class="seat premium" data-seat="E4">E4</div>
-                            <div class="seat premium" data-seat="E5">E5</div>
-                            <div class="seat premium" data-seat="E6">E6</div>
-                            <div class="seat premium" data-seat="E7">E7</div>
-                            <div class="seat premium" data-seat="E8">E8</div>
-                            <div class="seat available" data-seat="E9">E9</div>
-                            <div class="seat available" data-seat="E10">E10</div>
-                            <span class="row-label">E</span>
-                        </div>
-                        <div class="seat-row">
-                            <span class="row-label">F</span>
-                            <div class="seat available" data-seat="F1">F1</div>
-                            <div class="seat available" data-seat="F2">F2</div>
-                            <div class="seat premium" data-seat="F3">F3</div>
-                            <div class="seat premium" data-seat="F4">F4</div>
-                            <div class="seat premium taken" data-seat="F5">F5</div>
-                            <div class="seat premium taken" data-seat="F6">F6</div>
-                            <div class="seat premium" data-seat="F7">F7</div>
-                            <div class="seat premium" data-seat="F8">F8</div>
-                            <div class="seat available" data-seat="F9">F9</div>
-                            <div class="seat available" data-seat="F10">F10</div>
-                            <span class="row-label">F</span>
-                        </div>
-                        <div class="seat-row">
-                            <span class="row-label">G</span>
-                            <div class="seat available" data-seat="G1">G1</div>
-                            <div class="seat available" data-seat="G2">G2</div>
-                            <div class="seat available" data-seat="G3">G3</div>
-                            <div class="seat available" data-seat="G4">G4</div>
-                            <div class="seat available" data-seat="G5">G5</div>
-                            <div class="seat available" data-seat="G6">G6</div>
-                            <div class="seat available" data-seat="G7">G7</div>
-                            <div class="seat available" data-seat="G8">G8</div>
-                            <div class="seat available" data-seat="G9">G9</div>
-                            <div class="seat available" data-seat="G10">G10</div>
-                            <span class="row-label">G</span>
-                        </div>
+                        @foreach (var rowGroup in Model.Seats.GroupBy(s => s.Row))
+                        {
+                            <div class="seat-row">
+                                <span class="row-label">@rowGroup.Key</span>
+
+                                @foreach (var seat in rowGroup.OrderBy(s => int.Parse(s.Number)))
+                                {
+                                    var classes = "seat";
+                                    if (!seat.IsAvailable) { classes += " taken"; }
+                                    else if (seat.SeatType?.ToLower() == "premium") { classes += " premium"; }
+                                    else { classes += " available"; }
+
+                                    <div class="@classes" data-seat="@seat.SeatPosition">@seat.SeatPosition</div>
+                                }
+
+                                <span class="row-label">@rowGroup.Key</span>
+                            </div>
+                        }
+
                     </div>
                 </div>
 
@@ -288,15 +214,31 @@
                 <i class="fas fa-arrow-left"></i>
                 Back
             </button>
-            <button class="add-to-cart-btn" id="completeBooking">
-                <i class="fas fa-ticket-alt"></i>
-                Continue to Payment
-            </button>
+            <div asp-validation-summary="All"></div>
+                <button type="submit" class="add-to-cart-btn" id="completeBooking">
+                    <i class="fas fa-ticket-alt"></i>
+                    Continue to Payment
+                </button>
+
         </div>
     </div>
+    </form>
 </div>
+
 <button class="close-modal"><i class="fas fa-times"></i></button>
 
 @section Scripts {
     <script src="~/js/booking-modal.js"></script>
+    <script>
+        document.getElementById('bookingForm').addEventListener('submit', function (e) {
+            const selectedSeats = Array.from(document.querySelectorAll('.seat.selected'))
+                .map(seat => seat.getAttribute('data-seat'))
+                .join(',');
+            console.log("Selected seats:", selectedSeats); // تشوف إيه اللي طالع
+            const totalPrice = document.getElementById('totalPrice').innerText.replace('$', '');
+
+            document.getElementById('SelectedSeatsInput').value = selectedSeats;
+            document.getElementById('TotalPriceInput').value = totalPrice;
+        });
+    </script>
 }

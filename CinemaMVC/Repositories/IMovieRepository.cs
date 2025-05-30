@@ -2,7 +2,7 @@
 
 namespace CinemaMVC.Repositories
 {
-    public interface IMovieRepository
+    public interface IMovieRepository : IRepository<Movie>
     {
         Task<IEnumerable<Movie>> GetTopRatedAsync(int count);
         Task<IEnumerable<Movie>> GetPopularAsync(int count);

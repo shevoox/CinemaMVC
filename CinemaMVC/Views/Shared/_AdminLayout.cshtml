@@ -48,6 +48,10 @@
                         <i class="fas fa-calendar-alt"></i>
                         <a asp-action="Showtimes">Showtimes</a>
                     </li>
+                    <li class="@(ViewContext.RouteData.Values["action"].ToString() == "Users" ? "active" : "")">
+                        <i class="fas fa-calendar-alt"></i>
+                        <a asp-action="Users">Users</a>
+                    </li>
 
                     <li class="@(ViewContext.RouteData.Values["action"].ToString() == "Bookings" ? "active" : "")">
                         <i class="fas fa-ticket-alt"></i>

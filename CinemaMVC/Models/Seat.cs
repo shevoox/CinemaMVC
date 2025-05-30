@@ -17,17 +17,17 @@ namespace CinemaMVC.Models
         public string Number { get; set; }
 
         [StringLength(50)]
-        public string SeatType { get; set; } // Regular, VIP, Couple, etc.
+        public string SeatType { get; set; }
 
         public bool IsAvailable { get; set; }
 
         public int? BookingId { get; set; }
 
-        // Navigation properties
+
         public virtual Theater Theater { get; set; }
         public virtual Booking Booking { get; set; }
 
-        // Helper properties
+
         public string SeatPosition => $"{Row}{Number}";
     }
 }

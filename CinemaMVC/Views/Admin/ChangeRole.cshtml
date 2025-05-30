@@ -1,0 +1,74 @@
+﻿@model UserWithRoles
+
+<section class="content-section" id="dashboard">
+    <h1>Change User Role</h1>
+
+    <div class="form-container" style="max-width: 500px; margin-top: 30px;">
+        <form asp-action="ChangeRole" method="post">
+            <input type="hidden" asp-for="applicationUser.Id" />
+
+            <div class="form-group">
+                <label>User Name</label>
+                <input type="text" value="@Model.applicationUser.UserName" class="form-control" disabled />
+            </div>
+
+            <div class="form-group">
+                <label>Email</label>
+                <input type="email" value="@Model.applicationUser.Email" class="form-control" disabled />
+            </div>
+
+            <div class="form-group">
+                <label for="SelectedRole">Select Role</label>
+                <select asp-for="SelectedRole" asp-items="Model.RoleItems" class="form-control">
+                    <option class="form-options" disabled selected>-- Choose Role --</option>
+                </select>
+            </div>
+
+            <div class="form-group" style="margin-top: 15px;">
+                <button type="submit" class="user-action-btn change-role-btn">
+                    <i class="fas fa-user-shield"></i> Update Role
+                </button>
+            </div>
+        </form>
+    </div>
+</section>
+<style>
+    .form-group {
+        margin-bottom: 15px;
+    }
+
+    .form-control {
+        background-color: #f0f4ff; /* لون الخلفية */
+        color: #333; /* لون النص */
+        border: 1px solid #007bff; /* حدود زرقاء */
+        border-radius: 6px; /* زوايا ناعمة */
+        padding: 10px 12px;
+        font-size: 15px;
+        transition: border-color 0.3s ease;
+    }
+
+        .form-control:focus {
+            border-color: #0056b3;
+            outline: none;
+            box-shadow: 0 0 5px rgba(0,123,255,0.5);
+        }
+    .user-action-btn {
+        padding: 8px 12px;
+        border-radius: 5px;
+        color: white;
+        font-size: 14px;
+        display: inline-flex;
+        align-items: center;
+        gap: 5px;
+        border: none;
+    }
+
+    .change-role-btn {
+        background-color: #007bff;
+    }
+
+    .user-action-btn:hover {
+        opacity: 0.85;
+        cursor: pointer;
+    }
+</style>

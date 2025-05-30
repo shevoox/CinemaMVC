@@ -34,19 +34,19 @@ namespace CinemaMVC.Models
 
         [StringLength(50)]
         public string ReleaseYear { get; set; }
-        
+
         public int? DirectorId { get; set; }
         [ForeignKey("DirectorId")]
         public virtual Director Director { get; set; }
-        
+
         public string? Language { get; set; }
-        
+
         [Column(TypeName = "decimal(18,2)")]
         public decimal Price { get; set; }
-        
+
         public bool IsFeatured { get; set; }
         public int? BookedNumber { get; set; }
-        
+
         // Navigation properties
         public virtual ICollection<MovieGenre> MovieGenres { get; set; }
         public virtual ICollection<Showtime> Showtimes { get; set; }

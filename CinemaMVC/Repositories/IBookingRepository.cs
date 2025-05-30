@@ -9,5 +9,6 @@ namespace CinemaMVC.Repositories
         Task<Booking> GetBookingByIdAsync(int id);
         Task<int> GetTodayBookingsCountAsync();
         Task<decimal> GetTodayRevenueAsync();
+        Task Commit();
     }
-} 
+}

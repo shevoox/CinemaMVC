@@ -986,3 +986,108 @@ body {
         min-width: 80px;
     }
 }
+/* Booking Payment Page Styles */
+.payment-container {
+    max-width: 700px;
+    margin: 40px auto;
+    padding: 25px;
+    background-color: #fff;
+    box-shadow: 0 4px 15px rgba(0,0,0,0.1);
+    border-radius: 12px;
+    font-family: 'Segoe UI', sans-serif;
+}
+
+.payment-summary {
+    border-bottom: 1px solid #e0e0e0;
+    padding-bottom: 20px;
+    margin-bottom: 25px;
+}
+
+    .payment-summary h2,
+    .payment-form h2 {
+        margin-bottom: 15px;
+        color: #333;
+        font-size: 1.4rem;
+    }
+
+    .payment-summary p {
+        margin: 8px 0;
+        color: #555;
+    }
+
+.payment-form .form-group {
+    margin-bottom: 18px;
+}
+
+.payment-form label {
+    display: block;
+    margin-bottom: 6px;
+    font-weight: 600;
+    color: #444;
+}
+
+.payment-form input {
+    width: 100%;
+    padding: 10px 12px;
+    border: 1px solid #ccc;
+    border-radius: 6px;
+    transition: border 0.3s;
+    font-size: 15px;
+}
+
+    .payment-form input:focus {
+        border-color: #007bff;
+        outline: none;
+    }
+
+.form-row {
+    display: flex;
+    gap: 20px;
+}
+
+    .form-row .form-group.half {
+        flex: 1;
+    }
+
+.payment-actions {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-top: 25px;
+}
+
+    .payment-actions .back-btn,
+    .payment-actions .confirm-payment-btn {
+        padding: 10px 20px;
+        font-size: 15px;
+        border: none;
+        text-decoration: none;
+        border-radius: 6px;
+        cursor: pointer;
+        display: inline-flex;
+        align-items: center;
+        gap: 8px;
+    }
+
+    .payment-actions .back-btn {
+        background-color: #e0e0e0;
+        color: #333;
+    }
+
+    .payment-actions .confirm-payment-btn {
+        background-color: #28a745;
+        color: #fff;
+    }
+
+        .payment-actions .confirm-payment-btn:hover {
+            background-color: #218838;
+        }
+
+    .payment-actions .back-btn:hover {
+        background-color: #d5d5d5;
+    }
+
+.validation-summary {
+    color: #d9534f;
+    margin-top: 10px;
+}

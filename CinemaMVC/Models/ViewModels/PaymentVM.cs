@@ -1,10 +1,11 @@
-using System.ComponentModel.DataAnnotations;
+﻿using System.ComponentModel.DataAnnotations;
 
-namespace CinemaMVC.Models
+namespace CinemaMVC.Models.ViewModels
 {
-    public class Booking
+    public class PaymentVM
     {
-        public int Id { get; set; }
+
+        public string MovieTitle { get; set; }
 
         public string UserId { get; set; }
 
@@ -29,19 +30,9 @@ namespace CinemaMVC.Models
 
         [StringLength(200)]
         public string TransactionId { get; set; }
-
-        // Navigation properties
-        public virtual ApplicationUser User { get; set; }
-        public virtual Showtime Showtime { get; set; }
-        public virtual ICollection<Seat> Seats { get; set; }
-
-
-
-        public Booking()
-        {
-            BookingDate = DateTime.Now;
-            BookingStatus = "Pending";
-            Seats = new HashSet<Seat>();
-        }
+        public string CardName { get; set; }
+        public string CardNumber { get; set; }
+        public string ExpiryDate { get; set; }
+        public string CVV { get; set; }
     }
 }

@@ -80,7 +80,7 @@ namespace CinemaMVC.Models
             // Configure one-to-many relationship between Theater and Seat
             modelBuilder.Entity<Seat>()
                 .HasOne(s => s.Theater)
-                .WithMany()
+                .WithMany(t => t.Seats)
                 .HasForeignKey(s => s.TheaterId);
 
             // Configure one-to-many relationship between Booking and Seat

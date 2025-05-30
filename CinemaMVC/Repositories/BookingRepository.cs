@@ -53,7 +53,7 @@ namespace CinemaMVC.Repositories
         {
             DateTime today = DateTime.Today;
             DateTime tomorrow = today.AddDays(1);
-            
+
             return await _context.Bookings
                 .Where(b => b.BookingDate >= today && b.BookingDate < tomorrow)
                 .CountAsync();
@@ -63,10 +63,15 @@ namespace CinemaMVC.Repositories
         {
             DateTime today = DateTime.Today;
             DateTime tomorrow = today.AddDays(1);
-            
+
             return await _context.Bookings
                 .Where(b => b.BookingDate >= today && b.BookingDate < tomorrow && b.IsPaid)
                 .SumAsync(b => b.TotalPrice);
         }
+
+        public async Task Commit()
+        {
+            await _context.SaveChangesAsync();
+        }
     }
-} 
+}

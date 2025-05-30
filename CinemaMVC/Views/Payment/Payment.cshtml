@@ -1,0 +1,81 @@
+﻿@model PaymentVM
+@{
+    ViewData["Title"] = "Payment";
+}
+
+@section Styles {
+    <link href="~/css/booking-modal.css" rel="stylesheet" asp-append-version="true" />
+}
+
+<!-- Booking Progress -->
+<div class="booking-progress">
+    <div class="progress-step completed">
+        <div class="step-number"><i class="fas fa-check"></i></div>
+        <div class="step-label">Select Movie</div>
+    </div>
+    <div class="progress-step completed">
+        <div class="step-number"><i class="fas fa-check"></i></div>
+        <div class="step-label">Choose Seats</div>
+    </div>
+    <div class="progress-step active">
+        <div class="step-number">3</div>
+        <div class="step-label">Payment</div>
+    </div>
+    <div class="progress-step">
+        <div class="step-number">4</div>
+        <div class="step-label">Confirmation</div>
+    </div>
+</div>
+
+<div class="payment-container">
+    <form asp-action="ProcessPayment" asp-controller="Booking" method="post">
+@*         <input type="hidden" name="BookingId" value="@Model.BookingId" /> *@
+
+        <div class="payment-summary">
+            <h2>Booking Summary</h2>
+            <p><strong>Movie:</strong> @Model.MovieTitle</p>
+            <p><strong>Date:</strong> @Model.BookingDate.ToString("dddd, dd MMM yyyy")</p>
+            <p><strong>Seats:</strong> @Model.NumberOfSeats</p>
+            <p><strong>Total:</strong> $@Model.TotalPrice</p>
+        </div>
+
+        <div class="payment-form">
+            <h2>Payment Details</h2>
+            <div class="form-group">
+                <label for="cardName">Cardholder Name</label>
+                <input type="text" name="CardName" id="cardName" required />
+            </div>
+
+            <div class="form-group">
+                <label for="cardNumber">Card Number</label>
+                <input type="text" name="CardNumber" id="cardNumber" required maxlength="19" placeholder="XXXX XXXX XXXX XXXX" />
+            </div>
+
+            <div class="form-row">
+                <div class="form-group half">
+                    <label for="expiryDate">Expiry Date</label>
+                    <input type="text" name="ExpiryDate" id="expiryDate" required placeholder="MM/YY" />
+                </div>
+                <div class="form-group half">
+                    <label for="cvv">CVV</label>
+                    <input type="text" name="CVV" id="cvv" required maxlength="4" />
+                </div>
+            </div>
+
+            <div asp-validation-summary="All" class="validation-summary"></div>
+
+            <div class="payment-actions">
+                <a asp-action="Booking" asp-controller="Booking" asp-route-id="@Model." class="back-btn">
+                    <i class="fas fa-arrow-left"></i> Back
+                </a>
+                <button type="submit" class="confirm-payment-btn">
+                    <i class="fas fa-lock"></i> Pay $@Model.TotalPrice
+                </button>
+            </div>
+        </div>
+    </form>
+</div>
+
+@section Scripts {
+    <script src="~/js/payment.js"></script>
+}

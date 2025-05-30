@@ -1,0 +1,85 @@
+﻿@model Dictionary<ApplicationUser, string>
+@{
+    ViewData["Title"] = "User";
+    Layout = "~/Views/Shared/_AdminLayout.cshtml";
+}
+
+<section class="content-section" id="dashboard">
+    <h1>User Roles</h1>
+
+
+    <!-- Recent Bookings -->
+    <div class="section-header">
+        <h2>Recent Bookings</h2>
+        <a href="#" class="view-all">View All <i class="fas fa-arrow-right"></i></a>
+    </div>
+    <table>
+        <thead>
+            <tr>
+                <th>User Name</th>
+                <th>Email</th>
+                <th>Role Name</th>
+                <th>Actions</th>
+
+            </tr>
+        </thead>
+        <tbody>
+
+                @foreach (var item in Model)
+                {
+                    <tr>
+                        <td>@item.Key.UserName</td>
+                    <td>@item.Key.Email</td>
+                    <td>@item.Value</td>
+                    <td>
+                        <!-- Change Role Button -->
+                        <a asp-action="ChangeRole" asp-route-id="@item.Key.Id" class="user-action-btn change-role-btn" title="Change Role">
+                            <i class="fas fa-user-shield"></i> Change Role
+                        </a>
+
+                        <!-- Block User Button -->
+                        <form method="post" asp-action="Block" asp-route-id="@item.Key.Id" style="display:inline;">
+                            <button type="submit" class="user-action-btn block-user-btn" onclick="return confirm('Are you sure you want to block this user?');" title="Block User">
+                                <i class="fas fa-user-slash"></i> Block
+                            </button>
+                        </form>
+                    </td>
+
+
+                    </tr>
+                }
+
+        </tbody>
+    </table>
+</section>
+<style>
+    .user-action-btn {
+        padding: 6px 10px;
+        border-radius: 5px;
+        margin: 0 5px;
+        display: inline-flex;
+        align-items: center;
+        gap: 5px;
+        color: white;
+        text-decoration: none;
+        font-size: 14px;
+        transition: background-color 0.3s ease;
+    }
+
+    /* Change Role button */
+    .change-role-btn {
+        background-color: #007bff; /* أزرق */
+    }
+
+    /* Block User button */
+    .block-user-btn {
+        background-color: #dc3545; /* أحمر */
+        border: none;
+    }
+
+    .user-action-btn:hover {
+        opacity: 0.85;
+        cursor:pointer;
+    }
+
+</style>
